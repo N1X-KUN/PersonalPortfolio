@@ -1,59 +1,83 @@
 gsap.registerPlugin(ScrollTrigger);
 
-// --- 1. Magnetic Gallery Effect ---
-const gallery = document.querySelector('.magnetic-gallery');
+// --- 1. NEW DETACHED Magnetic Gallery Effect ---
+// detach pulls: apply separate move math to each image based on its unique wrapper
 const images = document.querySelectorAll('.mag-img');
 
-if (gallery) {
-    gallery.addEventListener('mousemove', (e) => {
-        const rect = gallery.getBoundingClientRect();
+images.forEach(img => {
+    img.addEventListener('mousemove', (e) => {
+        //detach directional follow: calculate move from image center
+        const rect = img.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
 
         const distX = e.clientX - centerX;
         const distY = e.clientY - centerY;
 
-        // Spread updated to 280 to match CSS
-        gsap.to('.img1', { x: -280 + distX * 0.1, y: distY * 0.1, duration: 0.5 });
-        gsap.to('.img2', { x: distX * 0.15, y: distY * 0.15, duration: 0.5 });
-        gsap.to('.img3', { x: 280 + distX * 0.1, y: distY * 0.1, duration: 0.5 });
+        // separate move math based on detached starting position spread
+        // stronger relative pull for center image
+        const pull = img.closest('.wrap2') ? 0.3 : 0.15; 
+        
+        gsap.to(img, { 
+            x: distX * pull, 
+            y: distY * pull, 
+            duration: 0.3 
+        });
     });
 
-    // Snap back to wider positions
-    gallery.addEventListener('mouseleave', () => {
-        gsap.to('.img1', { x: -280, y: 0, duration: 0.8, ease: "power3.out" });
-        gsap.to('.img2', { x: 0, y: 0, duration: 0.8, ease: "power3.out" });
-        gsap.to('.img3', { x: 280, y: 0, duration: 0.8, ease: "power3.out" });
+    // detach snap back: only the hovered image snaps back
+    img.addEventListener('mouseleave', () => {
+        gsap.to(img, { x: 0, y: 0, duration: 0.7, ease: "power3.out" });
     });
-}
+});
 
-// --- 2. Parallax Floating Shapes ---
-// Adds a subtle float effect to the background shapes when scrolling
-gsap.to(".shape-1", {
-    y: 150,
+// --- 2. Parallax Subtle Flow Effects ---
+// subtle float drifts for different connecting designs from header
+gsap.to(".genix-container", {
+    y: 100, // drift up subtly
     ease: "none",
     scrollTrigger: { trigger: "body", start: "top top", end: "bottom top", scrub: true }
 });
-gsap.to(".shape-2", {
-    y: -200,
+gsap.to(".magnteic-gallery", {
+    y: -150, // drift down subtly
     ease: "none",
     scrollTrigger: { trigger: "body", start: "top top", end: "bottom top", scrub: true }
 });
 
 // --- 3. Slanted Zoom-Through 'A' Animation ---
 gsap.to(".word-wrapper", {
-    scale: 80, 
+    scale: 80, // Massive scale for the "tunnel fall-through" effect
     ease: "power2.inOut",
     scrollTrigger: {
         trigger: ".zoom-container",
         start: "top top",
-        end: "+=2500", 
+        end: "+=2500", // Makes the scrolling journey longer and smoother
         pin: true,
         scrub: 1
     }
 });
 
-// --- 4. Hover Videos ---
+// --- 4. Shake Letters Effect (Cartoonic Interactivity) ---
+// Each letter shakes individually when the mouse hovers over it
+const shakeLetters = document.querySelectorAll('.shake-letter');
+
+shakeLetters.forEach(letter => {
+    letter.addEventListener('mouseenter', () => {
+        // Rapid random GSAP animation to simulate a violent shake
+        gsap.fromTo(letter, 
+            { x: -10, y: -10 }, 
+            { 
+                x: 10, y: 10, 
+                duration: 0.05, 
+                yoyo: true, 
+                repeat: 5, 
+                clearProps: "all" 
+            }
+        );
+    });
+});
+
+// --- 5. Hover Videos ---
 const projectCards = document.querySelectorAll('.project-card');
 
 projectCards.forEach(card => {

@@ -5,50 +5,43 @@
 }
 
 body {
-    background-color: #0A192F; /* Deep Navy Blue unified theme */
-    color: #FFFFFF;
+    background-color: #f4f4f4; /* Clean off-white agency base */
+    color: #0A192F; /* Black/Navy Text */
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
 }
 
-/* --- Floating Background Shapes --- */
-.shape {
-    position: fixed;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #FFD700, #FFA500); /* Yellow to Orange gradient */
-    filter: blur(60px); /* Makes them soft and glowing */
-    z-index: 0;
-    opacity: 0.4;
-    pointer-events: none;
-}
-.shape-1 { width: 400px; height: 400px; top: -10%; left: -10%; }
-.shape-2 { width: 300px; height: 300px; top: 40%; right: -5%; opacity: 0.3; }
-.shape-3 { width: 500px; height: 500px; bottom: -15%; left: 20%; background: linear-gradient(135deg, #00BFFF, #0A192F); opacity: 0.5; }
-
-/* --- GENIX Magnetic Hero --- */
+/* --- GENIX Magnetic Hero (Off-White Background) --- */
 .genix-hero {
     position: relative;
     height: 100vh;
     width: 100vw;
-    background-color: transparent; /* Lets the blue body and shapes show through */
-    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 2;
 }
 
-.bg-text {
+.genix-container {
     position: absolute;
-    font-size: 22vw;
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    color: rgba(255, 255, 255, 0.03); /* Subtle watermark effect */
-    z-index: 1;
+    top: 5vh; /* Fixed centering: no stretch, correct width/height */
+    width: 100%;
+    text-align: center;
     pointer-events: none;
+    z-index: 1;
 }
 
-/* Updated Bold Typography */
+.bg-text {
+    font-size: 18vw; /* Reduced size to match Foudre style */
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    color: #0A192F; /* Dark text for Genix */
+    letter-spacing: -5px;
+    margin: 0 auto;
+    max-width: 90vw; /* Prevents touching edges */
+}
+
+/* Hero text stacked on left; Repositioned slightly to prevnt overlap */
 .hero-titles {
     position: absolute;
     bottom: 3rem;
@@ -61,28 +54,29 @@ body {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 3px;
-    color: #8892b0; /* Slate gray */
+    color: #8892b0; /* Slate Gray */
     margin-bottom: 0.5rem;
 }
 
 .title-line {
     font-size: 2.5rem;
     font-family: 'Syne', sans-serif;
-    color: #FFFFFF;
+    color: #0A192F;
     line-height: 1;
 }
 
 .highlight-title {
-    font-size: 5.5rem;
+    font-size: 5rem;
     font-family: 'Syne', sans-serif;
     font-weight: 800;
-    color: #FFD700; /* Vibrant Yellow */
+    color: #FFD700; /* Vibrant Yellow highlight with stroke */
     line-height: 0.9;
     margin-top: 0.2rem;
-    text-shadow: 3px 3px 0px #FF007F; /* Pink drop shadow for that Foudre vibe */
+    /* Clean outline without glowing blurry gradients */
+    -webkit-text-stroke: 2px #0A192F; 
 }
 
-/* Fixed Magnetic Images Setup */
+/* Detached Magnetic Gallery Layout */
 .magnetic-gallery {
     position: relative;
     width: 70vw;
@@ -91,28 +85,36 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    /* Moved gallery further right to prevent overlapping Personal text */
+    margin-left: 200px; 
 }
 
-.mag-img {
+/* Structural Wrappers for detached independent follow */
+.img-wrapper {
     position: absolute;
     width: 260px;
     height: 380px;
-    object-fit: cover;
-    border-radius: 15px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-    transition: transform 0.1s ease-out;
 }
 
-/* Spaced out further and Z-index fixed */
-.img1 { transform: rotate(-12deg) translateX(-280px); z-index: 1; }
-.img2 { z-index: 5; width: 300px; height: 440px; } /* Middle stays strictly on top */
-.img3 { transform: rotate(12deg) translateX(280px); z-index: 2; }
+/* Detached starting positions with better spread */
+.wrap1 { transform: rotate(-12deg) translateX(-320px); z-index: 1; }
+.wrap2 { z-index: 5; width: 300px; height: 440px; } /* Center front stays bigger */
+.wrap3 { transform: rotate(12deg) translateX(320px); z-index: 2; }
+
+/* The images hold the individual hover effect */
+.mag-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
 
 /* --- GERARD Slanted Zoom Section --- */
 .zoom-container {
     height: 100vh;
     width: 100vw;
-    background-color: transparent;
+    background-color: #0A192F; /* Connecting design flows: Dark blue tunnel base */
     position: relative;
     overflow: hidden;
     display: flex;
@@ -126,8 +128,24 @@ body {
     width: 100vw;
     height: 100vh;
     transform: rotate(-8deg) scale(1.2); 
-    transform-origin: 58% 50%; 
+    transform-origin: 57% 50%; /* Target specific letter (like 'A' or 'R') for zoom */
 }
+
+/* Companion Text inside the slant (White) */
+.companion-text {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 3rem;
+    color: #FFFFFF; /* White color matching drawing, with shadow for visibility */
+    z-index: 5;
+    pointer-events: none;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+}
+.top-text { top: 20%; }
+.bottom-text { bottom: 20%; }
 
 .video-grid {
     position: absolute;
@@ -151,22 +169,20 @@ body {
     top: 0;
     left: 0;
     z-index: 2;
-    pointer-events: none;
 }
 
-/* Shrunk the GERARD text so it fits better */
+/* Chubby, cartoonic SVG font with internal letter spacing */
 .svg-text {
     font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 14vw; 
-    letter-spacing: -2px;
+    font-weight: 800; /* verified maximum weight for cartoonic feel */
+    font-size: 15vw; /* Reduced size to be visible on screen */
 }
 
-/* --- Project Grid Styles --- */
+/* --- Project Grid Styles (Unchanged, continues yellow down) --- */
 .content-section {
     min-height: 100vh;
     padding: 15vh 10vw;
-    background-color: transparent; 
+    background-color: #FFD700; /* Yellow continues down from the mask to projects */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -174,16 +190,16 @@ body {
     position: relative;
 }
 
-.section-heading {
+.content-section h2 {
     font-family: 'Syne', sans-serif;
     font-size: 4rem;
-    color: #FFD700;
+    color: #0A192F;
     margin-bottom: 0.5rem;
 }
 
-.section-subheading {
+.content-section p {
     font-size: 1.2rem;
-    color: #8892b0;
+    color: #0A192F88;
     margin-bottom: 4rem;
 }
 
@@ -200,67 +216,27 @@ body {
     height: 300px;
     border-radius: 12px;
     overflow: hidden;
-    background-color: #112240; /* Slightly lighter blue for cards */
+    background-color: #112240; /* Slightly lighter navy for cards */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     cursor: pointer;
 }
 
 .card-video {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.3;
-    transition: opacity 0.4s ease;
+    top: 0; left: 0; width: 100%; height: 100%;
+    object-fit: cover; opacity: 0.3; transition: opacity 0.4s ease;
 }
 
 .card-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 2rem;
+    position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem;
     background: linear-gradient(to top, rgba(10, 25, 47, 0.95), transparent);
-    color: #FFFFFF;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    height: 100%;
-    transition: transform 0.4s ease;
+    color: #FFFFFF; display: flex; flex-direction: column; justify-content: flex-end;
+    height: 100%; transition: transform 0.4s ease;
 }
 
-.card-overlay h3 {
-    font-size: 1.6rem;
-    color: #FFD700;
-    margin-bottom: 0.5rem;
-}
-
-.card-links {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.4s ease;
-}
-
-.card-links a {
-    color: #FFFFFF;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-    border: 1px solid #FFD700;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-}
-
-.card-links a:hover {
-    background-color: #FFD700;
-    color: #0A192F;
-}
-
+.card-overlay h3 { font-size: 1.6rem; color: #FFD700; margin-bottom: 0.5rem; }
+.card-links { display: flex; gap: 1rem; margin-top: 1rem; opacity: 0; transform: translateY(20px); transition: all 0.4s ease; }
+.card-links a { color: #FFFFFF; text-decoration: none; font-weight: 600; font-size: 0.9rem; border: 1px solid #FFD700; padding: 0.5rem 1rem; border-radius: 5px; transition: background-color 0.3s, color 0.3s; }
+.card-links a:hover { background-color: #FFD700; color: #0A192F; }
 .project-card:hover .card-video { opacity: 0.8; }
 .project-card:hover .card-links { opacity: 1; transform: translateY(0); }
