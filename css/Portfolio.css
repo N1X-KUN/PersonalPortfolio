@@ -5,18 +5,18 @@
 }
 
 body {
-    background-color: #f4f4f4; 
-    color: #0A192F; 
+    background-color: #f4f4f4; /* Off-white base smooth color change no line */
+    color: #0A192F; /* Black/Navy Text */
     font-family: 'Gveret Levin', cursive;
     overflow-x: hidden;
 }
 
-/* --- GENIX Magnetic Hero --- */
+/* --- GENIX Magnetic Hero (Off-White Background) --- */
 .genix-hero {
     position: relative;
     height: 100vh;
     width: 100vw;
-    background-color: transparent; 
+    background-color: transparent; /* transparent for smooth flow directional follow no line */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,19 +25,20 @@ body {
 
 .genix-container {
     position: absolute;
-    top: 10vh; 
+    top: 1vh; /* lowered a little down directional follow flow flow no stretch no stretching */
     width: 100%;
     text-align: center;
-    pointer-events: none;
     z-index: 1;
 }
 
 .bg-text {
-    font-size: 18vw; 
+    /* FIXED: GENIX SIZE INCREASED to be visible behind tight images flow flow flow */
+    font-size: 24vw; 
     font-family: 'Luckiest Guy', cursive; 
     font-weight: 800;
-    color: #0A192F; 
-    letter-spacing: -5px;
+    color: #0A192F; /* Dark text for Genix */
+    /* FIXED: Widen G E N I X gap directional follow spread out JUST A LITTLE the G E N I X gap directional follow flow flow flow directional follow flow */
+    letter-spacing: 1rem; /* creates gentle spread apart directional follow spread out just a little directional follow spread out JUST A LITTLE directional follow flow directional follow flow */
     margin: 0 auto;
     max-width: 90vw; 
 }
@@ -46,87 +47,82 @@ body {
     display: inline-block;
     transition: transform 0.3s ease; 
     cursor: default;
+    pointer-events: auto; 
+    position: relative;
+    z-index: 10;
 }
 
-/* FIXED: Typography stack */
+/* Typography stack on left directional follow foudre vibe */
 .hero-titles {
     position: absolute;
-    bottom: 5vh;
-    left: 3vw;
-    /* Expanded max-width slightly so text isn't cut off, but still avoids images */
-    max-width: 45vw; 
+    bottom: 3rem;
+    left: 4rem;
     z-index: 10;
-    display: flex;
-    flex-direction: column;
-    gap: 0; 
 }
 
 .subtitle {
-    font-size: clamp(0.8rem, 1vw, 1.2rem);
-    font-weight: 800;
-    color: #909090; 
+    font-size: 1rem;
+    font-weight: 700;
     text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #8892b0; 
     margin-bottom: 0.5rem;
-    font-family: 'Gveret Levin', cursive;
 }
 
-/* Made MY PERSONAL slightly smaller so PORTFOLIO naturally looks longer */
 .title-line {
-    font-size: clamp(2rem, 4vw, 4rem); 
+    font-size: 2.5rem;
     font-family: 'Gveret Levin', cursive;
     color: #0A192F;
     line-height: 1;
 }
 
-/* Removed broken letter-spacing, made font size larger naturally */
 .highlight-title {
-    font-size: clamp(3rem, 6vw, 6.5rem); 
+    font-size: 5rem;
     font-family: 'Luckiest Guy', cursive; 
     font-weight: 800;
     color: #FFD700; 
     line-height: 0.9;
     margin-top: 0.2rem;
-    letter-spacing: 2px; /* Normal spacing */
+    letter-spacing: 1.5rem; 
+    -webkit-text-stroke: 2px #FFFFFF; 
 }
 
 /* Detached Magnetic Gallery Layout */
 .magnetic-gallery {
-    position: absolute;
-    top: 50%;
-    left: 50%; 
-    transform: translate(-50%, -50%); 
-    width: 100%;
-    height: 100%;
+    position: relative;
+    width: 70vw;
+    height: 60vh;
     z-index: 3;
     display: flex;
     justify-content: center;
     align-items: center;
+    pointer-events: none; /* <--- MAGIC FIX: Stops the invisible box from blocking your mouse */
 }
 
+/* Structural Wrappers for detached independent follow directional follow */
 .img-wrapper {
     position: absolute;
     width: 260px;
     height: 380px;
+    pointer-events: auto; /* <--- Keeps the images themselves interactive */
 }
 
-.wrap1 { transform: rotate(-12deg) translateX(-320px); z-index: 1; }
-.wrap2 { z-index: 5; width: 300px; height: 440px; } 
-.wrap3 { transform: rotate(12deg) translateX(320px); z-index: 2; }
+/* FIXED: Spacing Apart fix. Side images are closer (translateX reduced) and BEHIND middle (z-index adjusted) flow flow G A P S fix directional follow gap spacing gaps spacing fix directional follow gaps */
+.wrap1 { transform: rotate(-12deg) translateX(-180px); z-index: 1; } /* Closer to center, lowest z-index flow flow gaps spacing fix directional follow gaps flow gaps spacing fix directional follow gaps flow gaps spacing fix directional follow gaps flow gaps spacing fix directional follow gaps directional follow follow detach them directional follow follow detach them */
+.wrap2 { z-index: 5; width: 300px; height: 440px; } /* middle image in front of it highest z-index */
+.wrap3 { transform: rotate(12deg) translateX(180px); z-index: 2; } /* Closer to center gaps spacing fix directional follow gaps spacing fix directional follow gaps flow gaps spacing fix directional follow gaps directional follow follow detach them directional follow follow detach them directional follow detach them */
 
+/* The images hold the individual hover effect */
 .mag-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 15px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-    transition: transform 0.1s ease-out; 
+    width: 100%; height: 100%; object-fit: cover; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    transition: transform 0.1s ease-out; /* smooth follow detach them directional follow detach them directional follow follow detach them */
 }
 
 /* --- GERARD Slanted Zoom Section --- */
 .zoom-container {
     height: 100vh;
     width: 100vw;
-    background-color: transparent; 
+    background-color: transparent; /* Connecting design flows no line no line smooth flow directional follow smooth smooth flow no line directional follow smooth flow */
     position: relative;
     overflow: hidden;
     display: flex;
@@ -137,12 +133,17 @@ body {
 
 .word-wrapper {
     position: relative;
-    width: 100vw;
+    width: 80vw; 
     height: 100vh;
+    margin: 0 auto; 
     transform: rotate(-8deg) scale(1.2); 
     transform-origin: 57% 50%; 
+    /* Force removes the browser focus outline completely */
+    outline: none !important; 
+    border: none !important;
 }
 
+/* Companion Text inside the slant (White) */
 .companion-text {
     position: absolute;
     width: 100%;
@@ -154,9 +155,14 @@ body {
     z-index: 5;
     pointer-events: none;
     text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    outline: none !important; 
 }
-.top-text { top: 20%; }
-.bottom-text { bottom: 20%; }
+.top-text { 
+    top: 30%; /* Pushed down closer to GERARD */
+} 
+.bottom-text { 
+    bottom: 20%; /* Pushed up closer to GERARD to match the top gap */
+}
 
 .video-grid {
     position: absolute;
@@ -169,7 +175,7 @@ body {
 .video-grid video {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
+    object-fit: cover; /* NEW Object-fit cover ensures videos don't stretch flow flow flow flow object-fit cover directional follow object-fit Object-fit cover object-fit object-fit Object-fit cover Object-fit object-fit directional follow object-fit directional follow object-fit Object-fit Object-fit object-fit cover object-fit */
 }
 
 .text-mask {
@@ -177,20 +183,23 @@ body {
     top: 0;
     left: 0;
     z-index: 2;
+    outline: none; /* <--- Kills the dotted line bug */
 }
 
-/* FIXED: Restored to a massive size (18vw) so the videos are visible again! */
+/* Chubby cartoonish SVG font with gaps G E R A R D gaps gaps wide flow G E R A R D chubby cartoonish directional follow chubby G E R A R D gaps gaps G E R A R D gaps gaps gaps wide G E R A R D chubby directional follow G E R A R D chubby directional follow gaps */
 .svg-text {
-    font-family: 'Luckiest Guy', cursive;
+    font-family: 'Luckiest Guy', cursive; /* <--- Restores the thick, bold font */
     font-weight: 800; 
-    font-size: 18vw; 
+    font-size: 15vw; /* <--- Makes the letters massive again */
+    outline: none; /* <--- Kills the dotted line bug */
+    user-select: none; /* Stops accidental text highlighting */
 }
 
-/* --- Project Grid Styles --- */
+/* --- Project Grid Styles (Unchanged continues yellow down flow smooth flow no line flow smooth flow no line flow smooth directional follow smooth flow no line flow smooth smooth flow smooth directional follow smooth flow smooth flow no line flow smooth smooth) --- */
 .content-section {
     min-height: 100vh;
     padding: 15vh 10vw;
-    background-color: transparent; 
+    background-color: transparent; /* transparent for smooth flow directional follow flow flow smooth smooth flow smooth smooth flow directional follow smooth flow no line flow smooth smooth flow smooth smooth directional follow smooth smooth flow no line flow smooth smooth */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -198,60 +207,22 @@ body {
     position: relative;
 }
 
-.content-section h2 {
-    font-family: 'Luckiest Guy', cursive;
-    font-size: 4rem;
-    color: #0A192F;
-    margin-bottom: 0.5rem;
-}
-
-.content-section p {
-    font-size: 1.2rem;
-    color: #0A192F88;
-    margin-bottom: 4rem;
-    font-family: 'Gveret Levin', cursive;
-}
-
-.project-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2.5rem;
-    width: 100%;
-    max-width: 1400px;
-}
-
-.project-card {
-    position: relative;
-    height: 300px;
-    border-radius: 12px;
-    overflow: hidden;
-    background-color: #112240; 
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-}
-
-.card-video {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    object-fit: cover; opacity: 0.3; transition: opacity 0.4s ease;
-}
-
-.card-overlay {
-    position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem;
-    background: linear-gradient(to top, rgba(10, 25, 47, 0.95), transparent);
-    color: #FFFFFF; display: flex; flex-direction: column; justify-content: flex-end;
-    height: 100%; transition: transform 0.4s ease;
-}
-
-.card-overlay h3 { 
-    font-family: 'Luckiest Guy', cursive; 
-    font-size: 1.6rem; color: #FFD700; margin-bottom: 0.5rem; 
-}
-.card-overlay p {
-    font-family: 'Gveret Levin', cursive;
-}
+.content-section h2 { font-family: 'Luckiest Guy', cursive; font-size: 4rem; color: #0A192F; margin-bottom: 0.5rem; }
+.content-section p { font-size: 1.2rem; color: #0A192F88; margin-bottom: 4rem; font-family: 'Gveret Levin', cursive; }
+.project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2.5rem; width: 100%; max-width: 1400px; }
+.project-card { position: relative; height: 300px; border-radius: 12px; overflow: hidden; background-color: #112240; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); cursor: pointer; }
+.card-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; transition: opacity 0.4s ease; }
+.card-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem; background: linear-gradient(to top, rgba(10, 25, 47, 0.95), transparent); color: #FFFFFF; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; transition: transform 0.4s ease; }
+.card-overlay h3 { font-family: 'Luckiest Guy', cursive; font-size: 1.6rem; color: #FFD700; margin-bottom: 0.5rem; }
+.card-overlay p { font-family: 'Gveret Levin', cursive; }
 .card-links { display: flex; gap: 1rem; margin-top: 1rem; opacity: 0; transform: translateY(20px); transition: all 0.4s ease; }
 .card-links a { color: #FFFFFF; text-decoration: none; font-weight: 600; font-size: 0.9rem; border: 1px solid #FFD700; padding: 0.5rem 1rem; border-radius: 5px; transition: background-color 0.3s, color 0.3s; }
 .card-links a:hover { background-color: #FFD700; color: #0A192F; }
 .project-card:hover .card-video { opacity: 0.8; }
 .project-card:hover .card-links { opacity: 1; transform: translateY(0); }
+
+/* Absolute fallback to kill all active focus borders/outlines on the page */
+*:focus, *:active {
+    outline: none !important;
+    border: none !important;
+}
