@@ -83,7 +83,7 @@ body {
     color: #FFD700; 
     line-height: 0.9;
     margin-top: 0.2rem;
-    letter-spacing: 1.5rem; 
+    letter-spacing: 0.5rem; 
     -webkit-text-stroke: 2px #FFFFFF; 
 }
 
@@ -122,25 +122,36 @@ body {
 .zoom-container {
     height: 100vh;
     width: 100vw;
-    background-color: transparent; /* Connecting design flows no line no line smooth flow directional follow smooth smooth flow no line directional follow smooth flow */
+    background-color: transparent; 
     position: relative;
-    overflow: hidden;
+    overflow: hidden; /* MUST BE HIDDEN */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 2;
+    /* Kill any potential section outlines */
+    outline: none !important;
+    border: none !important;
 }
 
 .word-wrapper {
     position: relative;
-    width: 80vw; 
+    width: 75vw; 
     height: 100vh;
     margin: 0 auto; 
-    transform: rotate(-8deg) scale(1.2); 
-    transform-origin: 57% 50%; 
-    /* Force removes the browser focus outline completely */
-    outline: none !important; 
+    
+    /* Change the -8deg to match your red lines (e.g., -10deg, -5deg) */
+    transform: rotate(-5deg) scale(1.2) translate3d(0,0,0); 
+    
+    transform-origin: 50% 50%; 
+    outline: 1px solid transparent !important; 
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 1px; 
     border: none !important;
+    -webkit-tap-highlight-color: transparent; 
+    box-shadow: none !important; 
+    overflow: hidden; 
 }
 
 /* Companion Text inside the slant (White) */
@@ -180,10 +191,19 @@ body {
 
 .text-mask {
     position: absolute;
-    top: 0;
-    left: 0;
+    /* MAGIC FIX: Pulls the SVG slightly outside the box to hide the dotted anti-aliasing seam */
+    top: -2%;
+    left: -2%;
+    width: 104% !important;
+    height: 104% !important;
     z-index: 2;
-    outline: none; /* <--- Kills the dotted line bug */
+    outline: none !important;
+    border: none !important;
+}
+
+#mask-rect {
+    outline: none !important;
+    stroke: none !important;
 }
 
 /* Chubby cartoonish SVG font with gaps G E R A R D gaps gaps wide flow G E R A R D chubby cartoonish directional follow chubby G E R A R D gaps gaps G E R A R D gaps gaps gaps wide G E R A R D chubby directional follow G E R A R D chubby directional follow gaps */
