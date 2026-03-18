@@ -4,109 +4,109 @@
     box-sizing: border-box;
 }
 
+/* body starts off-white for smooth morph down to yellow */
 body {
-    background-color: #f4f4f4; /* Clean off-white agency base */
-    color: #0A192F; /* Black/Navy Text */
+    background-color: #f4f4f4; 
+    color: #0A192F; 
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
 }
 
-/* --- GENIX Magnetic Hero (Off-White Background) --- */
+/* --- GENIX Magnetic Hero --- */
 .genix-hero {
     position: relative;
     height: 100vh;
     width: 100vw;
+    background-color: transparent; /* Must be transparent for smooth morph */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 2;
 }
 
+/* FIXED Centering and RAISED position */
 .genix-container {
     position: absolute;
-    top: 5vh; /* Fixed centering: no stretch, correct width/height */
+    top: 15vh; /* RAISED the word GENIX higher up, as requested */
+    left: 50%; /* STOOD back in center */
+    transform: translateX(-50%); /* horizontally centeralize */
     width: 100%;
     text-align: center;
     pointer-events: none;
     z-index: 1;
 }
 
+/* Fixed GENIX size and color (Deep Navy Blue) */
 .bg-text {
-    font-size: 18vw; /* Reduced size to match Foudre style */
+    font-size: 14vw; 
     font-family: 'Syne', sans-serif;
     font-weight: 800;
-    color: #0A192F; /* Dark text for Genix */
-    letter-spacing: -5px;
+    color: #0A192F; 
+    letter-spacing: -2px;
     margin: 0 auto;
-    max-width: 90vw; /* Prevents touching edges */
 }
 
-/* Hero text stacked on left; Repositioned slightly to prevnt overlap */
+/* Foudre Style Typography: clamped size avoids center collision */
 .hero-titles {
     position: absolute;
-    bottom: 3rem;
-    left: 4rem;
+    bottom: 5vh;
+    left: 3vw;
+    max-width: 40vw; /* limit text width so it avoids the centered gallery */
     z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 0; 
 }
 
 .subtitle {
-    font-size: 1rem;
-    font-weight: 700;
+    font-size: clamp(0.8rem, 1vw, 1.2rem);
+    font-weight: 800;
+    color: #909090; 
     text-transform: uppercase;
-    letter-spacing: 3px;
-    color: #8892b0; /* Slate Gray */
     margin-bottom: 0.5rem;
 }
 
-.title-line {
-    font-size: 2.5rem;
-    font-family: 'Syne', sans-serif;
-    color: #0A192F;
-    line-height: 1;
+.title-line, .highlight-title {
+    font-family: 'Anton', sans-serif;
+    font-size: clamp(3rem, 6vw, 7.5rem); 
+    line-height: 0.85; 
+    letter-spacing: 1px;
+    -webkit-text-stroke: 0; 
 }
 
-.highlight-title {
-    font-size: 5rem;
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    color: #FFD700; /* Vibrant Yellow highlight with stroke */
-    line-height: 0.9;
-    margin-top: 0.2rem;
-    /* Clean outline without glowing blurry gradients */
-    -webkit-text-stroke: 2px #0A192F; 
-}
+.title-line { color: #0A192F; }
+.highlight-title { color: #FFD700; }
 
-/* Detached Magnetic Gallery Layout */
+/* FIXED: CENTERALIZED the gallery */
 .magnetic-gallery {
-    position: relative;
-    width: 70vw;
-    height: 60vh;
+    position: absolute;
+    top: 50%;
+    left: 50%; /* STOOD back in center, not to the right */
+    transform: translate(-50%, -50%); /* perfectly centeralize the gallery focus */
+    width: 100%;
+    height: 100%;
     z-index: 3;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Moved gallery further right to prevent overlapping Personal text */
-    margin-left: 200px; 
+    pointer-events: none; /* Let clicks pass through empty space */
 }
 
-/* Structural Wrappers for detached independent follow */
+/* Gallery images - structurally fixed to avoid collision */
 .img-wrapper {
     position: absolute;
-    width: 260px;
-    height: 380px;
+    width: 220px;
+    height: 320px;
+    pointer-events: auto; /* enable pointer events for detach pulls hover */
 }
 
-/* Detached starting positions with better spread */
-.wrap1 { transform: rotate(-12deg) translateX(-320px); z-index: 1; }
-.wrap2 { z-index: 5; width: 300px; height: 440px; } /* Center front stays bigger */
-.wrap3 { transform: rotate(12deg) translateX(320px); z-index: 2; }
+/* TIGHT SPACING fixed: pulled images closer together from 280 to 160 */
+.wrap1 { transform: rotate(-10deg) translateX(-160px); z-index: 1; }
+.wrap2 { z-index: 5; width: 260px; height: 380px; } /* middle image stays big */
+.wrap3 { transform: rotate(10deg) translateX(160px); z-index: 2; }
 
-/* The images hold the individual hover effect */
 .mag-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 15px;
+    width: 100%; height: 100%; object-fit: cover; border-radius: 15px;
     box-shadow: 0 15px 40px rgba(0,0,0,0.3);
 }
 
@@ -114,7 +114,7 @@ body {
 .zoom-container {
     height: 100vh;
     width: 100vw;
-    background-color: #0A192F; /* Connecting design flows: Dark blue tunnel base */
+    background-color: transparent; /* transparent for morph flow */
     position: relative;
     overflow: hidden;
     display: flex;
@@ -128,61 +128,33 @@ body {
     width: 100vw;
     height: 100vh;
     transform: rotate(-8deg) scale(1.2); 
-    transform-origin: 57% 50%; /* Target specific letter (like 'A' or 'R') for zoom */
+    transform-origin: 57% 50%; /* Targets 'A' for perfect zoom tunnel fall-through */
 }
 
-/* Companion Text inside the slant (White) */
 .companion-text {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 3rem;
-    color: #FFFFFF; /* White color matching drawing, with shadow for visibility */
-    z-index: 5;
-    pointer-events: none;
+    position: absolute; width: 100%; text-align: center;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 3rem;
+    color: #FFFFFF; z-index: 5; pointer-events: none;
     text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
 }
 .top-text { top: 20%; }
 .bottom-text { bottom: 20%; }
 
-.video-grid {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    z-index: 1;
-}
+.video-grid { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: grid; grid-template-columns: repeat(6, 1fr); z-index: 1; }
+.video-grid video { width: 100%; height: 100%; object-fit: cover; }
+.text-mask { position: absolute; top: 0; left: 0; z-index: 2; }
 
-.video-grid video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.text-mask {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 2;
-}
-
-/* Chubby, cartoonic SVG font with internal letter spacing */
 .svg-text {
     font-family: 'Syne', sans-serif;
-    font-weight: 800; /* verified maximum weight for cartoonic feel */
-    font-size: 15vw; /* Reduced size to be visible on screen */
+    font-weight: 800; 
+    font-size: 14vw; 
 }
 
-/* --- Project Grid Styles (Unchanged, continues yellow down) --- */
+/* --- Project Grid Styles --- */
 .content-section {
     min-height: 100vh;
     padding: 15vh 10vw;
-    background-color: #FFD700; /* Yellow continues down from the mask to projects */
+    background-color: transparent; /* transparent so background morph shows */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -190,50 +162,12 @@ body {
     position: relative;
 }
 
-.content-section h2 {
-    font-family: 'Syne', sans-serif;
-    font-size: 4rem;
-    color: #0A192F;
-    margin-bottom: 0.5rem;
-}
-
-.content-section p {
-    font-size: 1.2rem;
-    color: #0A192F88;
-    margin-bottom: 4rem;
-}
-
-.project-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2.5rem;
-    width: 100%;
-    max-width: 1400px;
-}
-
-.project-card {
-    position: relative;
-    height: 300px;
-    border-radius: 12px;
-    overflow: hidden;
-    background-color: #112240; /* Slightly lighter navy for cards */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-}
-
-.card-video {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    object-fit: cover; opacity: 0.3; transition: opacity 0.4s ease;
-}
-
-.card-overlay {
-    position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem;
-    background: linear-gradient(to top, rgba(10, 25, 47, 0.95), transparent);
-    color: #FFFFFF; display: flex; flex-direction: column; justify-content: flex-end;
-    height: 100%; transition: transform 0.4s ease;
-}
-
+.content-section h2 { font-family: 'Syne', sans-serif; font-size: 4rem; color: #0A192F; margin-bottom: 0.5rem; }
+.content-section p { font-size: 1.2rem; color: #0A192F88; margin-bottom: 4rem; }
+.project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2.5rem; width: 100%; max-width: 1400px; }
+.project-card { position: relative; height: 300px; border-radius: 12px; overflow: hidden; background-color: #112240; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); cursor: pointer; }
+.card-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.3; transition: opacity 0.4s ease; }
+.card-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem; background: linear-gradient(to top, rgba(10, 25, 47, 0.95), transparent); color: #FFFFFF; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; transition: transform 0.4s ease; }
 .card-overlay h3 { font-size: 1.6rem; color: #FFD700; margin-bottom: 0.5rem; }
 .card-links { display: flex; gap: 1rem; margin-top: 1rem; opacity: 0; transform: translateY(20px); transition: all 0.4s ease; }
 .card-links a { color: #FFFFFF; text-decoration: none; font-weight: 600; font-size: 0.9rem; border: 1px solid #FFD700; padding: 0.5rem 1rem; border-radius: 5px; transition: background-color 0.3s, color 0.3s; }

@@ -1,69 +1,78 @@
 gsap.registerPlugin(ScrollTrigger);
 
-// --- 1. NEW DETACHED Magnetic Gallery Effect ---
-// detach pulls: apply separate move math to each image based on its unique wrapper
+// --- 1. SMOOTH BACKGROUND COLOR MORPH (Agence Foudre style) ---
+gsap.to("body", {
+    backgroundColor: "#FFD700", // Morphs body base from off-white to yellow
+    scrollTrigger: {
+        trigger: ".zoom-container",
+        start: "top 60%", // morph starts before tunnel fully enters focus
+        end: "top 20%",
+        scrub: true
+    }
+});
+
+// simultaneous morph of the SVG mask rect from off-white to yellow
+gsap.to("#mask-rect", {
+    fill: "#FFD700",
+    scrollTrigger: {
+        trigger: ".zoom-container",
+        start: "top 60%",
+        end: "top 20%",
+        scrub: true
+    }
+});
+
+// --- 2. TRUE DETACHED Magnetic Images (Independent follow) ---
 const images = document.querySelectorAll('.mag-img');
 
 images.forEach(img => {
     img.addEventListener('mousemove', (e) => {
-        //detach directional follow: calculate move from image center
         const rect = img.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
+        // detach pulls math based on individual image centers
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
 
-        const distX = e.clientX - centerX;
-        const distY = e.clientY - centerY;
-
-        // separate move math based on detached starting position spread
-        // stronger relative pull for center image
+        // detach pulls based on which wrapper holds the image focus
         const pull = img.closest('.wrap2') ? 0.3 : 0.15; 
         
         gsap.to(img, { 
-            x: distX * pull, 
-            y: distY * pull, 
+            x: x * pull, 
+            y: y * pull, 
             duration: 0.3 
         });
     });
 
-    // detach snap back: only the hovered image snaps back
+    // detach snap back: image returns to its specific wrapper starting position
     img.addEventListener('mouseleave', () => {
         gsap.to(img, { x: 0, y: 0, duration: 0.7, ease: "power3.out" });
     });
 });
 
-// --- 2. Parallax Subtle Flow Effects ---
-// subtle float drifts for different connecting designs from header
+// --- 3. Parallax Subtle Flow Drift (Connectdesigns in header) ---
 gsap.to(".genix-container", {
-    y: 100, // drift up subtly
-    ease: "none",
-    scrollTrigger: { trigger: "body", start: "top top", end: "bottom top", scrub: true }
-});
-gsap.to(".magnteic-gallery", {
-    y: -150, // drift down subtly
+    y: 100, // drift subtly higher directional follow flow
     ease: "none",
     scrollTrigger: { trigger: "body", start: "top top", end: "bottom top", scrub: true }
 });
 
-// --- 3. Slanted Zoom-Through 'A' Animation ---
+// --- 4. Slanted Zoom-Through 'A' Animation ---
 gsap.to(".word-wrapper", {
-    scale: 80, // Massive scale for the "tunnel fall-through" effect
+    scale: 80, 
     ease: "power2.inOut",
     scrollTrigger: {
         trigger: ".zoom-container",
         start: "top top",
-        end: "+=2500", // Makes the scrolling journey longer and smoother
+        end: "+=2500", 
         pin: true,
         scrub: 1
     }
 });
 
-// --- 4. Shake Letters Effect (Cartoonic Interactivity) ---
-// Each letter shakes individually when the mouse hovers over it
+// --- 5. Shake Letters Effect ---
 const shakeLetters = document.querySelectorAll('.shake-letter');
 
 shakeLetters.forEach(letter => {
     letter.addEventListener('mouseenter', () => {
-        // Rapid random GSAP animation to simulate a violent shake
         gsap.fromTo(letter, 
             { x: -10, y: -10 }, 
             { 
@@ -77,7 +86,7 @@ shakeLetters.forEach(letter => {
     });
 });
 
-// --- 5. Hover Videos ---
+// --- 6. Hover Videos ---
 const projectCards = document.querySelectorAll('.project-card');
 
 projectCards.forEach(card => {
@@ -90,7 +99,7 @@ projectCards.forEach(card => {
     card.addEventListener('mouseleave', () => {
         if (video) {
             video.pause();
-            video.currentTime = 0; 
+            video.currentTime = 0; // Rewind video
         }
     });
 });
