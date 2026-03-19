@@ -5,40 +5,137 @@
 }
 
 body {
-    background-color: #f4f4f4; /* Off-white base smooth color change no line */
-    color: #0A192F; /* Black/Navy Text */
+    background-color: #f4f4f4; 
+    color: #0A192F; 
     font-family: 'Gveret Levin', cursive;
     overflow-x: hidden;
 }
 
-/* --- GENIX Magnetic Hero (Off-White Background) --- */
-.genix-hero {
+/* --- PAGE 1 & 2: PINNED HERO AND ABOUT --- */
+.pinned-hero-about {
     position: relative;
     height: 100vh;
     width: 100vw;
-    background-color: transparent; /* transparent for smooth flow directional follow no line */
+    background-color: transparent;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 2;
+    overflow: hidden; 
 }
 
+/* Page 1 wrapper so it can slide up out of view */
+.page1-content {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 1; 
+}
+
+/* --- PAGE 2 ABOUT STYLES (Foudre Accordion Layout) --- */
+.page2-content {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 4; 
+    pointer-events: none; 
+    transform: translateY(100vh); /* Starts off-screen at bottom */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5vw; /* Pushes text to left and right edges */
+}
+
+/* Left Side Bold Text */
+.foudre-left { 
+    width: 25vw; 
+}
+
+.foudre-main-title {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 4.5rem;
+    color: #FFD700; 
+    line-height: 0.9;
+    -webkit-text-stroke: 2px #0A192F;
+    margin-bottom: 1rem;
+}
+
+.foudre-sub-text {
+    font-family: 'Gveret Levin', cursive;
+    font-size: 1.2rem;
+    color: #0A192F;
+    font-weight: 700;
+}
+
+/* Right Side Accordion Stack */
+.foudre-right {
+    width: 25vw;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.acc-item { 
+    display: flex; 
+    flex-direction: column; 
+}
+
+/* The Titles (Inactive state by default - hollow text) */
+.acc-title {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 3.5rem;
+    color: transparent; 
+    -webkit-text-stroke: 2px #ffffff; 
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+/* The Content Box (Hidden by default) */
+.acc-content {
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.acc-content p {
+    font-family: 'Gveret Levin', cursive;
+    font-size: 1.1rem;
+    color: #0A192F;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+/* Foudre Style Tags (The pills) */
+.foudre-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.foudre-tags span {
+    background-color: #FFD700;
+    color: #0A192F;
+    padding: 8px 15px;
+    border-radius: 20px; 
+    font-family: 'Gveret Levin', cursive;
+    font-weight: 800;
+    font-size: 1rem;
+}
+
+/* --- HERO TYPOGRAPHY & LAYOUT --- */
 .genix-container {
     position: absolute;
-    top: 1vh; /* lowered a little down directional follow flow flow no stretch no stretching */
+    top: 1vh; 
     width: 100%;
     text-align: center;
     z-index: 1;
 }
 
 .bg-text {
-    /* FIXED: GENIX SIZE INCREASED to be visible behind tight images flow flow flow */
     font-size: 24vw; 
     font-family: 'Luckiest Guy', cursive; 
     font-weight: 800;
-    color: #0A192F; /* Dark text for Genix */
-    /* FIXED: Widen G E N I X gap directional follow spread out JUST A LITTLE the G E N I X gap directional follow flow flow flow directional follow flow */
-    letter-spacing: 1rem; /* creates gentle spread apart directional follow spread out just a little directional follow spread out JUST A LITTLE directional follow flow directional follow flow */
+    color: #0A192F; 
+    letter-spacing: 1rem; 
     margin: 0 auto;
     max-width: 90vw; 
 }
@@ -52,7 +149,6 @@ body {
     z-index: 10;
 }
 
-/* Typography stack on left directional follow foudre vibe */
 .hero-titles {
     position: absolute;
     bottom: 3rem;
@@ -87,7 +183,7 @@ body {
     -webkit-text-stroke: 2px #FFFFFF; 
 }
 
-/* Detached Magnetic Gallery Layout */
+/* --- MAGNETIC GALLERY --- */
 .magnetic-gallery {
     position: relative;
     width: 70vw;
@@ -96,26 +192,23 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    pointer-events: none; /* <--- MAGIC FIX: Stops the invisible box from blocking your mouse */
+    pointer-events: none; 
 }
 
-/* Structural Wrappers for detached independent follow directional follow */
 .img-wrapper {
     position: absolute;
     width: 260px;
     height: 380px;
-    pointer-events: auto; /* <--- Keeps the images themselves interactive */
+    pointer-events: auto; 
 }
 
-/* FIXED: Spacing Apart fix. Side images are closer (translateX reduced) and BEHIND middle (z-index adjusted) flow flow G A P S fix directional follow gap spacing gaps spacing fix directional follow gaps */
-.wrap1 { transform: rotate(-12deg) translateX(-180px); z-index: 1; } /* Closer to center, lowest z-index flow flow gaps spacing fix directional follow gaps flow gaps spacing fix directional follow gaps flow gaps spacing fix directional follow gaps flow gaps spacing fix directional follow gaps directional follow follow detach them directional follow follow detach them */
-.wrap2 { z-index: 5; width: 300px; height: 440px; } /* middle image in front of it highest z-index */
-.wrap3 { transform: rotate(12deg) translateX(180px); z-index: 2; } /* Closer to center gaps spacing fix directional follow gaps spacing fix directional follow gaps flow gaps spacing fix directional follow gaps directional follow follow detach them directional follow follow detach them directional follow detach them */
+.wrap1 { transform: rotate(-12deg) translateX(-180px); z-index: 1; } 
+.wrap2 { z-index: 5; width: 300px; height: 440px; } 
+.wrap3 { transform: rotate(12deg) translateX(180px); z-index: 2; } 
 
-/* The images hold the individual hover effect */
 .mag-img {
     width: 100%; height: 100%; object-fit: cover; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-    transition: transform 0.1s ease-out; /* smooth follow detach them directional follow detach them directional follow follow detach them */
+    transition: transform 0.1s ease-out; 
 }
 
 /* --- GERARD Slanted Zoom Section --- */
@@ -124,12 +217,11 @@ body {
     width: 100vw;
     background-color: transparent; 
     position: relative;
-    overflow: hidden; /* MUST BE HIDDEN */
+    overflow: hidden; 
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 2;
-    /* Kill any potential section outlines */
     outline: none !important;
     border: none !important;
 }
@@ -139,10 +231,7 @@ body {
     width: 75vw; 
     height: 100vh;
     margin: 0 auto; 
-    
-    /* Change the -8deg to match your red lines (e.g., -10deg, -5deg) */
     transform: rotate(-5deg) scale(1.2) translate3d(0,0,0); 
-    
     transform-origin: 50% 50%; 
     outline: 1px solid transparent !important; 
     backface-visibility: hidden;
@@ -154,7 +243,6 @@ body {
     overflow: hidden; 
 }
 
-/* Companion Text inside the slant (White) */
 .companion-text {
     position: absolute;
     width: 100%;
@@ -168,12 +256,9 @@ body {
     text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
     outline: none !important; 
 }
-.top-text { 
-    top: 30%; /* Pushed down closer to GERARD */
-} 
-.bottom-text { 
-    bottom: 20%; /* Pushed up closer to GERARD to match the top gap */
-}
+
+.top-text { top: 30%; } 
+.bottom-text { bottom: 20%; }
 
 .video-grid {
     position: absolute;
@@ -186,12 +271,11 @@ body {
 .video-grid video {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* NEW Object-fit cover ensures videos don't stretch flow flow flow flow object-fit cover directional follow object-fit Object-fit cover object-fit object-fit Object-fit cover Object-fit object-fit directional follow object-fit directional follow object-fit Object-fit Object-fit object-fit cover object-fit */
+    object-fit: cover; 
 }
 
 .text-mask {
     position: absolute;
-    /* MAGIC FIX: Pulls the SVG slightly outside the box to hide the dotted anti-aliasing seam */
     top: -2%;
     left: -2%;
     width: 104% !important;
@@ -206,20 +290,19 @@ body {
     stroke: none !important;
 }
 
-/* Chubby cartoonish SVG font with gaps G E R A R D gaps gaps wide flow G E R A R D chubby cartoonish directional follow chubby G E R A R D gaps gaps G E R A R D gaps gaps gaps wide G E R A R D chubby directional follow G E R A R D chubby directional follow gaps */
 .svg-text {
-    font-family: 'Luckiest Guy', cursive; /* <--- Restores the thick, bold font */
+    font-family: 'Luckiest Guy', cursive; 
     font-weight: 800; 
-    font-size: 15vw; /* <--- Makes the letters massive again */
-    outline: none; /* <--- Kills the dotted line bug */
-    user-select: none; /* Stops accidental text highlighting */
+    font-size: 15vw; 
+    outline: none; 
+    user-select: none; 
 }
 
-/* --- Project Grid Styles (Unchanged continues yellow down flow smooth flow no line flow smooth flow no line flow smooth directional follow smooth flow no line flow smooth smooth flow smooth directional follow smooth flow smooth flow no line flow smooth smooth) --- */
+/* --- Project Grid Styles --- */
 .content-section {
     min-height: 100vh;
     padding: 15vh 10vw;
-    background-color: transparent; /* transparent for smooth flow directional follow flow flow smooth smooth flow smooth smooth flow directional follow smooth flow no line flow smooth smooth flow smooth smooth directional follow smooth smooth flow no line flow smooth smooth */
+    background-color: transparent; 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -241,7 +324,6 @@ body {
 .project-card:hover .card-video { opacity: 0.8; }
 .project-card:hover .card-links { opacity: 1; transform: translateY(0); }
 
-/* Absolute fallback to kill all active focus borders/outlines on the page */
 *:focus, *:active {
     outline: none !important;
     border: none !important;
