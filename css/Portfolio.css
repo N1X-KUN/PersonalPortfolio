@@ -298,17 +298,134 @@ body {
     user-select: none; 
 }
 
-/* --- Project Grid Styles --- */
-.content-section {
-    min-height: 100vh;
-    padding: 15vh 10vw;
+/* ==========================================
+   PAGE 4: SELECTED WORKS (Edge Studio Style)
+   ========================================== */
+   .content-section {
+    /* MAGIC FIX: Fixed position anchors it directly over the screen, ignoring the 2500px gap */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    
+    /* SHRUNK PADDING to ensure everything fits comfortably at 100% zoom */
+    padding: 2vh 5vw; 
+    justify-content: center; 
     background-color: transparent; 
     display: flex;
     flex-direction: column;
-    align-items: center;
-    z-index: 5;
-    position: relative;
+    z-index: 10;
+    
+    /* Starts invisible. autoAlpha in JS handles visibility */
+    opacity: 0;
+    visibility: hidden; 
+    transform: scale(0.9);
 }
+
+.works-header { margin-bottom: 0.5rem; }
+.edge-title { font-family: 'Luckiest Guy', cursive; font-size: 3.2rem; color: #0A192F; line-height: 1; margin-bottom: 0.2rem; }
+.edge-sub { font-family: 'Gveret Levin', cursive; font-size: 1.1rem; color: #0A192F; font-weight: 700; opacity: 0.8; }
+
+/* The Carousel Track */
+.carousel-wrapper { width: 100%; position: relative; }
+.carousel-track {
+    display: flex;
+    gap: 1.2rem;
+    overflow-x: auto;
+    /* REMOVED SCROLL SNAP: This was actively fighting your mouse wheel! */
+    padding: 1rem 0; 
+    
+    /* VISIBLE CUSTOM SCROLLBAR */
+    scrollbar-width: thin; 
+    scrollbar-color: #0A192F transparent; 
+}
+
+/* Scrollbar Styling for Chrome/Safari */
+.carousel-track::-webkit-scrollbar { height: 8px; display: block; }
+.carousel-track::-webkit-scrollbar-track { background: transparent; }
+.carousel-track::-webkit-scrollbar-thumb { background: #0A192F; border-radius: 10px; }
+
+/* The Individual Cards (SHRUNK DOWN) */
+.edge-card {
+    flex: 0 0 300px; /* Reduced width */
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    transition: transform 0.3s ease; 
+}
+.edge-card:hover {
+    transform: scale(1.03); /* Hover expansion */
+}
+
+/* Image Box (SHRUNK DOWN) */
+.edge-img-box {
+    position: relative;
+    width: 100%;
+    height: 180px; /* Reduced height to fit standard screens */
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    background-color: #112240; 
+}
+.edge-media { width: 100%; height: 100%; object-fit: cover; }
+.placeholder-bg { width: 100%; height: 100%; background: linear-gradient(45deg, #0A192F, #1c355e); }
+
+.edge-tags {
+    position: absolute;
+    top: 0.6rem; left: 0.6rem;
+    display: flex; flex-direction: column; gap: 0.3rem;
+    align-items: flex-start;
+}
+.edge-tags span {
+    background-color: #0A192F;
+    color: #FFFFFF;
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 0.65rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    letter-spacing: 1px;
+}
+
+/* Text and Buttons Below Image */
+.edge-info { display: flex; flex-direction: column; align-items: flex-start; }
+.edge-date { font-family: 'Luckiest Guy', cursive; color: #FF7A59; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 0.2rem; }
+.edge-info h3 { font-family: 'Luckiest Guy', cursive; font-size: 1.6rem; color: #0A192F; line-height: 1; margin-bottom: 0.3rem; }
+.edge-info p { font-family: 'Gveret Levin', cursive; font-size: 0.85rem; color: #0A192F; font-weight: 700; margin-bottom: 0.6rem; opacity: 0.8; line-height: 1.2; }
+
+/* The Orange Redirect Button */
+.edge-btn {
+    background-color: #FF7A59; 
+    color: #FFFFFF;
+    font-family: 'Luckiest Guy', cursive;
+    text-decoration: none;
+    padding: 0.4rem 0.9rem;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 5px 15px rgba(255, 122, 89, 0.4);
+}
+.edge-btn:hover { background-color: #0A192F; transform: translateY(-2px); }
+
+/* Navigation Bottom */
+.carousel-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+    margin-top: 0.5rem;
+    padding-top: 0.8rem;
+    border-top: 2px solid rgba(10, 25, 47, 0.1); 
+}
+.nav-arrow { background: none; border: none; font-size: 1.2rem; color: #FF7A59; cursor: pointer; transition: transform 0.2s; }
+.nav-arrow:hover { transform: scale(1.3); }
+.nav-numbers { display: flex; gap: 0.6rem; }
+.num { 
+    width: 25px; height: 25px; border-radius: 50%; border: 1px solid #0A192F; 
+    display: flex; justify-content: center; align-items: center;
+    font-family: 'Luckiest Guy', cursive; color: #0A192F; font-size: 0.9rem;
+    transition: all 0.3s;
+    cursor: pointer; 
+}
+.num.active { background-color: #0A192F; color: #FFD700; border-color: #0A192F; transform: scale(1.1); }
 
 .content-section h2 { font-family: 'Luckiest Guy', cursive; font-size: 4rem; color: #0A192F; margin-bottom: 0.5rem; }
 .content-section p { font-size: 1.2rem; color: #0A192F88; margin-bottom: 4rem; font-family: 'Gveret Levin', cursive; }

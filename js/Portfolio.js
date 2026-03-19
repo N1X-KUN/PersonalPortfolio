@@ -157,3 +157,61 @@ gsap.to(".word-wrapper", {
         scrub: 1
     }
 });
+
+// ==========================================
+// PAGE 4: EDGE STUDIO SLIDER & ZOOM SYNC
+// ==========================================
+
+// 1. Sync Reveal perfectly with the GERARD Zoom
+// We tie a timeline directly to the 2500px zoom container.
+const revealTl = gsap.timeline({
+    scrollTrigger: {
+        trigger: ".zoom-container",
+        start: "top top",
+        end: "+=2500", // Maps perfectly to the GERARD zoom
+        scrub: true
+    }
+});
+
+// Wait in the background for 80% of the zoom, then fade up on top of the yellow!
+revealTl.to({}, { duration: 0.8 }) 
+        .to(".content-section", { autoAlpha: 1, scale: 1, duration: 0.2 });
+
+
+// 2. Carousel Slider, Hover Sync, & Click Logic
+const track = document.getElementById('track');
+const btnPrev = document.getElementById('btn-prev');
+const btnNext = document.getElementById('btn-next');
+const numbers = document.querySelectorAll('.num');
+const cards = document.querySelectorAll('.edge-card');
+
+// Calculate exact scroll amount (Card width + gap)
+const getScrollAmount = () => cards[0].offsetWidth + parseFloat(window.getComputedStyle(track).gap);
+
+// Button Arrow Scrolling
+btnNext.addEventListener('click', () => { track.scrollBy({ left: getScrollAmount(), behavior: 'smooth' }); });
+btnPrev.addEventListener('click', () => { track.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' }); });
+
+// Click numbers to scroll directly to a specific card
+numbers.forEach((num, index) => {
+    num.addEventListener('click', () => {
+        track.scrollTo({ left: index * getScrollAmount(), behavior: 'smooth' });
+    });
+});
+
+// Hover over a card to immediately highlight the corresponding number below it
+cards.forEach((card, index) => {
+    card.addEventListener('mouseenter', () => {
+        numbers.forEach(n => n.classList.remove('active'));
+        if(numbers[index]) numbers[index].classList.add('active');
+    });
+});
+
+// HORIZONTAL MOUSE WHEEL SCROLL FIX
+track.addEventListener('wheel', (e) => {
+    if (e.deltaY !== 0) {
+        // Stop page from jittering vertically while scrolling horizontal
+        e.preventDefault(); 
+        track.scrollLeft += e.deltaY;
+    }
+}, { passive: false });
