@@ -175,7 +175,7 @@ const revealTl = gsap.timeline({
 
 // Wait in the background for 80% of the zoom, then fade up on top of the yellow!
 revealTl.to({}, { duration: 0.8 }) 
-        .to(".content-section", { autoAlpha: 1, scale: 1, duration: 0.2 });
+        .to(".content-section", { autoAlpha: 1, scale: 1, pointerEvents: "auto", duration: 0.2 });
 
 
 // 2. Carousel Slider, Hover Sync, & Click Logic

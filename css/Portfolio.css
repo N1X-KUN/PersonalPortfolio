@@ -302,27 +302,26 @@ body {
    PAGE 4: SELECTED WORKS (Edge Studio Style)
    ========================================== */
    .content-section {
-    /* MAGIC FIX: Fixed position anchors it directly over the screen, ignoring the 2500px gap */
     position: fixed;
     top: 0; left: 0;
     width: 100vw; height: 100vh;
-    
-    /* SHRUNK PADDING to ensure everything fits comfortably at 100% zoom */
     padding: 2vh 5vw; 
     justify-content: center; 
     background-color: transparent; 
     display: flex;
     flex-direction: column;
     z-index: 10;
-    
-    /* Starts invisible. autoAlpha in JS handles visibility */
     opacity: 0;
     visibility: hidden; 
     transform: scale(0.9);
+    pointer-events: none; /* NEW: Stops the invisible wall from breaking your scroll! */
 }
 
-.works-header { margin-bottom: 0.5rem; }
-.edge-title { font-family: 'Luckiest Guy', cursive; font-size: 3.2rem; color: #0A192F; line-height: 1; margin-bottom: 0.2rem; }
+.works-header { 
+    margin-top: 5vh; /* ⬅️ LEVER 1: Increase this number (e.g., 8vh, 10vh) to push the text DOWN from the top edge */
+    margin-bottom: -3rem; /* ⬅️ LEVER 2: Increase this number (e.g., 2rem) if you need more space between the text and the cards */
+}
+.edge-title { font-family: 'Luckiest Guy', cursive; font-size: 3rem; color: #0A192F; line-height: 1; margin-bottom: 0.2rem; } /* Reduced from 3.5rem */
 .edge-sub { font-family: 'Gveret Levin', cursive; font-size: 1.1rem; color: #0A192F; font-weight: 700; opacity: 0.8; }
 
 /* The Carousel Track */
@@ -331,10 +330,9 @@ body {
     display: flex;
     gap: 1.2rem;
     overflow-x: auto;
-    /* REMOVED SCROLL SNAP: This was actively fighting your mouse wheel! */
-    padding: 1rem 0; 
-    
-    /* VISIBLE CUSTOM SCROLLBAR */
+    padding: 0.5rem 2rem; /* Shrunk the 1rem to 0.5rem */
+    border-top: 2px solid rgba(255, 255, 255, 0.6);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.6);
     scrollbar-width: thin; 
     scrollbar-color: #0A192F transparent; 
 }
@@ -344,26 +342,35 @@ body {
 .carousel-track::-webkit-scrollbar-track { background: transparent; }
 .carousel-track::-webkit-scrollbar-thumb { background: #0A192F; border-radius: 10px; }
 
-/* The Individual Cards (SHRUNK DOWN) */
+
+/* The Individual Cards */
 .edge-card {
-    flex: 0 0 300px; /* Reduced width */
+    flex: 0 0 320px; 
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
-    transition: transform 0.3s ease; 
-}
-.edge-card:hover {
-    transform: scale(1.03); /* Hover expansion */
+    gap: 0.8rem;
+    transition: all 0.3s ease; 
+    
+    /* FIX 2: Set up the card to act as a neat container */
+    background-color: transparent;
+    padding: 1.2rem; /* Adds inner spacing so the text isn't pressed against the edge of the white box */
+    border-radius: 20px; /* Smooth rounded corners for the hover box */
 }
 
-/* Image Box (SHRUNK DOWN) */
+/* FIX 3: The White Background Hover Effect! */
+.edge-card:hover {
+    transform: translateY(-5px) scale(1.03); 
+    background-color: #FFFFFF; /* Flashes white when you hover */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15); /* Adds a soft drop shadow to make it pop off the yellow */
+}
+
 .edge-img-box {
     position: relative;
     width: 100%;
-    height: 180px; /* Reduced height to fit standard screens */
-    border-radius: 12px;
+    height: 180px; /* Reduced from 220px */
+    border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
     background-color: #112240; 
 }
 .edge-media { width: 100%; height: 100%; object-fit: cover; }
@@ -386,13 +393,19 @@ body {
 }
 
 /* Text and Buttons Below Image */
-.edge-info { display: flex; flex-direction: column; align-items: flex-start; }
+.edge-info { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: flex-start; 
+    flex-grow: 1; /* NEW: Forces container to stretch and fill empty space */
+}
 .edge-date { font-family: 'Luckiest Guy', cursive; color: #FF7A59; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 0.2rem; }
 .edge-info h3 { font-family: 'Luckiest Guy', cursive; font-size: 1.6rem; color: #0A192F; line-height: 1; margin-bottom: 0.3rem; }
 .edge-info p { font-family: 'Gveret Levin', cursive; font-size: 0.85rem; color: #0A192F; font-weight: 700; margin-bottom: 0.6rem; opacity: 0.8; line-height: 1.2; }
 
 /* The Orange Redirect Button */
 .edge-btn {
+    margin-top: auto; /* NEW: Pushes button to the absolute bottom! */
     background-color: #FF7A59; 
     color: #FFFFFF;
     font-family: 'Luckiest Guy', cursive;
@@ -410,9 +423,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1.2rem;
-    margin-top: 0.5rem;
-    padding-top: 0.8rem;
+    gap: 1.5rem;
+    margin-top: 0; /* Shrunk from 1rem */
+    padding-top: 0.5rem; /* Shrunk from 1rem */
     border-top: 2px solid rgba(10, 25, 47, 0.1); 
 }
 .nav-arrow { background: none; border: none; font-size: 1.2rem; color: #FF7A59; cursor: pointer; transition: transform 0.2s; }
