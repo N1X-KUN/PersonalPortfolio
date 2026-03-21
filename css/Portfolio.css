@@ -317,9 +317,11 @@ body {
     pointer-events: none; /* NEW: Stops the invisible wall from breaking your scroll! */
 }
 
-.works-header { 
-    margin-top: 5vh; /* ⬅️ LEVER 1: Increase this number (e.g., 8vh, 10vh) to push the text DOWN from the top edge */
-    margin-bottom: -3rem; /* ⬅️ LEVER 2: Increase this number (e.g., 2rem) if you need more space between the text and the cards */
+.works-header {
+    text-align: center; /* Centers the text perfectly */
+    margin-top: 3vh;    /* Pushes it down slightly from the very top */
+    margin-bottom: -5vh; 
+    width: 100%;
 }
 .edge-title { font-family: 'Luckiest Guy', cursive; font-size: 3rem; color: #0A192F; line-height: 1; margin-bottom: 0.2rem; } /* Reduced from 3.5rem */
 .edge-sub { font-family: 'Gveret Levin', cursive; font-size: 1.1rem; color: #0A192F; font-weight: 700; opacity: 0.8; }
@@ -421,12 +423,11 @@ body {
 /* Navigation Bottom */
 .carousel-nav {
     display: flex;
-    align-items: center;
     justify-content: center;
-    gap: 1.5rem;
-    margin-top: 0; /* Shrunk from 1rem */
-    padding-top: 0.5rem; /* Shrunk from 1rem */
-    border-top: 2px solid rgba(10, 25, 47, 0.1); 
+    align-items: center;
+    gap: 1rem;
+    margin-top: 3vh;
+    padding-bottom: 6vh; /* This is the magic padding that lifts it off the bottom! */
 }
 .nav-arrow { background: none; border: none; font-size: 1.2rem; color: #FF7A59; cursor: pointer; transition: transform 0.2s; }
 .nav-arrow:hover { transform: scale(1.3); }
@@ -697,3 +698,25 @@ body {
 .social-row { display: flex; gap: 2rem; }
 .menu-social-icon { width: 40px; height: 40px; fill: #FFFFFF; transition: fill 0.3s, transform 0.3s; }
 .social-row a:hover .menu-social-icon { fill: #FFD700; transform: scale(1.1); }
+
+/* Music Toggle Button - Locked to the bottom right of the menu */
+.music-btn {
+    position: absolute;
+    bottom: 3rem;
+    right: 3rem; /* Pushes it to the bottom right corner! */
+    background: transparent;
+    border: 2px solid #FFD700;
+    color: #FFD700;
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 1.2rem;
+    padding: 0.5rem 1.5rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+.music-btn:hover {
+    background: #FFD700;
+    color: #0A192F;
+    transform: scale(1.05);
+}

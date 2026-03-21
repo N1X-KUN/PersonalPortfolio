@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerard Matthew | Portfolio</title>
+    <link rel="icon" type="image/png" href="assets/images/Logo.png">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,14 +13,18 @@
     <link rel="stylesheet" href="css/Portfolio.css">
 </head>
 <body>
+    
     <div class="loader-wrapper">
         <div class="loader-panel panel-top"></div>
         <div class="loader-panel panel-bottom"></div>
         <h1 class="loader-text">GENIX</h1>
     </div>
 
+    <audio id="bg-music" loop>
+        <source src="assets/videos/We Shop Song.mp3" type="audio/mpeg">
+    </audio>
+
     <header class="site-header">
-        
         <button class="burger-btn" id="burger-btn">
             <span class="burger-line"></span>
             <span class="burger-line"></span>
@@ -57,16 +62,13 @@
                     <a href="https://www.linkedin.com/in/gerard-matthew-fernandez-9aa8a8374/" target="_blank">
                         <svg class="menu-social-icon" viewBox="0 0 448 512"><path d="M100.28 148.14L100.28 148.14c-28.02 0-46.28-18.51-46.28-41.67 0-23.64 18.74-41.68 47.26-41.68 28.5 0 46.27 18.04 46.75 41.68 0 23.16-18.25 41.67-47.73 41.67zm-30.82 283.84h61.64V179.9H69.46v252.08zm267.06-259c-32.9 0-47.72 18.15-56.02 30.93v-26.6h-61.65c.81 17.43 0 254.67 0 254.67h61.65V280.97c0-7.39.53-14.78 2.69-20.08 5.92-14.77 19.34-30.06 41.9-30.06 29.58 0 41.44 22.56 41.44 55.61v145.54h61.65V278.43c0-82.4-43.98-120.73-102.34-120.73z"/></svg>
                     </a>
-                    <a href="#" target="_blank">
-                        <svg class="menu-social-icon" viewBox="0 0 640 512"><path d="M524.531,69.836a1.5,1.5,0,0,0-.764-.7A485.065,485.065,0,0,0,404.081,32.03a1.816,1.816,0,0,0-1.923.91,337.461,337.461,0,0,0-14.9,30.6,447.848,447.848,0,0,0-134.426,0,309.541,309.541,0,0,0-15.135-30.6,1.89,1.89,0,0,0-1.924-.91A483.689,483.689,0,0,0,116.085,69.137a1.712,1.712,0,0,0-.788.676C39.068,183.651,18.186,294.69,28.43,404.354a2.016,2.016,0,0,0,.765,1.375A487.666,487.666,0,0,0,176.02,479.918a1.9,1.9,0,0,0,2.063-.276c8.3-11.455,15.894-23.475,22.846-35.96a1.884,1.884,0,0,0-1.058-2.617,314.168,314.168,0,0,1-44.821-21.365,1.88,1.88,0,0,1-.188-3.155c3.08-2.316,6.138-4.7,9.088-7.144a1.834,1.834,0,0,1,1.924-.225c95.234,43.518,198.374,43.518,292.368,0a1.841,1.841,0,0,1,1.924.225c2.95,2.44,6.008,4.828,9.112,7.144a1.884,1.884,0,0,1-.164,3.155,310.573,310.573,0,0,1-44.869,21.365,1.88,1.88,0,0,0-1.035,2.617c6.976,12.485,14.568,24.5,22.822,35.96a1.894,1.894,0,0,0,2.063.276A486.2,486.2,0,0,0,611.534,405.729a1.882,1.882,0,0,0,.765-1.352C623.729,277.594,590.933,167.465,524.531,69.836ZM222.491,337.58c-28.972,0-52.844-26.587-52.844-59.239S193.056,219.1,222.491,219.1c29.665,0,53.306,26.82,52.843,59.239C275.334,310.993,251.924,337.58,222.491,337.58Zm195.38,0c-28.971,0-52.843-26.587-52.843-59.239S388.437,219.1,417.871,219.1c29.667,0,53.307,26.82,52.844,59.239C470.715,310.993,447.538,337.58,417.871,337.58Z"/></svg>
-                    </a>
                 </div>
             </div>
         </div>
+        <button id="music-toggle" class="music-btn">🔊 MUTE MUSIC</button>
     </div>
 
     <section class="pinned-hero-about">
-
         <div class="page1-content">
             <div class="genix-container">
                 <h1 class="bg-text">
@@ -93,33 +95,31 @@
         </div>
 
         <div class="page2-content">
-            
             <div class="foudre-left">
                 <h2 class="foudre-main-title">CREATIVE<br>COMPUTING<br>STUDENT.</h2>
-                <p class="foudre-sub-text">Blending art, technology, and interactive media to bring imaginative concepts to life.</p>
+                <p class="foudre-sub-text">Now in my final year soon to recieve my Bachelor Degree for my creativity in coding.</p>
             </div>
-
             <div class="foudre-right">
-                
                 <div class="acc-item" id="acc-1">
                     <h3 class="acc-title">MY PERSONALITY</h3>
                     <div class="acc-content">
-                        <p>I thrive on bringing imaginative concepts to life through interactive media and design.</p>
+                        <p>I'm Introverted haha, but I will be talkative/interactive if my friends needs me too, I like working with attention to details and at 200% of passion on tasks.</p>
                     </div>
                 </div>
-
                 <div class="acc-item" id="acc-2">
                     <h3 class="acc-title">MY HOBBIES</h3>
                     <div class="acc-content">
                         <div class="foudre-tags">
-                            <span>Gaming</span>
-                            <span>Plushies</span>
-                            <span>Pop Culture</span>
-                            <span>Storytelling</span>
+                            <span>Gaymer</span>
+                            <span>Cosplayer</span>
+                            <span>TCG Collector</span>
+                            <span>Figurines Collector</span>
+                            <span>Lego Builder</span>
+                            <span>Content Edits</span>
+                            <span>Anime Viewer</span>
                         </div>
                     </div>
                 </div>
-
                 <div class="acc-item" id="acc-3">
                     <h3 class="acc-title">MY SKILLS</h3>
                     <div class="acc-content">
@@ -128,27 +128,28 @@
                             <span>UI/UX Design</span>
                             <span>GSAP Animation</span>
                             <span>Machine Learning</span>
+                            <span>Web Coding</span>
+                            <span>Video Editor</span>
+                            <span>Customer Service</span>
+                            <span>2D Animation</span>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
+
     <section class="zoom-container">
         <div class="word-wrapper">
-            
             <h3 class="companion-text top-text">Discover More Of</h3>
-
             <div class="video-grid">
-                <video src="assets/videos/App Review A2.mp4" autoplay loop muted playsinline></video>
+                <video src="assets/videos/MangaMatch.mp4" autoplay loop muted playsinline></video>
                 <video src="assets/videos/Digital Storytellin Animatic.mp4" autoplay loop muted playsinline></video>
                 <video src="assets/videos/POKEMON-DEX.mp4" autoplay loop muted playsinline></video>
                 <video src="assets/videos/Welcome to Metavers.mp4" autoplay loop muted playsinline></video>
-                <video src="assets/videos/Transformer Stop Motion.mp4" autoplay loop muted playsinline></video>
-                <video src="assets/videos/Website Backend.mp4" autoplay loop muted playsinline></video>
+                <video src="assets/videos/MachineLearning Assesment 1 (2).mp4" autoplay loop muted playsinline></video>
+                <video src="assets/videos/Figma App.mp4" autoplay loop muted playsinline></video>
             </div>
-
             <svg class="text-mask" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" focusable="false">
                 <defs>
                     <mask id="gerard-mask">
@@ -163,108 +164,185 @@
                 </defs>
                 <rect id="mask-rect" width="100%" height="100%" fill="#f4f4f4" mask="url(#gerard-mask)" />
             </svg>
-            
             <h3 class="companion-text bottom-text">Previews Projects</h3>
         </div>
     </section>
     
     <section class="content-section" id="selected-works">
-        
         <div class="works-header">
             <h2 class="edge-title">Case study websites</h2>
             <p class="edge-sub">Detailed examples of our creative computing and game development work</p>
         </div>
-        
         <div class="carousel-wrapper">
             <div class="carousel-track" id="track">
                 
                 <div class="edge-card">
                     <div class="edge-img-box">
-                        <video class="edge-media" loop muted playsinline autoplay><source src="assets/videos/Game Dev .mp4" type="video/mp4"></video>
+                        <video class="edge-media" loop muted playsinline autoplay onclick="window.open('https://youtu.be/5WJJPNMPipY', '_blank')" style="cursor: pointer;"><source src="assets/videos/MarvelRival A1.mp4" type="video/mp4"></video>
                         <div class="edge-tags">
-                            <span>UNITY 3D</span>
-                            <span>C# SCRIPTING</span>
-                            <span>GAME DESIGN</span>
+                            <span>VS Studio</span>
+                            <span>Backend</span>
+                            <span>Web Design</span>
                         </div>
                     </div>
                     <div class="edge-info">
-                        <span class="edge-date">MAR 2026</span>
-                        <h3>Problematic Probability</h3>
-                        <p>A deep dive into probability mechanics utilizing Unity Game Development to create an engaging experience.</p>
-                        <a href="https://nixkun.itch.io/ppap-problematic-probability-assessment-project" target="_blank" class="edge-btn">View full project ➔</a>
+                        <span class="edge-date">JAN 2026</span>
+                        <h3>Marvel Rivals Website</h3>
+                        <p>Fully working backend website which is a recreation of my own design for the offical Marvel Rivals website.</p>
+                        <a href="https://gerivalsassessment.onrender.com/Rivals.html" target="_blank" class="edge-btn">View full project ➔</a>
                     </div>
                 </div>
 
                 <div class="edge-card">
                     <div class="edge-img-box">
-                        <video class="edge-media" loop muted playsinline autoplay><source src="assets/videos/MangaMatch.mp4" type="video/mp4"></video>
+                        <video class="edge-media" loop muted playsinline autoplay onclick="window.open('https://youtu.be/aUHNDErglM8', '_blank')" style="cursor: pointer;"><source src="assets/videos/MachineLearning Assesment 1 (2).mp4" type="video/mp4"></video>
                         <div class="edge-tags">
-                            <span>APP DESIGN</span>
-                            <span>UI / UX</span>
+                            <span>MACHINE LEARNING</span>
+                            <span>GRADIO MODELING</span>
+                            <span>DOCUMENTATION</span>
+                        </div>
+                    </div>
+                    <div class="edge-info">
+                        <span class="edge-date">JAN 2026</span>
+                        <h3>Kaggle - Machine Learning</h3>
+                        <p>Using any CSV datasheet that has 500+ data and I built a mood checker if Introverted or Extroverted.</p>
+                        <a href="https://www.kaggle.com/code/gerardmatthew/machine-learning-model-documentation" target="_blank" class="edge-btn">View full project ➔</a>
+                    </div>
+                </div>
+
+                <div class="edge-card">
+                    <div class="edge-img-box">
+                        <video class="edge-media" loop muted playsinline autoplay onclick="window.open('https://youtu.be/34PJGzwrbnE', '_blank')" style="cursor: pointer;"><source src="assets/videos/AnakEssentials.mp4" type="video/mp4"></video>
+                        <div class="edge-tags">
+                            <span>CREATIVE INDUSTRY</span>
+                            <span>CLIENT WEBSITE</span>
+                            <span>GROUP WORK</span>
+                        </div>
+                    </div>
+                    <div class="edge-info">
+                        <span class="edge-date">MAY 2025</span>
+                        <h3>AnakEssentials</h3>
+                        <p>Group work where met with real clients for website creation of their products.</p>
+                        <a href="https://imbr3m.github.io/Anak/" target="_blank" class="edge-btn">View full project ➔</a>
+                    </div>
+                </div>
+
+                <div class="edge-card">
+                    <div class="edge-img-box">
+                        <video class="edge-media" loop muted playsinline autoplay onclick="window.open('https://youtu.be/bdUciFvqBcg', '_blank')" style="cursor: pointer;"><source src="assets/videos/MangaMatch.mp4" type="video/mp4"></video>
+                        <div class="edge-tags">
+                            <span>ANDROID STUDIO</span>
+                            <span>APPLICATION</span>
                             <span>PROTOTYPING</span>
                         </div>
                     </div>
                     <div class="edge-info">
-                        <span class="edge-date">FEB 2026</span>
+                        <span class="edge-date">APR 2025</span>
                         <h3>MangaMatch</h3>
-                        <p>Mobile app development focused on matching users with manga based on their unique reading habits.</p>
+                        <p>Mobile app development focused on matching users with manga based on their unique reading habits by using Android Studio.</p>
                         <a href="https://github.com/N1X-KUN/MangaMatch.git" target="_blank" class="edge-btn">View full project ➔</a>
                     </div>
                 </div>
 
                 <div class="edge-card">
                     <div class="edge-img-box">
-                        <video class="edge-media" loop muted playsinline autoplay><source src="assets/videos/Twine Story.mp4" type="video/mp4"></video>
+                        <video class="edge-media" loop muted playsinline autoplay onclick="window.open('https://youtu.be/swhZywgU8Vg', '_blank')" style="cursor: pointer;"><source src="assets/videos/App Review A2.mp4" type="video/mp4"></video>
                         <div class="edge-tags">
-                            <span>NARRATIVE</span>
-                            <span>TWINE</span>
-                            <span>STORYTELLING</span>
+                            <span>APP REVIEW</span>
+                            <span>METAVERSE</span>
+                            <span>VIDEO WALKTHROUGH</span>
                         </div>
                     </div>
                     <div class="edge-info">
-                        <span class="edge-date">JAN 2026</span>
-                        <h3>Digital Storytelling</h3>
-                        <p>An interactive narrative experience exploring branching storylines and player-driven choices.</p>
-                        <a href="https://sway.cloud.microsoft/ZERzsTC5OGmEP5pi" target="_blank" class="edge-btn">View full project ➔</a>
+                        <span class="edge-date">MAR 2025</span>
+                        <h3>Discord App Review</h3>
+                        <p>Tasked to select one application and make a walkthrough video explaining about it.</p>
+                        <a href="https://docs.google.com/document/d/1NAD0_ARyKFVkL_IUDSOs1shS4Z0v8Pmv/edit" target="_blank" class="edge-btn">View full project ➔</a>
                     </div>
                 </div>
 
                 <div class="edge-card">
                     <div class="edge-img-box">
-                        <div class="placeholder-bg"></div>
-                        <div class="edge-tags"><span>IN DEVELOPMENT</span></div>
+                        <video class="edge-media" loop muted playsinline autoplay onclick="window.open('https://youtu.be/bxc2ihS5rLg', '_blank')" style="cursor: pointer;"><source src="assets/videos/Game Dev .mp4" type="video/mp4"></video>
+                        <div class="edge-tags">
+                            <span>UNITY 2D GAME</span>
+                            <span>C# SCRIPTING</span>
+                            <span>RPG GAME THEME</span>
+                        </div>
                     </div>
                     <div class="edge-info">
-                        <span class="edge-date">COMING SOON</span>
-                        <h3>Project Name 4</h3>
-                        <p>Description of your fourth project will go right here.</p>
-                        <a href="#" class="edge-btn">View full project ➔</a>
+                        <span class="edge-date">JAN 2025</span>
+                        <h3>PPAP - UNITY GAME DEV</h3>
+                        <p>My first time creating a game using Unity for one of my assessment, its a slime adventure story game :D</p>
+                        <a href="https://nixkun.itch.io/ppap-problematic-probability-assessment-project" target="_blank" class="edge-btn">View full project ➔</a>
                     </div>
                 </div>
 
                 <div class="edge-card">
                     <div class="edge-img-box">
-                        <div class="placeholder-bg"></div>
-                        <div class="edge-tags"><span>IN DEVELOPMENT</span></div>
+                        <video class="edge-media" loop muted playsinline autoplay onclick="window.open('https://youtu.be/uNiRGbbUhP0', '_blank')" style="cursor: pointer;"><source src="assets/videos/POKEMON-DEX.mp4" type="video/mp4"></video>
+                        <div class="edge-tags">
+                            <span>PYTHON PROGRAMMING</span>
+                            <span>METAVERSE</span>
+                            <span>TKINTER AND API</span>
+                        </div>
                     </div>
                     <div class="edge-info">
-                        <span class="edge-date">COMING SOON</span>
-                        <h3>Project Name 5</h3>
-                        <p>Description of your fifth project will go right here.</p>
-                        <a href="#" class="edge-btn">View full project ➔</a>
+                        <span class="edge-date">JAN 2025</span>
+                        <h3>Utility App</h3>
+                        <p>This is my api app based on pokemon index that has the codes,names of pokemons.</p>
+                        <a href="https://github.com/N1X-KUN/CodeLab-2-UTILITY-APP.git" target="_blank" class="edge-btn">View full project ➔</a>
                     </div>
                 </div>
 
                 <div class="edge-card">
                     <div class="edge-img-box">
-                        <div class="placeholder-bg"></div>
-                        <div class="edge-tags"><span>IN DEVELOPMENT</span></div>
+                        <video class="edge-media" loop muted playsinline autoplay onclick="window.open('https://youtu.be/yrm9iUrIrb8', '_blank')" style="cursor: pointer;"><source src="assets/videos/Figma App.mp4" type="video/mp4"></video>
+                        <div class="edge-tags">
+                            <span>Figma</span>
+                            <span>UI DESIGN</span>
+                            <span>IDEATION & UX DESIGN</span>
+                        </div>
                     </div>
                     <div class="edge-info">
-                        <span class="edge-date">COMING SOON</span>
-                        <h3>Project Name 6</h3>
-                        <p>Description of your sixth project will go right here.</p>
-                        <a href="#" class="edge-btn">View full project ➔</a>
+                        <span class="edge-date">JUN 2024</span>
+                        <h3>Mobile Manga - Figma Prototype</h3>
+                        <p>Created a Mobile Application Prototype using figma which is a manga app that has music</p>
+                        <a href="https://www.figma.com/design/3gwwYZhZIrGArn18Y60AeV/App-Design?node-id=0-1&t=fON6uK9iK2vEeFko-1" target="_blank" class="edge-btn">View full project ➔</a>
+                    </div>
+                </div>
+
+                <div class="edge-card">
+                    <div class="edge-img-box">
+                        <video class="edge-media" loop muted playsinline autoplay onclick="window.open('https://youtu.be/669zAlLsCR0', '_blank')" style="cursor: pointer;"><source src="assets/videos/Digital Storytellin Animatic.mp4" type="video/mp4"></video>
+                        <div class="edge-tags">
+                            <span>DIGITAL STORYTELLING</span>
+                            <span>METAVERSE</span>
+                            <span>SWAY PORTFOLIO</span>
+                        </div>
+                    </div>
+                    <div class="edge-info">
+                        <span class="edge-date">DEC 2023</span>
+                        <h3>Digital Storytelling- Sway Portfolio</h3>
+                        <p>Entire sway portfolio of all my task and projects done in storytelling.</p>
+                        <a href="https://sway.cloud.microsoft/gzBaTq0LG796iAqG?ref=Link" target="_blank" class="edge-btn">View full project ➔</a>
+                    </div>
+                </div>
+
+                <div class="edge-card">
+                    <div class="edge-img-box">
+                        <video class="edge-media" loop muted playsinline autoplay onclick="window.open('https://youtu.be/rDSn3sTdqJw', '_blank')" style="cursor: pointer;"><source src="assets/videos/Welcome to Metavers.mp4" type="video/mp4"></video>
+                        <div class="edge-tags">
+                            <span>PHOTO & VIDEOGRAPHY</span>
+                            <span>METAVERSE</span>
+                            <span>CC LEVEL 4 ASSESSMENT</span>
+                        </div>
+                    </div>
+                    <div class="edge-info">
+                        <span class="edge-date">OCT 2023</span>
+                        <h3>Welcome To Metaverse</h3>
+                        <p>Tasked to showcase everything we learned about media so we made a music montage video.</p>
+                        <a href="https://sway.cloud.microsoft/ybS2kmElP9BEP0ji?ref=Link" target="_blank" class="edge-btn">View full project ➔</a>
                     </div>
                 </div>
 
@@ -273,11 +351,19 @@
             <div class="carousel-nav">
                 <button class="nav-arrow" id="btn-prev">←</button>
                 <div class="nav-numbers">
-                    <span class="num active">1</span><span class="num">2</span><span class="num">3</span><span class="num">4</span><span class="num">5</span><span class="num">6</span>
+                    <span class="num active">1</span>
+                    <span class="num">2</span>
+                    <span class="num">3</span>
+                    <span class="num">4</span>
+                    <span class="num">5</span>
+                    <span class="num">6</span>
+                    <span class="num">7</span>
+                    <span class="num">8</span>
+                    <span class="num">9</span>
+                    <span class="num">10</span>
                 </div>
                 <button class="nav-arrow" id="btn-next">→</button>
             </div>
-            
         </div>
     </section>
 
@@ -286,7 +372,6 @@
     <section class="footer-scroll-trigger"></section>
 
     <div class="page5-container">
-        
         <video class="footer-video-bg" src="assets/videos/Welcome to Metavers.mp4" autoplay loop muted playsinline></video>
         
         <div class="yellow-blinds">

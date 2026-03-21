@@ -1,6 +1,46 @@
 gsap.registerPlugin(ScrollTrigger);
 
 // ==========================================
+// BACKGROUND MUSIC LOGIC
+// ==========================================
+const bgMusic = document.getElementById('bg-music');
+const musicToggleBtn = document.getElementById('music-toggle');
+let isMusicPlaying = false;
+
+// Set volume to exactly 50%
+bgMusic.volume = 0.5;
+
+// Browsers block autoplay. This waits for the user's VERY FIRST click anywhere on the page to start the music.
+const startMusicOnInteraction = () => {
+    if (!isMusicPlaying) {
+        bgMusic.play();
+        isMusicPlaying = true;
+        musicToggleBtn.innerHTML = "🔊 MUTE MUSIC";
+        // Remove this listener so it doesn't keep firing
+        document.removeEventListener('click', startMusicOnInteraction);
+    }
+};
+document.addEventListener('click', startMusicOnInteraction);
+
+// Mute/Unmute Logic for the Hamburger Menu Button
+musicToggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation(); // Stops this click from triggering other events
+    
+    if (bgMusic.muted) {
+        bgMusic.muted = false;
+        musicToggleBtn.innerHTML = "🔊 MUTE MUSIC";
+        musicToggleBtn.style.backgroundColor = "transparent";
+        musicToggleBtn.style.color = "#FFD700";
+    } else {
+        bgMusic.muted = true;
+        musicToggleBtn.innerHTML = "🔇 PLAY MUSIC";
+        // Make it solid yellow when muted so it's visually obvious
+        musicToggleBtn.style.backgroundColor = "#FFD700";
+        musicToggleBtn.style.color = "#0A192F";
+    }
+});
+
+// ==========================================
 // 1. INITIAL LOADING SCREEN ANIMATION
 // ==========================================
 // Freeze scrolling while loading
