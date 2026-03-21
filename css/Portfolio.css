@@ -458,3 +458,105 @@ body {
     outline: none !important;
     border: none !important;
 }
+
+/* ==========================================
+   WATERMARK
+   ========================================== */
+   .gerard-watermark {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    font-family: 'Luckiest Guy', cursive;
+    color: rgba(10, 25, 47, 0.4); /* Faded Navy */
+    font-size: 1.5rem;
+    z-index: 100;
+    pointer-events: none; /* So it doesn't block clicks */
+}
+
+/* ==========================================
+   PAGE 5: FOOTER LAYOUT (Mindjoin Style)
+   ========================================== */
+   .footer-scroll-trigger { width: 100%; height: 250vh; position: relative; z-index: 1; }
+
+   .page5-container {
+       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+       z-index: 8; visibility: hidden;
+       display: flex; justify-content: center; align-items: center; 
+   }
+   .footer-video-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+   .yellow-blinds { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; z-index: 2; }
+   .blind { flex: 1; background-color: #FFD700; height: 100%; }
+   
+   .navy-footer-box {
+       position: relative; width: 85vw; max-width: 1100px;
+       background-color: rgba(10, 25, 47, 0.95); 
+       box-shadow: 0 0 100px 70px rgba(10, 25, 47, 0.95);
+       z-index: 3; opacity: 0; transform: scale(0.8); border-radius: 15px; 
+   }
+   
+   .footer-grid { width: 100%; height: 100%; border: 1px solid rgba(255, 255, 255, 0.15); display: flex; flex-direction: column; }
+   
+   /* FIX: The Contact Box is now White with Navy Outline & Yellow Text! */
+   .contact-header-box {
+       position: absolute; top: -22px; left: 50%; transform: translateX(-50%);
+       background-color: #FFFFFF;
+       border: 2px solid #0A192F; /* Navy Outline */
+       padding: 0.6rem 2rem; border-radius: 8px;
+       box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 10;
+   }
+   .contact-header-box h4 { color: #FFD700; font-family: 'Luckiest Guy', cursive; letter-spacing: 2px; font-size: 1.2rem; line-height: 1; margin: 0; }
+   
+   /* FIX: Removed overflow:hidden so the box doesn't get cut */
+   .grid-top {
+       flex: 1; padding: 6rem 0 2rem; border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+       display: flex; flex-direction: column; align-items: center; justify-content: center;
+       position: relative; height: 40vh; 
+   }
+   
+   /* FIX: SITETRIP PARALLAX LAYERS */
+   .physics-elements {
+       position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+       display: flex; justify-content: center; align-items: center; width: 100%;
+   }
+   #physics-emojis { z-index: 1; gap: 15px; margin-top: 30px; } /* Background Layer */
+   #physics-letters { z-index: 2; gap: 5px; } /* Foreground Layer */
+   
+   #physics-letters span { font-family: 'Luckiest Guy', cursive; font-size: 11vw; color: #f4f4f4; line-height: 0.8; text-shadow: 0 10px 20px rgba(0,0,0,0.5); display: inline-block; }
+   #physics-emojis span { font-size: 4vw; opacity: 0.8; display: inline-block; }
+   
+   
+   /* FIX: ALIGNMENT FOR THE BOTTOM GRID */
+   .grid-bottom { flex: 1; display: flex; }
+   .social-box, .academic-box, .email-box {
+       flex: 1; padding: 2.5rem; 
+       display: flex; flex-direction: column; 
+       justify-content: flex-start; /* Perfectly aligns the tops of all three boxes! */
+       align-items: flex-start;
+   }
+   .social-box, .academic-box { border-right: 1px solid rgba(255, 255, 255, 0.15); }
+   .box-title { color: rgba(255, 255, 255, 0.4); font-family: 'Gveret Levin', cursive; margin-bottom: 1.5rem; letter-spacing: 2px; font-size: 1.1rem; }
+   
+   /* Socials */
+   .social-box ul { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
+   .social-box a { color: #f4f4f4; text-decoration: none; font-family: 'Luckiest Guy', cursive; font-size: 1.6rem; transition: color 0.3s; display: flex; align-items: center; gap: 15px; }
+   .social-icon { width: 32px; height: 32px; fill: #f4f4f4; transition: fill 0.3s, transform 0.3s; }
+   .social-box a:hover { color: #FFD700; }
+   .social-box a:hover .social-icon { fill: #FFD700; transform: scale(1.1); }
+   
+   /* Academic & CV Button */
+   .academic-text { font-family: 'Gveret Levin', cursive; color: #f4f4f4; font-size: 1rem; line-height: 1.6; font-weight: 700; margin-bottom: 1.5rem; }
+   .cv-btn {
+       background: #FFFFFF; color: #0A192F; border: 2px solid #0A192F;
+       padding: 0.6rem 1.5rem; font-family: 'Luckiest Guy', cursive; font-size: 0.95rem;
+       border-radius: 30px; text-decoration: none; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+   }
+   .cv-btn:hover { background: #0A192F; color: #FFFFFF; border-color: #FFFFFF; transform: translateY(-3px); }
+   
+   /* Email Form */
+   .email-box form { display: flex; flex-direction: column; gap: 1.2rem; width: 100%; }
+   .email-box input, .email-box textarea { background: transparent; border: none; border-bottom: 1px solid rgba(255, 255, 255, 0.4); padding: 0.5rem 0; color: #f4f4f4; font-family: 'Gveret Levin', cursive; font-size: 1rem; outline: none; transition: border-color 0.3s; }
+   .email-box input:focus, .email-box textarea:focus { border-color: #FFD700; }
+   .email-box input::placeholder, .email-box textarea::placeholder { color: rgba(255, 255, 255, 0.3); }
+   .email-box textarea { resize: none; height: 50px; }
+   .send-btn { margin-top: 0.8rem; background: #FFD700; color: #0A192F; border: none; padding: 0.7rem 2.2rem; font-family: 'Luckiest Guy', cursive; font-size: 1rem; border-radius: 30px; cursor: pointer; transition: transform 0.3s; }
+   .send-btn:hover { transform: scale(1.05); }

@@ -215,3 +215,75 @@ track.addEventListener('wheel', (e) => {
         track.scrollLeft += e.deltaY;
     }
 }, { passive: false });
+
+// ==========================================
+// PAGE 5: FOOTER UNRAVEL + SITETRIP GRAVITY
+// ==========================================
+
+const genixLettersBox = document.getElementById('physics-letters');
+const emojisBox = document.getElementById('physics-emojis');
+
+if (genixLettersBox && emojisBox) {
+    
+    const emojisList = ['😔','💀','🤓','😆','😭','😏'];
+
+    // Inject Spans
+    let genixLettersSpans = "";
+    for (let char of "GENIX") genixLettersSpans += `<span>${char}</span>`;
+    genixLettersBox.innerHTML = genixLettersSpans;
+
+    let emojisSpans = "";
+    for (let emoji of emojisList) emojisSpans += `<span>${emoji}</span>`;
+    emojisBox.innerHTML = emojisSpans;
+
+    // The Master Timeline
+    const footerTl = gsap.timeline({
+        scrollTrigger: {
+            trigger: ".footer-scroll-trigger",
+            start: "top 80%", // Triggers slightly before you hit the bottom to ensure smooth handoff
+            end: "bottom bottom", 
+            scrub: 1 
+        }
+    });
+
+    footerTl.set(".page5-container", { visibility: "visible" })
+            .to(".content-section", { autoAlpha: 0, duration: 0.1 }) // Instantly fades out Page 4
+            
+            // Fracture the yellow screen
+            .add("unravel")
+            .to(".blind-up", { y: "-100vh", duration: 0.3, ease: "power2.inOut" }, "unravel")
+            .to(".blind-down", { y: "100vh", duration: 0.3, ease: "power2.inOut" }, "unravel")
+            
+            // Blur video & Scale in Navy Box
+            .add("footerUp", "+=0.1")
+            .to(".footer-video-bg", { filter: "blur(12px) brightness(0.4)", duration: 0.4 }, "footerUp")
+            .to(".navy-footer-box", { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out" }, "footerUp");
+
+    // ==========================================
+    // SITETRIP.BE GRAVITY FALL EFFECT
+    // ==========================================
+    const letters = document.querySelectorAll('#physics-letters span');
+    const emojis = document.querySelectorAll('#physics-emojis span');
+
+    // Layer 2: GENIX Letters fall from high up with varied rotations
+    letters.forEach(letter => {
+        footerTl.from(letter, {
+            y: gsap.utils.random(-800, -1200), // Massive drop distance
+            rotation: gsap.utils.random(-45, 45),
+            opacity: 0,
+            duration: gsap.utils.random(0.4, 0.7),
+            ease: "power2.out"
+        }, "footerUp+=" + gsap.utils.random(0, 0.2)); // Stagger them randomly
+    });
+
+    // Layer 1: Emojis fall from slightly lower, with a tiny bounce effect
+    emojis.forEach(emoji => {
+        footerTl.from(emoji, {
+            y: gsap.utils.random(-600, -1000),
+            rotation: gsap.utils.random(-90, 90),
+            opacity: 0,
+            duration: gsap.utils.random(0.5, 0.8),
+            ease: "back.out(1.5)" // Small bounce as they settle
+        }, "footerUp+=" + gsap.utils.random(0.1, 0.3));
+    });
+}
