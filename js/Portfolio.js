@@ -1,6 +1,71 @@
 gsap.registerPlugin(ScrollTrigger);
 
 // ==========================================
+// 1. INITIAL LOADING SCREEN ANIMATION
+// ==========================================
+// Freeze scrolling while loading
+document.body.style.overflow = "hidden";
+
+const loaderTl = gsap.timeline({
+    onComplete: () => {
+        document.body.style.overflow = "auto"; // Re-enable scrolling
+        gsap.set(".loader-wrapper", { display: "none" }); // Remove from DOM to prevent clicking issues
+    }
+});
+
+loaderTl.from(".loader-text", { opacity: 0, scale: 0.8, duration: 1, ease: "power2.out" }) // Fade in text
+        .to(".loader-text", { opacity: 0, y: -20, duration: 0.5, delay: 0.5 }) // Fade out text
+        .to(".panel-top", { y: "-100vh", duration: 1, ease: "power2.inOut" }, "split") // Slide top piece up
+        .to(".panel-bottom", { y: "100vh", duration: 1, ease: "power2.inOut" }, "split"); // Slide bottom piece down
+
+// ==========================================
+// 2. HAMBURGER MENU & NAVIGATION LOGIC
+// ==========================================
+const burgerBtn = document.getElementById('burger-btn');
+const menuOverlay = document.getElementById('menu-overlay');
+const navLinks = document.querySelectorAll('.nav-link');
+
+// Toggle Menu Open/Close
+burgerBtn.addEventListener('click', () => {
+    burgerBtn.classList.toggle('open');
+    menuOverlay.classList.toggle('open');
+});
+
+// Custom Smooth Scrolling for GSAP Pinned Sections
+navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault(); // Stop standard link jumping
+        
+        // Close the menu
+        burgerBtn.classList.remove('open');
+        menuOverlay.classList.remove('open');
+
+        const target = link.getAttribute('data-target');
+        let scrollY = 0;
+
+        // Calculate exact scroll positions based on your GSAP pinning math
+        if (target === "home") {
+            scrollY = 0;
+        } else if (target === "about") {
+            // The first pinned section is 5000px long. The About section shuffles in roughly 20% through that timeline.
+            scrollY = 1500; 
+        } else if (target === "work") {
+            // Scroll to where the GERARD zoom container finishes pinning (5000 + 2500 + padding)
+            scrollY = 7600; 
+        } else if (target === "contact") {
+            // Scroll to the absolute bottom of the document to trigger the footer unravel
+            scrollY = document.body.scrollHeight; 
+        }
+
+        // Execute the smooth scroll
+        window.scrollTo({
+            top: scrollY,
+            behavior: 'smooth'
+        });
+    });
+});
+
+// ==========================================
 // GLOBAL & HOVER EFFECTS (Runs instantly)
 // ==========================================
 
