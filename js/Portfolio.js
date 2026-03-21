@@ -32,28 +32,28 @@ burgerBtn.addEventListener('click', () => {
 });
 
 // Custom Smooth Scrolling for GSAP Pinned Sections
+// Custom Smooth Scrolling for GSAP Pinned Sections
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
-        e.preventDefault(); // Stop standard link jumping
+        e.preventDefault(); 
         
         // Close the menu
         burgerBtn.classList.remove('open');
         menuOverlay.classList.remove('open');
 
+        // OPTIMIZATION: Force Page 4 to drop its invisible wall instantly so it doesn't block the scroll jump!
+        gsap.set(".content-section", { pointerEvents: "none" });
+
         const target = link.getAttribute('data-target');
         let scrollY = 0;
 
-        // Calculate exact scroll positions based on your GSAP pinning math
         if (target === "home") {
             scrollY = 0;
         } else if (target === "about") {
-            // The first pinned section is 5000px long. The About section shuffles in roughly 20% through that timeline.
             scrollY = 1500; 
         } else if (target === "work") {
-            // Scroll to where the GERARD zoom container finishes pinning (5000 + 2500 + padding)
             scrollY = 7600; 
         } else if (target === "contact") {
-            // Scroll to the absolute bottom of the document to trigger the footer unravel
             scrollY = document.body.scrollHeight; 
         }
 
@@ -224,47 +224,38 @@ gsap.to(".word-wrapper", {
 });
 
 // ==========================================
-// PAGE 4: EDGE STUDIO SLIDER & ZOOM SYNC
+// PAGE 4: EDGE STUDIO SLIDER
 // ==========================================
 
-// 1. Sync Reveal perfectly with the GERARD Zoom
-// We tie a timeline directly to the 2500px zoom container.
 const revealTl = gsap.timeline({
     scrollTrigger: {
         trigger: ".zoom-container",
         start: "top top",
-        end: "+=2500", // Maps perfectly to the GERARD zoom
+        end: "+=2500", 
         scrub: true
     }
 });
 
-// Wait in the background for 80% of the zoom, then fade up on top of the yellow!
 revealTl.to({}, { duration: 0.8 }) 
         .to(".content-section", { autoAlpha: 1, scale: 1, pointerEvents: "auto", duration: 0.2 });
 
-
-// 2. Carousel Slider, Hover Sync, & Click Logic
 const track = document.getElementById('track');
 const btnPrev = document.getElementById('btn-prev');
 const btnNext = document.getElementById('btn-next');
 const numbers = document.querySelectorAll('.num');
 const cards = document.querySelectorAll('.edge-card');
 
-// Calculate exact scroll amount (Card width + gap)
 const getScrollAmount = () => cards[0].offsetWidth + parseFloat(window.getComputedStyle(track).gap);
 
-// Button Arrow Scrolling
 btnNext.addEventListener('click', () => { track.scrollBy({ left: getScrollAmount(), behavior: 'smooth' }); });
 btnPrev.addEventListener('click', () => { track.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' }); });
 
-// Click numbers to scroll directly to a specific card
 numbers.forEach((num, index) => {
     num.addEventListener('click', () => {
         track.scrollTo({ left: index * getScrollAmount(), behavior: 'smooth' });
     });
 });
 
-// Hover over a card to immediately highlight the corresponding number below it
 cards.forEach((card, index) => {
     card.addEventListener('mouseenter', () => {
         numbers.forEach(n => n.classList.remove('active'));
@@ -272,91 +263,72 @@ cards.forEach((card, index) => {
     });
 });
 
-// HORIZONTAL MOUSE WHEEL SCROLL FIX
+// Horizontal scroll breakout so you don't get stuck
 track.addEventListener('wheel', (e) => {
-    if (e.deltaY !== 0) {
-        // Stop page from jittering vertically while scrolling horizontal
-        e.preventDefault(); 
-        track.scrollLeft += e.deltaY;
-    }
+    const isAtLeftEdge = track.scrollLeft <= 2;
+    const isAtRightEdge = Math.ceil(track.scrollLeft + track.clientWidth) >= (track.scrollWidth - 2);
+
+    if (e.deltaY < 0 && isAtLeftEdge) return; 
+    if (e.deltaY > 0 && isAtRightEdge) return;
+
+    e.preventDefault(); 
+    track.scrollLeft += e.deltaY;
 }, { passive: false });
 
 // ==========================================
 // PAGE 5: FOOTER UNRAVEL, SCATTER, & FALL
 // ==========================================
 
-// 1. Scatter and Float the Emojis (The Bodyguards)
 const emojis = gsap.utils.toArray('.float-emoji');
 
-// Define safe zones around the edge of the box so they don't hide behind the text
 const safeZones = [
-    { left: 10, top: 20 }, // 1. Top Far Left
-    { left: 30, top: 10 }, // 2. Top Mid Left (Above the G)
-    { left: 70, top: 10 }, // 3. Top Mid Right (Above the X)
-    { left: 90, top: 20 }, // 4. Top Far Right
-    { left: 8,  top: 50 }, // 5. Middle Far Left
-    { left: 92, top: 50 }, // 6. Middle Far Right
-    { left: 15, top: 80 }, // 7. Bottom Far Left
-    { left: 35, top: 85 }, // 8. Bottom Mid Left (Under the E/N)
-    { left: 65, top: 85 }, // 9. Bottom Mid Right (Under the I)
-    { left: 85, top: 80 }  // 10. Bottom Far Right
+    { left: 10, top: 20 }, { left: 30, top: 10 }, { left: 70, top: 10 }, { left: 90, top: 20 },
+    { left: 8,  top: 50 }, { left: 92, top: 50 }, { left: 15, top: 80 }, { left: 35, top: 85 },
+    { left: 65, top: 85 }, { left: 85, top: 80 }
 ];
 
 emojis.forEach((emoji, index) => {
-    // Assign each emoji to its own locked zone
     let zone = safeZones[index % safeZones.length];
-
-    // Set initial position exactly at the safe zone
     gsap.set(emoji, {
-        left: zone.left + "%", 
-        top: zone.top + "%",
-        xPercent: -50, 
-        yPercent: -50,
+        left: zone.left + "%", top: zone.top + "%",
+        xPercent: -50, yPercent: -50,
         rotation: gsap.utils.random(-30, 30)
     });
     
-    // Constrained floating animation so their paths never cross
     gsap.to(emoji, {
-        y: gsap.utils.random(-15, 15), 
-        x: gsap.utils.random(-15, 15), 
+        y: gsap.utils.random(-15, 15), x: gsap.utils.random(-15, 15), 
         rotation: "+=" + gsap.utils.random(-20, 20),
         duration: gsap.utils.random(2.5, 4),
-        yoyo: true,
-        repeat: -1,
-        ease: "sine.inOut"
+        yoyo: true, repeat: -1, ease: "sine.inOut"
     });
 });
 
-// 2. The Master Scrub Timeline (with GENIX Fall)
+// THE KILL SWITCH: Notice the onEnter and onLeaveBack commands here.
 const footerTl = gsap.timeline({
     scrollTrigger: {
         trigger: ".footer-scroll-trigger",
         start: "top top", 
         end: "bottom bottom", 
-        scrub: 1.5 
+        scrub: 1.5,
+        onEnter: () => gsap.set(".page5-container", { autoAlpha: 1 }),      // Turns ON when scrolling down
+        onLeaveBack: () => gsap.set(".page5-container", { autoAlpha: 0 }) // KILL SWITCH: Forces it OFF when scrolling up
     }
 });
 
-footerTl.set(".page5-container", { visibility: "visible" })
-        .to(".content-section", { autoAlpha: 0, duration: 0.2 }) 
-        .add("unravel")
+// The set() is gone from here, animations remain exactly the same.
+footerTl.add("unravel")
         .to(".blind-up", { y: "-100vh", duration: 1, ease: "power2.inOut" }, "unravel")
         .to(".blind-down", { y: "100vh", duration: 1, ease: "power2.inOut" }, "unravel")
         .to({}, { duration: 0.5 })
         .add("footerUp")
         .to(".footer-video-bg", { filter: "blur(12px) brightness(0.4)", duration: 1 }, "footerUp")
         .to(".navy-footer-box", { opacity: 1, scale: 1, duration: 1, ease: "power2.out" }, "footerUp")
-        
-        // 3. The GENIX Falling Animation (Chaotic Random Drop!)
         .from(".giant-genix-outline span", { 
             y: -250,                                
             scale: 1.2,                             
             opacity: 0,                             
             rotation: () => gsap.utils.random(-25, 25), 
             duration: 1.2,
-            stagger: {
-                each: 0.15,      
-                from: "random"   
-            },
+            stagger: { each: 0.15, from: "random" },
             ease: "back.out(1.5)"                   
         }, "footerUp+=0.1");
