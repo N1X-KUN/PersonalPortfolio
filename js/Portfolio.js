@@ -217,73 +217,81 @@ track.addEventListener('wheel', (e) => {
 }, { passive: false });
 
 // ==========================================
-// PAGE 5: FOOTER UNRAVEL + SITETRIP GRAVITY
+// PAGE 5: FOOTER UNRAVEL, SCATTER, & FALL
 // ==========================================
 
-const genixLettersBox = document.getElementById('physics-letters');
-const emojisBox = document.getElementById('physics-emojis');
+// 1. Scatter and Float the Emojis (The Bodyguards)
+const emojis = gsap.utils.toArray('.float-emoji');
 
-if (genixLettersBox && emojisBox) {
+// Define safe zones around the edge of the box so they don't hide behind the text
+const safeZones = [
+    { left: 10, top: 20 }, // 1. Top Far Left
+    { left: 30, top: 10 }, // 2. Top Mid Left (Above the G)
+    { left: 70, top: 10 }, // 3. Top Mid Right (Above the X)
+    { left: 90, top: 20 }, // 4. Top Far Right
+    { left: 8,  top: 50 }, // 5. Middle Far Left
+    { left: 92, top: 50 }, // 6. Middle Far Right
+    { left: 15, top: 80 }, // 7. Bottom Far Left
+    { left: 35, top: 85 }, // 8. Bottom Mid Left (Under the E/N)
+    { left: 65, top: 85 }, // 9. Bottom Mid Right (Under the I)
+    { left: 85, top: 80 }  // 10. Bottom Far Right
+];
+
+emojis.forEach((emoji, index) => {
+    // Assign each emoji to its own locked zone
+    let zone = safeZones[index % safeZones.length];
+
+    // Set initial position exactly at the safe zone
+    gsap.set(emoji, {
+        left: zone.left + "%", 
+        top: zone.top + "%",
+        xPercent: -50, 
+        yPercent: -50,
+        rotation: gsap.utils.random(-30, 30)
+    });
     
-    const emojisList = ['😔','💀','🤓','😆','😭','😏'];
-
-    // Inject Spans
-    let genixLettersSpans = "";
-    for (let char of "GENIX") genixLettersSpans += `<span>${char}</span>`;
-    genixLettersBox.innerHTML = genixLettersSpans;
-
-    let emojisSpans = "";
-    for (let emoji of emojisList) emojisSpans += `<span>${emoji}</span>`;
-    emojisBox.innerHTML = emojisSpans;
-
-    // The Master Timeline
-    const footerTl = gsap.timeline({
-        scrollTrigger: {
-            trigger: ".footer-scroll-trigger",
-            start: "top 80%", // Triggers slightly before you hit the bottom to ensure smooth handoff
-            end: "bottom bottom", 
-            scrub: 1 
-        }
+    // Constrained floating animation so their paths never cross
+    gsap.to(emoji, {
+        y: gsap.utils.random(-15, 15), 
+        x: gsap.utils.random(-15, 15), 
+        rotation: "+=" + gsap.utils.random(-20, 20),
+        duration: gsap.utils.random(2.5, 4),
+        yoyo: true,
+        repeat: -1,
+        ease: "sine.inOut"
     });
+});
 
-    footerTl.set(".page5-container", { visibility: "visible" })
-            .to(".content-section", { autoAlpha: 0, duration: 0.1 }) // Instantly fades out Page 4
-            
-            // Fracture the yellow screen
-            .add("unravel")
-            .to(".blind-up", { y: "-100vh", duration: 0.3, ease: "power2.inOut" }, "unravel")
-            .to(".blind-down", { y: "100vh", duration: 0.3, ease: "power2.inOut" }, "unravel")
-            
-            // Blur video & Scale in Navy Box
-            .add("footerUp", "+=0.1")
-            .to(".footer-video-bg", { filter: "blur(12px) brightness(0.4)", duration: 0.4 }, "footerUp")
-            .to(".navy-footer-box", { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out" }, "footerUp");
+// 2. The Master Scrub Timeline (with GENIX Fall)
+const footerTl = gsap.timeline({
+    scrollTrigger: {
+        trigger: ".footer-scroll-trigger",
+        start: "top top", 
+        end: "bottom bottom", 
+        scrub: 1.5 
+    }
+});
 
-    // ==========================================
-    // SITETRIP.BE GRAVITY FALL EFFECT
-    // ==========================================
-    const letters = document.querySelectorAll('#physics-letters span');
-    const emojis = document.querySelectorAll('#physics-emojis span');
-
-    // Layer 2: GENIX Letters fall from high up with varied rotations
-    letters.forEach(letter => {
-        footerTl.from(letter, {
-            y: gsap.utils.random(-800, -1200), // Massive drop distance
-            rotation: gsap.utils.random(-45, 45),
-            opacity: 0,
-            duration: gsap.utils.random(0.4, 0.7),
-            ease: "power2.out"
-        }, "footerUp+=" + gsap.utils.random(0, 0.2)); // Stagger them randomly
-    });
-
-    // Layer 1: Emojis fall from slightly lower, with a tiny bounce effect
-    emojis.forEach(emoji => {
-        footerTl.from(emoji, {
-            y: gsap.utils.random(-600, -1000),
-            rotation: gsap.utils.random(-90, 90),
-            opacity: 0,
-            duration: gsap.utils.random(0.5, 0.8),
-            ease: "back.out(1.5)" // Small bounce as they settle
-        }, "footerUp+=" + gsap.utils.random(0.1, 0.3));
-    });
-}
+footerTl.set(".page5-container", { visibility: "visible" })
+        .to(".content-section", { autoAlpha: 0, duration: 0.2 }) 
+        .add("unravel")
+        .to(".blind-up", { y: "-100vh", duration: 1, ease: "power2.inOut" }, "unravel")
+        .to(".blind-down", { y: "100vh", duration: 1, ease: "power2.inOut" }, "unravel")
+        .to({}, { duration: 0.5 })
+        .add("footerUp")
+        .to(".footer-video-bg", { filter: "blur(12px) brightness(0.4)", duration: 1 }, "footerUp")
+        .to(".navy-footer-box", { opacity: 1, scale: 1, duration: 1, ease: "power2.out" }, "footerUp")
+        
+        // 3. The GENIX Falling Animation (Chaotic Random Drop!)
+        .from(".giant-genix-outline span", { 
+            y: -250,                                
+            scale: 1.2,                             
+            opacity: 0,                             
+            rotation: () => gsap.utils.random(-25, 25), 
+            duration: 1.2,
+            stagger: {
+                each: 0.15,      
+                from: "random"   
+            },
+            ease: "back.out(1.5)"                   
+        }, "footerUp+=0.1");
