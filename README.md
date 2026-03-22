@@ -1,24 +1,15 @@
 # ⚡ Welcome to my Creative Space! ⚡
 
-<p align="center">
-  <h1> 👨‍💻 🌐 🚀 </h1>
-</p>
-
 ### 🖥️ Portfolio Project
 This is my **website portfolio** that showcases all my previous projects and work. 
 
 *   🎨 **Design Inspiration:** Highly influenced by the modern, high-end aesthetics of [Awwwards](https://www.awwwards.com).
-*   🚀 **Live Demo:** Hosted on [Render.com](https://genixportfolio.onrender.com)
+*   🚀 **Live Demo:** [View my Portfolio on Render](https://genixportfolio.onrender.com)
 
 ---
 
 ### 🛠️ Tech Stack & Tools
-<p align="left">
-  <img src="https://img.shields.io" />
-  <img src="https://img.shields.io" />
-  <img src="https://img.shields.io" />
-  <img src="https://img.shields.io" />
-</p>
+*   🟠 **HTML5** | 🔵 **CSS3** | 🟡 **JavaScript** | 🟢 **GSAP**
 
 - ⚡ **Animations:** Powered by **GSAP** for that butter-smooth Awwwards feel.
 - 🌐 **Hosting:** Deployed via **Render** for seamless delivery.
@@ -27,27 +18,17 @@ This is my **website portfolio** that showcases all my previous projects and wor
 ---
 
 ### 📊 GitHub Activity
-<p align="left">
-<img src="https://github-readme-stats.vercel.app" alt="N1X-KUN's Stats" />
-</p>
+![N1X-KUN's Stats](https://github-readme-stats.vercel.app)
 
 ---
 
 ### 🤝 Let's Connect
-<p align="left">
-  <a href="https://github.com">
-    <img src="https://img.shields.io" />
-  </a>
-  <a href="https://www.linkedin.com">
-    <img src="https://img.shields.io" />
-  </a>
-  <a href="https://www.youtube.com">
-    <img src="https://img.shields.io" />
-  </a>
-</p>
+*   🐙 **GitHub:** [N1X-KUN](https://github.com)
+*   💼 **LinkedIn:** [Gerard Matthew Fernandez](https://www.linkedin.com)
+*   🎬 **YouTube:** [@NTX-KUN](https://www.youtube.com)
 
 ---
 
-<p align="center">
+<p align="right">
   <i>"Its nice to be the idiot once in a while~"</i> ✨
 </p>
