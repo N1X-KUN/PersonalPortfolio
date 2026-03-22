@@ -372,3 +372,78 @@ footerTl.add("unravel")
             stagger: { each: 0.15, from: "random" },
             ease: "back.out(1.5)"                   
         }, "footerUp+=0.1");
+
+// ==========================================
+// MOBILE WARNING & FLOATING EMOJI LOGIC
+// ==========================================
+let emojisAnimated = false; // Flag to prevent re-running the animation
+
+function handleMobileLockout() {
+    const warningOverlay = document.getElementById('mobile-warning-overlay');
+
+    // Check if the screen is mobile/tablet width
+    if (window.innerWidth <= 1024) {
+        warningOverlay.style.display = 'flex';
+
+        // Animate the emojis ONLY if they haven't been animated yet
+        if (!emojisAnimated) {
+            const emojisM = gsap.utils.toArray('.emoji-m');
+            
+            // STRICT SAFE ZONES: Corners, far edges, top, and bottom. Away from the center!
+            const mobileSafeZones = [
+                { left: 15, top: 12 }, { left: 85, top: 12 }, // Top Corners
+                { left: 35, top: 8 },  { left: 65, top: 8 },  // Top Middle
+                { left: 15, top: 88 }, { left: 85, top: 88 }, // Bottom Corners
+                { left: 35, top: 92 }, { left: 65, top: 92 }, // Bottom Middle
+                { left: 8, top: 50 },  { left: 92, top: 50 }  // Left & Right Edges
+            ];
+
+            emojisM.forEach((emoji, index) => {
+                let zone = mobileSafeZones[index % mobileSafeZones.length];
+                
+                // Snap them to their safe zones
+                gsap.set(emoji, {
+                    opacity: 1,
+                    left: zone.left + "%",
+                    top: zone.top + "%",
+                    xPercent: -50,
+                    yPercent: -50,
+                    scale: gsap.utils.random(0.8, 1.2),
+                    rotation: gsap.utils.random(-45, 45)
+                });
+
+                // Tighter float animation so they don't wander into the yellow box
+                gsap.to(emoji, {
+                    x: gsap.utils.random(-15, 15),
+                    y: gsap.utils.random(-15, 15),
+                    rotation: "+=" + gsap.utils.random(-30, 30),
+                    duration: gsap.utils.random(15, 25),
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut"
+                });
+            });
+            emojisAnimated = true; 
+        }
+
+        // Ensure background music continues
+        const bgMusic = document.getElementById('bg-music');
+        if (bgMusic && bgMusic.paused && !bgMusic.ended) {
+            document.addEventListener('click', () => { bgMusic.play(); isMusicPlaying = true; }, { once: true });
+        }
+
+    } else {
+        warningOverlay.style.display = 'none';
+        
+        const bgMusic = document.getElementById('bg-music');
+        if (bgMusic && bgMusic.paused && !bgMusic.ended) {
+             document.addEventListener('click', () => { bgMusic.play(); isMusicPlaying = true; }, { once: true });
+        }
+    }
+}
+
+// -------------------------------------------------------------
+// UNIFIED TRIGGERS
+// -------------------------------------------------------------
+loaderTl.call(handleMobileLockout);
+window.addEventListener('resize', handleMobileLockout); 
