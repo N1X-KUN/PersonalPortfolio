@@ -1,14 +1,14 @@
 # ⚡ Welcome to my Creative Space! ⚡
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com" alt="Creative Coding" width="120" height="120" />
+  <h1> 👨‍💻 🌐 🚀 </h1>
 </p>
 
 ### 🖥️ Portfolio Project
 This is my **website portfolio** that showcases all my previous projects and work. 
 
 *   🎨 **Design Inspiration:** Highly influenced by the modern, high-end aesthetics of [Awwwards](https://www.awwwards.com).
-*   🚀 **Live Demo:** Hosted on [Render.com](https://genixportfolio.onrender.com) 
+*   🚀 **Live Demo:** Hosted on [Render.com](https://genixportfolio.onrender.com)
 
 ---
 
@@ -35,19 +35,19 @@ This is my **website portfolio** that showcases all my previous projects and wor
 
 ### 🤝 Let's Connect
 <p align="left">
-  <a href="https://github.com/N1X-KUN">
-    <img src="https://raw.githubusercontent.com" width="40" height="40" alt="GitHub" />
+  <a href="https://github.com">
+    <img src="https://img.shields.io" />
   </a>
-  <a href="https://www.linkedin.com/in/gerard-matthew-fernandez-9aa8a8374/">
-    <img src="https://raw.githubusercontent.com" width="40" height="40" alt="LinkedIn" />
+  <a href="https://www.linkedin.com">
+    <img src="https://img.shields.io" />
   </a>
-  <a href="https://www.youtube.com/@NTX-KUN">
-    <img src="https://raw.githubusercontent.com" width="40" height="40" alt="YouTube" />
+  <a href="https://www.youtube.com">
+    <img src="https://img.shields.io" />
   </a>
 </p>
 
 ---
 
 <p align="center">
-  <i>"Motion tells the story that words cannot."</i> ✨
+  <i>"Its nice to be the idiot once in a while~"</i> ✨
 </p>
