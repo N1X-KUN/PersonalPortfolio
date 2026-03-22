@@ -1,5 +1,3 @@
-# ⚡ Welcome to my Creative Space! ⚡
-
 ### 🖥️ Portfolio Project
 This is my **website portfolio** that showcases all my previous projects and work. 
 
@@ -14,11 +12,6 @@ This is my **website portfolio** that showcases all my previous projects and wor
 - ⚡ **Animations:** Powered by **GSAP** for that butter-smooth Awwwards feel.
 - 🌐 **Hosting:** Deployed via **Render** for seamless delivery.
 - 🏗️ **Structure:** Pure **HTML/CSS/JS** architecture.
-
----
-
-### 📊 GitHub Activity
-![N1X-KUN's Stats](https://github-readme-stats.vercel.app)
 
 ---
 
