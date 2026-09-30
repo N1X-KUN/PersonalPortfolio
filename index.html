@@ -48,8 +48,8 @@
         <h1 class="loader-text">GENIX</h1>
     </div>
 
-    <audio id="bg-music" loop>
-        <source src="assets/videos/We Shop Song.mp3" type="audio/mpeg">
+    <audio id="bg-music" loop preload="auto">
+        <source src="assets/videos/Instrumental.mp3" type="audio/mpeg">
     </audio>
 
     <header class="site-header">
@@ -106,7 +106,7 @@
             <div class="hero-titles">
                 <h2 class="title-line">MY PERSONAL</h2>
                 <h2 class="highlight-title">PORTFOLIO</h2>
-                <p class="subtitle">Gerard Matthew Guanco Fernandez</p>
+                <p class="subtitle" style="letter-spacing: 0.35em;">Gerard Matthew Guanco Fernandez</p>
             </div>
         </div>
 
@@ -124,18 +124,22 @@
 
         <div class="page2-content">
             <div class="foudre-left">
-                <h2 class="foudre-main-title">DIGITAL MEDIA<br>&amp; TECH<br>SPECIALIST.</h2>
+                <h2 class="foudre-main-title">
+                    <span style="text-decoration: underline; text-decoration-thickness: 5px; text-underline-offset: 5px;">DIGITAL MEDIA</span><br>
+                    TECH SPECIALIST.
+                </h2>
                 <p class="foudre-sub-text">A Bath Spa University graduate with Honors based in Dubai, blending front-end web development with multimedia creation and engaging brand experiences.</p>
             </div>
             <div class="foudre-right">
                 <div class="acc-item" id="acc-1">
-                    <h3 class="acc-title">MY PERSONALITY</h3>
+                    <h3 class="acc-title">PERSONALITY</h3>
                     <div class="acc-content">
-                        <p>I am naturally observant and very quick to adapt to new technology. I enjoy the energy of engaging with customers just as much as I like sitting down to plan and edit video content. Getting the small details right is always my priority. Once the work is done, I completely switch off by catching up on my favorite comics or diving into a gaming session.</p>
+                        <p>I am naturally observant and very quick to adapt to new technology. I enjoy the energy of engaging with customers just as much as I like sitting down to plan and edit video content. Getting the small details right is always my priority.</p>
+                        <p>Once the work is done, I completely switch off by catching up on my favorite comics or diving into a gaming session.</p>
                     </div>
                 </div>
                 <div class="acc-item" id="acc-2">
-                    <h3 class="acc-title">MY HOBBIES</h3>
+                    <h3 class="acc-title">HOBBIES</h3>
                     <div class="acc-content">
                         <div class="foudre-tags">
                             <span>Gamer</span>
@@ -148,7 +152,7 @@
                     </div>
                 </div>
                 <div class="acc-item" id="acc-3">
-                    <h3 class="acc-title">MY SKILLS</h3>
+                    <h3 class="acc-title">SKILLS</h3>
                     <div class="acc-content">
                         <div class="foudre-tags">
                             <span>Game Developer</span>
@@ -156,8 +160,8 @@
                             <span>Customer Service</span>
                             <span>Coding Languages</span>
                             <span>Communications</span>
-                            <span>Fast-paced event coordination</span>
                             <span>Adaptability</span>
+                            <span>Fast-Paced Event Coordination</span>
                         </div>
                     </div>
                 </div>
@@ -166,31 +170,27 @@
     </section>
 
     <section class="zoom-container">
-        <div class="word-wrapper">
-            <h3 class="companion-text top-text">Discover More Of</h3>
-            <div class="video-grid">
-                <video src="assets/videos/MangaMatch.mp4" autoplay loop muted playsinline></video>
-                <video src="assets/videos/Digital Storytellin Animatic.mp4" autoplay loop muted playsinline></video>
-                <video src="assets/videos/POKEMON-DEX.mp4" autoplay loop muted playsinline></video>
-                <video src="assets/videos/Welcome to Metavers.mp4" autoplay loop muted playsinline></video>
-                <video src="assets/videos/MachineLearning Assesment 1 (2).mp4" autoplay loop muted playsinline></video>
-                <video src="assets/videos/Figma App.mp4" autoplay loop muted playsinline></video>
+        <div class="gerard-showcase">
+            <div class="gerard-stage">
+                <article class="gerard-card gerard-card--left">
+                    <img src="assets/images/MoonKnight.jpg" alt="Preview left">
+                    <span class="gerard-card-fade"></span>
+                </article>
+                <article class="gerard-card gerard-card--center">
+                    <img src="assets/images/Pic2-Photoroom.png" alt="Preview center">
+                    <span class="gerard-card-fade"></span>
+                </article>
+                <article class="gerard-card gerard-card--right">
+                    <img src="assets/images/Grad.jpg" alt="Preview right">
+                    <span class="gerard-card-fade"></span>
+                </article>
             </div>
-            <svg class="text-mask" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" focusable="false">
-                <defs>
-                    <mask id="gerard-mask">
-                        <rect width="100%" height="100%" fill="white" />
-                        <text x="8.33%" y="55%" text-anchor="middle" dominant-baseline="central" fill="black" class="svg-text shake-letter">G</text>
-                        <text x="25%" y="55%" text-anchor="middle" dominant-baseline="central" fill="black" class="svg-text shake-letter">E</text>
-                        <text x="41.66%" y="55%" text-anchor="middle" dominant-baseline="central" fill="black" class="svg-text shake-letter">R</text>
-                        <text x="58.33%" y="55%" text-anchor="middle" dominant-baseline="central" fill="black" class="svg-text shake-letter">A</text>
-                        <text x="75%" y="55%" text-anchor="middle" dominant-baseline="central" fill="black" class="svg-text shake-letter">R</text>
-                        <text x="91.66%" y="55%" text-anchor="middle" dominant-baseline="central" fill="black" class="svg-text shake-letter">D</text>
-                    </mask>
-                </defs>
-                <rect id="mask-rect" width="100%" height="100%" fill="#f4f4f4" mask="url(#gerard-mask)" />
-            </svg>
-            <h3 class="companion-text bottom-text">Previews Projects</h3>
+
+            <div class="gerard-caption">
+                <h2 class="gerard-wordmark">GERARD</h2>
+                <p class="gerard-tagline">Discover more of my preview projects</p>
+                <button type="button" class="gerard-cta">View Project</button>
+            </div>
         </div>
     </section>
     

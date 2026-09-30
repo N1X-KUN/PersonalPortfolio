@@ -7,12 +7,17 @@ const bgMusic = document.getElementById('bg-music');
 const musicToggleBtn = document.getElementById('music-toggle');
 let isMusicPlaying = false;
 
-// Set volume to exactly 50%
-bgMusic.volume = 0.5;
+const setMusicVolumeHalf = () => {
+    bgMusic.volume = 0.5;
+};
+setMusicVolumeHalf();
+bgMusic.addEventListener('loadedmetadata', setMusicVolumeHalf);
+bgMusic.addEventListener('play', setMusicVolumeHalf);
 
 // Browsers block autoplay. This waits for the user's VERY FIRST click anywhere on the page to start the music.
 const startMusicOnInteraction = () => {
     if (!isMusicPlaying) {
+        setMusicVolumeHalf();
         bgMusic.play();
         isMusicPlaying = true;
         musicToggleBtn.innerHTML = "🔊 MUTE MUSIC";
@@ -225,23 +230,13 @@ aboutTl.to({}, {duration: 0.2});
 
 
 // ==========================================
-// PAGE 3: GERARD ZOOM (Calculated Last!)
+// PAGE 3: GERARD TITLE
+// Pin duration stays +=2500 so Page 4 still reveals on the same scroll.
+// Scale-80 zoom and mask fill were removed with the old GERARD cutout.
 // ==========================================
 
-// Smooth background color morph back to Yellow
 gsap.to("body", {
-    backgroundColor: "#FFD700", 
-    scrollTrigger: {
-        trigger: ".zoom-container",
-        start: "top 60%", 
-        end: "top 20%",
-        scrub: true
-    }
-});
-
-// Simultaneous morph of the SVG mask rect
-gsap.to("#mask-rect", {
-    fill: "#FFD700",
+    backgroundColor: "#FFD700",
     scrollTrigger: {
         trigger: ".zoom-container",
         start: "top 60%",
@@ -250,17 +245,12 @@ gsap.to("#mask-rect", {
     }
 });
 
-// Slanted Zoom-Through Animation
-gsap.to(".word-wrapper", {
-    scale: 80, 
-    ease: "power2.inOut",
-    scrollTrigger: {
-        trigger: ".zoom-container",
-        start: "top top",
-        end: "+=2500", 
-        pin: true,
-        scrub: 1
-    }
+ScrollTrigger.create({
+    trigger: ".zoom-container",
+    start: "top top",
+    end: "+=2500",
+    pin: true,
+    scrub: 1
 });
 
 // ==========================================
@@ -429,7 +419,7 @@ function handleMobileLockout() {
         // Ensure background music continues
         const bgMusic = document.getElementById('bg-music');
         if (bgMusic && bgMusic.paused && !bgMusic.ended) {
-            document.addEventListener('click', () => { bgMusic.play(); isMusicPlaying = true; }, { once: true });
+            document.addEventListener('click', () => { bgMusic.volume = 0.5; bgMusic.play(); isMusicPlaying = true; }, { once: true });
         }
 
     } else {
@@ -437,7 +427,7 @@ function handleMobileLockout() {
         
         const bgMusic = document.getElementById('bg-music');
         if (bgMusic && bgMusic.paused && !bgMusic.ended) {
-             document.addEventListener('click', () => { bgMusic.play(); isMusicPlaying = true; }, { once: true });
+             document.addEventListener('click', () => { bgMusic.volume = 0.5; bgMusic.play(); isMusicPlaying = true; }, { once: true });
         }
     }
 }
