@@ -7,8 +7,9 @@ const bgMusic = document.getElementById('bg-music');
 const musicToggleBtn = document.getElementById('music-toggle');
 let isMusicPlaying = false;
 
+const MUSIC_VOLUME = 0.25;
 const setMusicVolumeHalf = () => {
-    bgMusic.volume = 0.5;
+    bgMusic.volume = MUSIC_VOLUME;
 };
 setMusicVolumeHalf();
 bgMusic.addEventListener('loadedmetadata', setMusicVolumeHalf);
@@ -95,9 +96,11 @@ navLinks.forEach(link => {
         if (target === "home") {
             scrollY = 0;
         } else if (target === "about") {
-            scrollY = 1500; 
+            const st = aboutTl.scrollTrigger;
+            scrollY = st ? st.start + (st.end - st.start) * 0.92 : 1100;
         } else if (target === "work") {
-            scrollY = 7600; 
+            const st = revealTl.scrollTrigger;
+            scrollY = st ? st.end - 40 : 4000;
         } else if (target === "contact") {
             scrollY = document.body.scrollHeight; 
         }
@@ -164,69 +167,155 @@ genixLetters.forEach(letter => {
 // PAGE 2: FOUDRE SHUFFLE (Calculated First)
 // ==========================================
 
+// ==========================================
+// PAGE 2: ABOUT (one scroll in, hover to shuffle)
+// ==========================================
+
 gsap.set("#acc-1 .acc-title", { color: "#0A192F", webkitTextStroke: "0px" });
 gsap.set("#acc-1 .acc-content", { height: "auto", opacity: 1 });
+
+let lastAboutPanel = "acc-1";
+let aboutGalleryActive = false;
+
+const aboutLayouts = {
+    "acc-1": {
+        wrap1: { x: -40, y: 10, rotation: -8, scale: 0.9, zIndex: 1 },
+        wrap2: { x: 0, y: -12, rotation: 0, scale: 1.08, zIndex: 5 },
+        wrap3: { x: 40, y: 10, rotation: 8, scale: 0.9, zIndex: 2 }
+    },
+    "acc-2": {
+        wrap1: { x: 0, y: -12, rotation: 0, scale: 1.08, zIndex: 5 },
+        wrap2: { x: 48, y: 12, rotation: 10, scale: 0.9, zIndex: 2 },
+        wrap3: { x: -48, y: 12, rotation: -10, scale: 0.9, zIndex: 1 }
+    },
+    "acc-3": {
+        wrap1: { x: -48, y: 12, rotation: -10, scale: 0.9, zIndex: 1 },
+        wrap2: { x: 48, y: 12, rotation: 10, scale: 0.9, zIndex: 2 },
+        wrap3: { x: 0, y: -12, rotation: 0, scale: 1.08, zIndex: 5 }
+    }
+};
+
+const restoreHomeGallery = () => {
+    gsap.to(".wrap1", { x: -180, y: 0, rotation: -12, scale: 1, zIndex: 1, duration: 0.7, ease: "power2.inOut" });
+    gsap.to(".wrap2", { x: 0, y: 0, rotation: 0, scale: 1, zIndex: 5, duration: 0.7, ease: "power2.inOut" });
+    gsap.to(".wrap3", { x: 180, y: 0, rotation: 12, scale: 1, zIndex: 2, duration: 0.7, ease: "power2.inOut" });
+    gsap.to("body", { "--about-a": "#f4f4f4", "--about-b": "#f4f4f4", duration: 0.7, ease: "power2.inOut" });
+};
+
+const aboutThemes = {
+    "acc-1": {
+        a: "#FFD700",
+        b: "#FFD700",
+        titleFill: "#0A192F",
+        inactiveStroke: "2px #ffffff",
+        content: "#0A192F",
+        foudreStroke: "2px #0A192F",
+        foudreSub: "#0A192F"
+    },
+    "acc-2": {
+        a: "#0A192F",
+        b: "#FFD700",
+        titleFill: "#FFFFFF",
+        inactiveStroke: "2px #ffffff",
+        content: "#FFFFFF",
+        foudreStroke: "2px #FFFFFF",
+        foudreSub: "#FFFFFF"
+    },
+    "acc-3": {
+        a: "#f4f4f4",
+        b: "#FFD700",
+        titleFill: "#0A192F",
+        inactiveStroke: "2px #0A192F",
+        content: "#0A192F",
+        foudreStroke: "2px #0A192F",
+        foudreSub: "#0A192F"
+    }
+};
+
+const applyGerardTheme = (panelId, duration = 0.7) => {
+    const personality = panelId === "acc-1";
+    const gerardBg = personality ? "#0A192F" : "#FFD700";
+    const text = personality ? "#FFD700" : "#0A192F";
+    const ease = "power2.inOut";
+
+    gsap.to("body", { "--gerard-bg": gerardBg, "--gerard-fade": gerardBg, duration, ease });
+    gsap.to(".gerard-wordmark", { color: text, duration, ease });
+    gsap.to(".gerard-tagline", { color: text, duration, ease });
+    gsap.to(".gerard-cta", { color: text, borderColor: text, duration, ease });
+};
+
+const applyAboutPanel = (panelId, animate = true) => {
+    lastAboutPanel = panelId;
+    const duration = animate ? 0.7 : 0;
+    const ease = "power2.inOut";
+    const layout = aboutLayouts[panelId];
+    const theme = aboutThemes[panelId];
+
+    gsap.to("body", { "--about-a": theme.a, "--about-b": theme.b, duration, ease });
+    gsap.to(".foudre-main-title", { webkitTextStroke: theme.foudreStroke, duration, ease });
+    gsap.to(".foudre-sub-text", { color: theme.foudreSub, duration, ease });
+    applyGerardTheme(panelId, duration);
+
+    ["acc-1", "acc-2", "acc-3"].forEach((id) => {
+        const active = id === panelId;
+        gsap.to(`#${id} .acc-title`, {
+            color: active ? theme.titleFill : "transparent",
+            webkitTextStroke: active ? "0px" : theme.inactiveStroke,
+            duration,
+            ease
+        });
+        gsap.to(`#${id} .acc-content`, {
+            height: active ? "auto" : 0,
+            opacity: active ? 1 : 0,
+            duration,
+            ease
+        });
+        gsap.to(`#${id} .acc-content p`, {
+            color: theme.content,
+            duration,
+            ease
+        });
+    });
+
+    gsap.to(".wrap1", { ...layout.wrap1, duration, ease });
+    gsap.to(".wrap2", { ...layout.wrap2, duration, ease });
+    gsap.to(".wrap3", { ...layout.wrap3, duration, ease });
+};
 
 const aboutTl = gsap.timeline({
     scrollTrigger: {
         trigger: ".pinned-hero-about",
         pin: true,
         start: "top top",
-        end: "+=5000", 
-        scrub: 1.5 
+        end: "+=1400",
+        scrub: 1.5,
+        onUpdate: (self) => {
+            if (self.progress > 0.62) {
+                if (!aboutGalleryActive) {
+                    aboutGalleryActive = true;
+                    applyAboutPanel(lastAboutPanel, true);
+                }
+            } else if (aboutGalleryActive) {
+                aboutGalleryActive = false;
+                restoreHomeGallery();
+            }
+        },
+        onEnterBack: () => {
+            aboutGalleryActive = true;
+            applyAboutPanel(lastAboutPanel, true);
+        }
     }
 });
 
-// ACTION 1: SCROLL TO PAGE 2 & TURN BG YELLOW
-aboutTl.to(".page1-content", { y: "-100vh", duration: 1, ease: "power2.inOut" }, 0) 
-       .to(".page2-content", { y: "0", duration: 1, ease: "power2.inOut" }, 0)      
-       .to("body", { backgroundColor: "#FFD700", duration: 1 }, 0) 
-       .to(".wrap1", { x: -40, y: 0, rotation: -5, scale: 0.9, zIndex: 1, duration: 1, ease: "power2.inOut" }, 0) 
-       .to(".wrap3", { x: 40, y: 0, rotation: 5, scale: 0.9, zIndex: 1, duration: 1, ease: "power2.inOut" }, 0)  
-       .to(".wrap2", { x: 0, y: 0, rotation: 0, scale: 1.05, zIndex: 5, duration: 1, ease: "power2.inOut" }, 0); 
+aboutTl.to(".page1-content", { y: "-100vh", duration: 1, ease: "power2.inOut" }, 0)
+       .to(".page2-content", { y: "0", duration: 1, ease: "power2.inOut" }, 0);
 
-aboutTl.to({}, {duration: 0.2}); 
-
-// ACTION 2: SHUFFLE TO HOBBIES & TURN BG BLACK
-aboutTl.add("shuffle1_out")
-       .to("body", { backgroundColor: "#0A192F", duration: 1 }, "shuffle1_out") 
-       .to(".foudre-sub-text", { color: "#FFFFFF", duration: 1 }, "shuffle1_out") 
-       .to(".foudre-main-title", { webkitTextStroke: "2px #FFFFFF", duration: 1 }, "shuffle1_out") 
-       .to(".wrap2", { x: 250, y: -40, rotation: 15, duration: 0.8, ease: "power2.inOut" }, "shuffle1_out") 
-       .to(".wrap1", { x: -250, y: 30, rotation: -15, duration: 0.8, ease: "power2.inOut" }, "shuffle1_out")
-       .to("#acc-1 .acc-title", { color: "transparent", webkitTextStroke: "2px #ffffff", duration: 0.8 }, "shuffle1_out")
-       .to("#acc-1 .acc-content", { height: 0, opacity: 0, duration: 0.8 }, "shuffle1_out")
-       .set(".wrap2", { zIndex: 1 })
-       .set(".wrap1", { zIndex: 5 })
-       .add("shuffle1_in")
-       .to(".wrap2", { x: 40, y: 0, rotation: 5, scale: 0.9, duration: 0.8, ease: "power2.inOut" }, "shuffle1_in")
-       .to(".wrap1", { x: 0, y: 0, rotation: 0, scale: 1.05, duration: 0.8, ease: "power2.inOut" }, "shuffle1_in")
-       .to("#acc-2 .acc-title", { color: "#FFFFFF", webkitTextStroke: "0px", duration: 0.8 }, "shuffle1_in")
-       .to("#acc-2 .acc-content p", { color: "#FFFFFF", duration: 0.8 }, "shuffle1_in")
-       .to("#acc-2 .acc-content", { height: "auto", opacity: 1, duration: 0.8 }, "shuffle1_in");
-
-aboutTl.to({}, {duration: 0.2}); 
-
-// ACTION 3: SHUFFLE TO SKILLS & TURN BG OFF-WHITE
-aboutTl.add("shuffle2_out")
-       .to("body", { backgroundColor: "#f4f4f4", duration: 1 }, "shuffle2_out") 
-       .to(".foudre-sub-text", { color: "#0A192F", duration: 1 }, "shuffle2_out") 
-       .to(".foudre-main-title", { webkitTextStroke: "2px #0A192F", duration: 1 }, "shuffle2_out") 
-       .to(".acc-title", { webkitTextStroke: "2px #0A192F", duration: 1 }, "shuffle2_out") 
-       .to(".wrap1", { x: 250, y: -40, rotation: 15, duration: 0.8, ease: "power2.inOut" }, "shuffle2_out") 
-       .to(".wrap3", { x: -250, y: 30, rotation: -15, duration: 0.8, ease: "power2.inOut" }, "shuffle2_out")
-       .to("#acc-2 .acc-title", { color: "transparent", webkitTextStroke: "2px #0A192F", duration: 0.8 }, "shuffle2_out")
-       .to("#acc-2 .acc-content", { height: 0, opacity: 0, duration: 0.8 }, "shuffle2_out")
-       .set(".wrap1", { zIndex: 1 })
-       .set(".wrap3", { zIndex: 5 })
-       .add("shuffle2_in")
-       .to(".wrap1", { x: -40, y: 0, rotation: -5, scale: 0.9, duration: 0.8, ease: "power2.inOut" }, "shuffle2_in")
-       .to(".wrap3", { x: 0, y: 0, rotation: 0, scale: 1.05, duration: 0.8, ease: "power2.inOut" }, "shuffle2_in")
-       .to("#acc-3 .acc-title", { color: "#0A192F", webkitTextStroke: "0px", duration: 0.8 }, "shuffle2_in")
-       .to("#acc-3 .acc-content p", { color: "#0A192F", duration: 0.8 }, "shuffle2_in")
-       .to("#acc-3 .acc-content", { height: "auto", opacity: 1, duration: 0.8 }, "shuffle2_in");
-
-aboutTl.to({}, {duration: 0.2});
+["acc-1", "acc-2", "acc-3"].forEach((id) => {
+    const item = document.getElementById(id);
+    item.addEventListener("mouseenter", () => {
+        applyAboutPanel(id, true);
+    });
+});
 
 
 // ==========================================
@@ -236,12 +325,12 @@ aboutTl.to({}, {duration: 0.2});
 // ==========================================
 
 gsap.to("body", {
-    backgroundColor: "#FFD700",
     scrollTrigger: {
         trigger: ".zoom-container",
-        start: "top 60%",
-        end: "top 20%",
-        scrub: true
+        start: "top 70%",
+        end: "top 25%",
+        scrub: true,
+        onUpdate: () => applyGerardTheme(lastAboutPanel, 0.2)
     }
 });
 
@@ -419,7 +508,7 @@ function handleMobileLockout() {
         // Ensure background music continues
         const bgMusic = document.getElementById('bg-music');
         if (bgMusic && bgMusic.paused && !bgMusic.ended) {
-            document.addEventListener('click', () => { bgMusic.volume = 0.5; bgMusic.play(); isMusicPlaying = true; }, { once: true });
+            document.addEventListener('click', () => { bgMusic.volume = MUSIC_VOLUME; bgMusic.play(); isMusicPlaying = true; }, { once: true });
         }
 
     } else {
@@ -427,7 +516,7 @@ function handleMobileLockout() {
         
         const bgMusic = document.getElementById('bg-music');
         if (bgMusic && bgMusic.paused && !bgMusic.ended) {
-             document.addEventListener('click', () => { bgMusic.volume = 0.5; bgMusic.play(); isMusicPlaying = true; }, { once: true });
+             document.addEventListener('click', () => { bgMusic.volume = MUSIC_VOLUME; bgMusic.play(); isMusicPlaying = true; }, { once: true });
         }
     }
 }
