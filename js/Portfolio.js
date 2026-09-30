@@ -199,13 +199,12 @@ const restoreHomeGallery = () => {
     gsap.to(".wrap1", { x: -180, y: 0, rotation: -12, scale: 1, zIndex: 1, duration: 0.7, ease: "power2.inOut" });
     gsap.to(".wrap2", { x: 0, y: 0, rotation: 0, scale: 1, zIndex: 5, duration: 0.7, ease: "power2.inOut" });
     gsap.to(".wrap3", { x: 180, y: 0, rotation: 12, scale: 1, zIndex: 2, duration: 0.7, ease: "power2.inOut" });
-    gsap.to("body", { "--about-a": "#f4f4f4", "--about-b": "#f4f4f4", duration: 0.7, ease: "power2.inOut" });
+    gsap.to("body", { backgroundColor: "#f4f4f4", duration: 0.7, ease: "power2.inOut" });
 };
 
 const aboutThemes = {
     "acc-1": {
-        a: "#FFD700",
-        b: "#FFD700",
+        bg: "#FFD700",
         titleFill: "#0A192F",
         inactiveStroke: "2px #ffffff",
         content: "#0A192F",
@@ -213,8 +212,7 @@ const aboutThemes = {
         foudreSub: "#0A192F"
     },
     "acc-2": {
-        a: "#0A192F",
-        b: "#FFD700",
+        bg: "#0A192F",
         titleFill: "#FFFFFF",
         inactiveStroke: "2px #ffffff",
         content: "#FFFFFF",
@@ -222,8 +220,7 @@ const aboutThemes = {
         foudreSub: "#FFFFFF"
     },
     "acc-3": {
-        a: "#f4f4f4",
-        b: "#FFD700",
+        bg: "#f4f4f4",
         titleFill: "#0A192F",
         inactiveStroke: "2px #0A192F",
         content: "#0A192F",
@@ -232,13 +229,38 @@ const aboutThemes = {
     }
 };
 
+const gerardPageColor = (panelId) => (panelId === "acc-1" ? "#0A192F" : "#FFD700");
+
+let aboutGerardColorTween;
+
+const rebuildAboutGerardColorScroll = () => {
+    if (aboutGerardColorTween) {
+        if (aboutGerardColorTween.scrollTrigger) aboutGerardColorTween.scrollTrigger.kill();
+        aboutGerardColorTween.kill();
+    }
+    aboutGerardColorTween = gsap.fromTo("body",
+        { backgroundColor: aboutThemes[lastAboutPanel].bg },
+        {
+            backgroundColor: gerardPageColor(lastAboutPanel),
+            ease: "none",
+            immediateRender: false,
+            scrollTrigger: {
+                trigger: ".zoom-container",
+                start: "top 80%",
+                end: "top top",
+                scrub: 1
+            }
+        }
+    );
+};
+
 const applyGerardTheme = (panelId, duration = 0.7) => {
     const personality = panelId === "acc-1";
-    const gerardBg = personality ? "#0A192F" : "#FFD700";
+    const gerardBg = gerardPageColor(panelId);
     const text = personality ? "#FFD700" : "#0A192F";
     const ease = "power2.inOut";
 
-    gsap.to("body", { "--gerard-bg": gerardBg, "--gerard-fade": gerardBg, duration, ease });
+    gsap.to("body", { "--gerard-fade": gerardBg, duration, ease });
     gsap.to(".gerard-wordmark", { color: text, duration, ease });
     gsap.to(".gerard-tagline", { color: text, duration, ease });
     gsap.to(".gerard-cta", { color: text, borderColor: text, duration, ease });
@@ -251,10 +273,11 @@ const applyAboutPanel = (panelId, animate = true) => {
     const layout = aboutLayouts[panelId];
     const theme = aboutThemes[panelId];
 
-    gsap.to("body", { "--about-a": theme.a, "--about-b": theme.b, duration, ease });
+    gsap.to("body", { backgroundColor: theme.bg, duration, ease });
     gsap.to(".foudre-main-title", { webkitTextStroke: theme.foudreStroke, duration, ease });
     gsap.to(".foudre-sub-text", { color: theme.foudreSub, duration, ease });
     applyGerardTheme(panelId, duration);
+    rebuildAboutGerardColorScroll();
 
     ["acc-1", "acc-2", "acc-3"].forEach((id) => {
         const active = id === panelId;
@@ -324,15 +347,7 @@ aboutTl.to(".page1-content", { y: "-100vh", duration: 1, ease: "power2.inOut" },
 // Scale-80 zoom and mask fill were removed with the old GERARD cutout.
 // ==========================================
 
-gsap.to("body", {
-    scrollTrigger: {
-        trigger: ".zoom-container",
-        start: "top 70%",
-        end: "top 25%",
-        scrub: true,
-        onUpdate: () => applyGerardTheme(lastAboutPanel, 0.2)
-    }
-});
+rebuildAboutGerardColorScroll();
 
 ScrollTrigger.create({
     trigger: ".zoom-container",
