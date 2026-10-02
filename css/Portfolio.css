@@ -295,19 +295,41 @@ body {
 
 .gerard-card--left,
 .gerard-card--right {
-    width: 22vw;
-    max-width: 280px;
-    height: 42vh;
+    width: min(36vw, 440px);
+    height: min(22vw, 270px);
+    max-width: none;
     z-index: 1;
-    margin: 0;
+    margin: 8vh 0 0;
+    border-radius: 0;
+    overflow: hidden;
 }
 
 .gerard-card--left {
     margin-right: -10vw;
+    transform: none;
+    clip-path: polygon(18% 0, 100% 0, 82% 100%, 0 100%);
 }
 
 .gerard-card--right {
     margin-left: -10vw;
+    transform: none;
+    clip-path: polygon(0 0, 82% 0, 100% 100%, 18% 100%);
+}
+
+.gerard-triptych {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+.gerard-triptych img {
+    flex: 1 1 0;
+    width: 0;
+    min-width: 0;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
 }
 
 .gerard-card--center {
