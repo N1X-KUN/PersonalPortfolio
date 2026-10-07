@@ -305,15 +305,21 @@ body {
 }
 
 .gerard-card--left {
-    margin-right: -10vw;
-    transform: none;
+    margin-right: -18vw;
+    transform: rotate(-14deg);
     clip-path: polygon(18% 0, 100% 0, 82% 100%, 0 100%);
 }
 
 .gerard-card--right {
-    margin-left: -10vw;
-    transform: none;
+    margin-left: -18vw;
+    transform: rotate(14deg);
     clip-path: polygon(0 0, 82% 0, 100% 100%, 18% 100%);
+}
+
+.gerard-card--right:has(.gerard-triptych img:hover) {
+    overflow: visible;
+    clip-path: none;
+    z-index: 8;
 }
 
 .gerard-triptych {
@@ -330,6 +336,16 @@ body {
     height: 100%;
     object-fit: cover;
     border-radius: 0;
+    cursor: pointer;
+    transition: flex 0.45s ease, min-width 0.45s ease, width 0.45s ease, transform 0.45s ease;
+}
+
+.gerard-triptych img:hover {
+    flex: 0 0 36vw;
+    min-width: 36vw;
+    width: 36vw;
+    z-index: 9;
+    transform: translateX(10%);
 }
 
 .gerard-card--center {
@@ -394,10 +410,14 @@ body {
     cursor: pointer;
 }
 
-/* ==========================================
-   PAGE 4: SELECTED WORKS (Edge Studio Style)
-   ========================================== */
-   .content-section {
+.case-reveal-svg {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+.content-section {
     position: fixed;
     top: 0; left: 0;
     width: 100vw; height: 100vh;
@@ -407,10 +427,12 @@ body {
     display: flex;
     flex-direction: column;
     z-index: 7;
-    opacity: 0;
-    visibility: hidden; 
-    transform: scale(0.9);
-    pointer-events: none; /* NEW: Stops the invisible wall from breaking your scroll! */
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    clip-path: url(#caseRevealClip);
+    -webkit-clip-path: url(#caseRevealClip);
+    pointer-events: none;
 }
 
 .works-header {

@@ -342,36 +342,68 @@ aboutTl.to(".page1-content", { y: "-100vh", duration: 1, ease: "power2.inOut" },
 
 
 // ==========================================
-// PAGE 3: GERARD TITLE
-// Pin duration stays +=2500 so Page 4 still reveals on the same scroll.
-// Scale-80 zoom and mask fill were removed with the old GERARD cutout.
+// PAGE 3 → PAGE 4: CASE STUDY REVEALED IN RANDOM BLOCKS
+// The boxes ARE windows of the next page (not a colored overlay).
 // ==========================================
 
 rebuildAboutGerardColorScroll();
 
-ScrollTrigger.create({
-    trigger: ".zoom-container",
-    start: "top top",
-    end: "+=2500",
-    pin: true,
-    scrub: 1
-});
+const gerardPinDistance = 1400;
+const clipRoot = document.getElementById("caseRevealClip");
+const ns = "http://www.w3.org/2000/svg";
+const revealRects = [];
 
-// ==========================================
-// PAGE 4: EDGE STUDIO SLIDER
-// ==========================================
+for (let i = 0; i < 28; i++) {
+    const rect = document.createElementNS(ns, "rect");
+    const w = gsap.utils.random(0.08, 0.34);
+    const h = gsap.utils.random(0.08, 0.38);
+    rect.setAttribute("x", String(gsap.utils.random(0, 1 - w)));
+    rect.setAttribute("width", String(w));
+    rect.setAttribute("height", String(h));
+    rect.setAttribute("y", "1.2");
+    clipRoot.appendChild(rect);
+    revealRects.push({
+        el: rect,
+        targetY: gsap.utils.random(0, Math.max(0.02, 1 - h)),
+        startAt: gsap.utils.random(0, 0.42)
+    });
+}
+
+const coverRect = document.createElementNS(ns, "rect");
+coverRect.setAttribute("x", "0");
+coverRect.setAttribute("width", "1");
+coverRect.setAttribute("height", "1");
+coverRect.setAttribute("y", "1.15");
+clipRoot.appendChild(coverRect);
 
 const revealTl = gsap.timeline({
     scrollTrigger: {
         trigger: ".zoom-container",
         start: "top top",
-        end: "+=2500", 
-        scrub: true
+        end: `+=${gerardPinDistance}`,
+        pin: true,
+        scrub: 1,
+        onUpdate: (self) => {
+            gsap.set(".content-section", {
+                pointerEvents: self.progress > 0.72 ? "auto" : "none"
+            });
+        }
     }
 });
 
-revealTl.to({}, { duration: 0.8 }) 
-        .to(".content-section", { autoAlpha: 1, scale: 1, pointerEvents: "auto", duration: 0.2 });
+revealRects.forEach(({ el, targetY, startAt }) => {
+    revealTl.fromTo(el,
+        { attr: { y: 1.25 } },
+        { attr: { y: targetY }, duration: 0.5, ease: "none" },
+        startAt
+    );
+});
+
+revealTl.fromTo(coverRect,
+    { attr: { y: 1.12 } },
+    { attr: { y: 0 }, duration: 0.35, ease: "none" },
+    0.58
+);
 
 const track = document.getElementById('track');
 const btnPrev = document.getElementById('btn-prev');
