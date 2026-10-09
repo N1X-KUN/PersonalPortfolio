@@ -350,6 +350,7 @@ rebuildAboutGerardColorScroll();
 
 const gerardPinDistance = 1400;
 const clipRoot = document.getElementById("caseRevealClip");
+const outlineRoot = document.querySelector(".glitch-outlines");
 const ns = "http://www.w3.org/2000/svg";
 const revealRects = [];
 
@@ -357,13 +358,24 @@ for (let i = 0; i < 28; i++) {
     const rect = document.createElementNS(ns, "rect");
     const w = gsap.utils.random(0.08, 0.34);
     const h = gsap.utils.random(0.08, 0.38);
-    rect.setAttribute("x", String(gsap.utils.random(0, 1 - w)));
+    const x = gsap.utils.random(0, 1 - w);
+    rect.setAttribute("x", String(x));
     rect.setAttribute("width", String(w));
     rect.setAttribute("height", String(h));
     rect.setAttribute("y", "1.2");
     clipRoot.appendChild(rect);
+
+    const line = document.createElementNS(ns, "line");
+    line.setAttribute("x1", String(x));
+    line.setAttribute("x2", String(x + w));
+    line.setAttribute("y1", "1.2");
+    line.setAttribute("y2", "1.2");
+    outlineRoot.appendChild(line);
+
     revealRects.push({
         el: rect,
+        line,
+        h,
         targetY: gsap.utils.random(0, Math.max(0.02, 1 - h)),
         startAt: gsap.utils.random(0, 0.42)
     });
@@ -391,10 +403,15 @@ const revealTl = gsap.timeline({
     }
 });
 
-revealRects.forEach(({ el, targetY, startAt }) => {
+revealRects.forEach(({ el, line, h, targetY, startAt }) => {
     revealTl.fromTo(el,
         { attr: { y: 1.25 } },
         { attr: { y: targetY }, duration: 0.5, ease: "none" },
+        startAt
+    );
+    revealTl.fromTo(line,
+        { attr: { y1: 1.25 + h, y2: 1.25 + h } },
+        { attr: { y1: targetY + h, y2: targetY + h }, duration: 0.5, ease: "none" },
         startAt
     );
 });

@@ -260,6 +260,7 @@ body {
     gap: 0;
     width: auto;
     z-index: 1;
+    isolation: isolate;
 }
 
 .gerard-card {
@@ -287,8 +288,8 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    height: 42%;
-    background: linear-gradient(to bottom, transparent 0%, var(--gerard-fade) 78%, var(--gerard-fade) 100%);
+    height: 26%;
+    background: linear-gradient(to bottom, transparent 0%, var(--gerard-fade) 88%, var(--gerard-fade) 100%);
     pointer-events: none;
     z-index: 2;
 }
@@ -302,24 +303,17 @@ body {
     margin: 8vh 0 0;
     border-radius: 0;
     overflow: hidden;
+    clip-path: polygon(16% 0, 100% 0, 84% 100%, 0 100%);
 }
 
 .gerard-card--left {
     margin-right: -18vw;
     transform: rotate(-14deg);
-    clip-path: polygon(18% 0, 100% 0, 82% 100%, 0 100%);
 }
 
 .gerard-card--right {
     margin-left: -18vw;
     transform: rotate(14deg);
-    clip-path: polygon(0 0, 82% 0, 100% 100%, 18% 100%);
-}
-
-.gerard-card--right:has(.gerard-triptych img:hover) {
-    overflow: visible;
-    clip-path: none;
-    z-index: 8;
 }
 
 .gerard-triptych {
@@ -337,25 +331,32 @@ body {
     object-fit: cover;
     border-radius: 0;
     cursor: pointer;
-    transition: flex 0.45s ease, min-width 0.45s ease, width 0.45s ease, transform 0.45s ease;
+    opacity: 1;
+    transition: flex 0.9s cubic-bezier(0.22, 1, 0.36, 1), min-width 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.7s ease;
+}
+
+.gerard-triptych:hover img {
+    flex: 0.001 1 0;
+    min-width: 0;
+    opacity: 0;
 }
 
 .gerard-triptych img:hover {
-    flex: 0 0 36vw;
-    min-width: 36vw;
-    width: 36vw;
-    z-index: 9;
-    transform: translateX(10%);
+    flex: 1 1 100%;
+    min-width: 100%;
+    width: 100%;
+    opacity: 1;
 }
 
 .gerard-card--center {
     width: auto;
     height: 72vh;
     max-width: 42vw;
-    z-index: 2;
+    z-index: 10;
     margin: 0;
     overflow: visible;
     background: transparent;
+    position: relative;
 }
 
 .gerard-card--center img {
@@ -415,6 +416,22 @@ body {
     width: 0;
     height: 0;
     overflow: hidden;
+}
+
+.glitch-outlines {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 8;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.glitch-outlines line {
+    stroke: rgba(10, 25, 47, 0.45);
+    stroke-width: 0.0022;
+    fill: none;
 }
 
 .content-section {
