@@ -238,17 +238,29 @@ const rebuildAboutGerardColorScroll = () => {
         if (aboutGerardColorTween.scrollTrigger) aboutGerardColorTween.scrollTrigger.kill();
         aboutGerardColorTween.kill();
     }
+    
+    // We only want the body color to animate back to the Gerard page default IF it's not currently locked by the White Project Page
+    const currentThemeBg = aboutThemes[lastAboutPanel].bg;
+    const targetGerardBg = gerardPageColor(lastAboutPanel);
+    
     aboutGerardColorTween = gsap.fromTo("body",
-        { backgroundColor: aboutThemes[lastAboutPanel].bg },
+        { backgroundColor: currentThemeBg },
         {
-            backgroundColor: gerardPageColor(lastAboutPanel),
+            backgroundColor: targetGerardBg,
             ease: "none",
             immediateRender: false,
             scrollTrigger: {
                 trigger: ".zoom-container",
                 start: "top 80%",
                 end: "top top",
-                scrub: 1
+                scrub: 1,
+                // Only allow this color scrub if we haven't hit the white project page yet
+                onUpdate: (self) => {
+                    const whiteContainer = document.querySelector('.project-page-container');
+                    if (whiteContainer && gsap.getProperty(whiteContainer, "opacity") === 0) {
+                         gsap.set("body", { backgroundColor: gsap.utils.interpolate(currentThemeBg, targetGerardBg, self.progress) });
+                    }
+                }
             }
         }
     );
@@ -342,8 +354,7 @@ aboutTl.to(".page1-content", { y: "-100vh", duration: 1, ease: "power2.inOut" },
 
 
 // ==========================================
-// PAGE 3 → PAGE 4: CASE STUDY REVEALED IN RANDOM BLOCKS
-// The boxes ARE windows of the next page (not a colored overlay).
+// PAGE 3 → PAGE 4: GLITCH TRANSITION
 // ==========================================
 
 rebuildAboutGerardColorScroll();
@@ -365,17 +376,16 @@ for (let i = 0; i < 28; i++) {
     rect.setAttribute("y", "1.2");
     clipRoot.appendChild(rect);
 
-    const line = document.createElementNS(ns, "line");
-    line.setAttribute("x1", String(x));
-    line.setAttribute("x2", String(x + w));
-    line.setAttribute("y1", "1.2");
-    line.setAttribute("y2", "1.2");
-    outlineRoot.appendChild(line);
+    const outline = document.createElementNS(ns, "rect");
+    outline.setAttribute("x", String(x));
+    outline.setAttribute("width", String(w));
+    outline.setAttribute("height", String(h));
+    outline.setAttribute("y", "1.2");
+    outlineRoot.appendChild(outline);
 
     revealRects.push({
         el: rect,
-        line,
-        h,
+        outline,
         targetY: gsap.utils.random(0, Math.max(0.02, 1 - h)),
         startAt: gsap.utils.random(0, 0.42)
     });
@@ -396,67 +406,92 @@ const revealTl = gsap.timeline({
         pin: true,
         scrub: 1,
         onUpdate: (self) => {
-            gsap.set(".content-section", {
+            gsap.set(".project-page-container", {
                 pointerEvents: self.progress > 0.72 ? "auto" : "none"
+            });
+            // EXACT ORIGINAL GLITCH OUTLINE LOGIC RESTORED
+            gsap.set(outlineRoot, {
+                opacity: self.progress > 0.03 && self.progress < 0.78 ? 1 : 0
             });
         }
     }
 });
 
-revealRects.forEach(({ el, line, h, targetY, startAt }) => {
-    revealTl.fromTo(el,
-        { attr: { y: 1.25 } },
-        { attr: { y: targetY }, duration: 0.5, ease: "none" },
-        startAt
-    );
-    revealTl.fromTo(line,
-        { attr: { y1: 1.25 + h, y2: 1.25 + h } },
-        { attr: { y1: targetY + h, y2: targetY + h }, duration: 0.5, ease: "none" },
-        startAt
-    );
+revealRects.forEach(({ el, outline, targetY, startAt }) => {
+    revealTl.fromTo(el, { attr: { y: 1.25 } }, { attr: { y: targetY }, duration: 0.5, ease: "none" }, startAt);
+    revealTl.fromTo(outline, { attr: { y: 1.25 } }, { attr: { y: targetY }, duration: 0.5, ease: "none" }, startAt);
 });
 
-revealTl.fromTo(coverRect,
-    { attr: { y: 1.12 } },
-    { attr: { y: 0 }, duration: 0.35, ease: "none" },
-    0.58
-);
+revealTl.fromTo(coverRect, { attr: { y: 1.12 } }, { attr: { y: 0 }, duration: 0.35, ease: "none" }, 0.58);
 
-const track = document.getElementById('track');
-const btnPrev = document.getElementById('btn-prev');
-const btnNext = document.getElementById('btn-next');
-const numbers = document.querySelectorAll('.num');
-const cards = document.querySelectorAll('.edge-card');
+// ==========================================
+// PAGE 4: PROJECT PAGE HOVER LOGIC (3D Tilt)
+// ==========================================
 
-const getScrollAmount = () => cards[0].offsetWidth + parseFloat(window.getComputedStyle(track).gap);
+const projectItems = document.querySelectorAll('.project-item');
+const hoverContainer = document.querySelector('.hover-media-container');
+const hoverVideo = document.querySelector('.hover-video');
+const hoverImage = document.querySelector('.hover-image');
 
-btnNext.addEventListener('click', () => { track.scrollBy({ left: getScrollAmount(), behavior: 'smooth' }); });
-btnPrev.addEventListener('click', () => { track.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' }); });
+// Center perfectly on cursor & set 3D perspective
+gsap.set(hoverContainer, { xPercent: -50, yPercent: -50, transformPerspective: 1000 });
 
-numbers.forEach((num, index) => {
-    num.addEventListener('click', () => {
-        track.scrollTo({ left: index * getScrollAmount(), behavior: 'smooth' });
+document.addEventListener('mousemove', (e) => {
+    if(hoverContainer.classList.contains('active')) {
+        const xPos = (e.clientX / window.innerWidth) - 0.5;
+        const yPos = (e.clientY / window.innerHeight) - 0.5;
+
+        gsap.to(hoverContainer, {
+            x: e.clientX,
+            y: e.clientY,
+            rotationY: xPos * 40, 
+            rotationX: -yPos * 40, 
+            duration: 0.6,
+            ease: "power3.out"
+        });
+    }
+});
+
+projectItems.forEach(item => {
+    item.addEventListener('mouseenter', (e) => {
+        const mediaSrc = item.getAttribute('data-media');
+        const mediaType = item.getAttribute('data-type');
+        
+        const xPos = (e.clientX / window.innerWidth) - 0.5;
+        const yPos = (e.clientY / window.innerHeight) - 0.5;
+
+        gsap.set(hoverContainer, { 
+            x: e.clientX, 
+            y: e.clientY,
+            rotationY: xPos * 40,
+            rotationX: -yPos * 40,
+            scale: 0.7 
+        });
+
+        if (mediaType === 'video') {
+            hoverVideo.src = mediaSrc;
+            hoverVideo.classList.add('show');
+            hoverImage.classList.remove('show');
+            hoverVideo.play();
+        } else {
+            hoverImage.src = mediaSrc;
+            hoverImage.classList.add('show');
+            hoverVideo.classList.remove('show');
+            hoverVideo.pause();
+        }
+        
+        hoverContainer.classList.add('active');
+        gsap.to(hoverContainer, { scale: 1, duration: 0.5, ease: "back.out(1.5)" });
+    });
+
+    item.addEventListener('mouseleave', () => {
+        hoverContainer.classList.remove('active');
+        gsap.to(hoverContainer, { scale: 0.7, duration: 0.4, ease: "power2.in" });
+        setTimeout(() => {
+            if(!hoverContainer.classList.contains('active')) hoverVideo.pause();
+        }, 400);
     });
 });
-
-cards.forEach((card, index) => {
-    card.addEventListener('mouseenter', () => {
-        numbers.forEach(n => n.classList.remove('active'));
-        if(numbers[index]) numbers[index].classList.add('active');
-    });
-});
-
-// Horizontal scroll breakout so you don't get stuck
-track.addEventListener('wheel', (e) => {
-    const isAtLeftEdge = track.scrollLeft <= 2;
-    const isAtRightEdge = Math.ceil(track.scrollLeft + track.clientWidth) >= (track.scrollWidth - 2);
-
-    if (e.deltaY < 0 && isAtLeftEdge) return; 
-    if (e.deltaY > 0 && isAtRightEdge) return;
-
-    e.preventDefault(); 
-    track.scrollLeft += e.deltaY;
-}, { passive: false });
 
 // ==========================================
 // PAGE 5: FOOTER UNRAVEL, SCATTER, & FALL
@@ -590,3 +625,171 @@ function handleMobileLockout() {
 // -------------------------------------------------------------
 loaderTl.call(handleMobileLockout);
 window.addEventListener('resize', handleMobileLockout); 
+
+// ==========================================
+// MODAL POP-UP LOGIC
+// ==========================================
+
+const modalCS = document.getElementById('modal-customer-service');
+const triggerCS = document.getElementById('trigger-cs');
+const closeBtns = document.querySelectorAll('.modal-close-btn');
+
+// 1. Open the Modal when clicking "Customer Services"
+if (triggerCS && modalCS) {
+    // Add the event listener, but pass 'e' (the event) to handle the exact click target
+    triggerCS.addEventListener('click', (e) => {
+        // Prevent any default link behavior or bubbling issues
+        e.preventDefault();
+        
+        modalCS.classList.add('active');
+        document.body.style.overflow = "hidden"; // Freeze background scrolling
+        
+        // Force the 3D media box to vanish instantly
+        gsap.set('.hover-media-container', { opacity: 0, display: "none" });
+    });
+} else {
+    console.error("Modal or Trigger ID not found! Check your HTML.");
+}
+
+// Function to smoothly close the modal
+const closeModal = () => {
+    if (modalCS.classList.contains('active')) {
+        modalCS.classList.remove('active');
+        document.body.style.overflow = "auto"; // Unfreeze background
+        
+        // Clear both opacity AND display so the 3D media box works again!
+        gsap.set('.hover-media-container', { clearProps: "opacity,display" });
+    }
+};
+
+// 2. Close when clicking the 'X' button
+closeBtns.forEach(btn => {
+    btn.addEventListener('click', closeModal);
+});
+
+// 3. Close when pressing 'Escape'
+document.addEventListener('keydown', (e) => {
+    if (e.key === "Escape") {
+        closeModal();
+    }
+});
+
+// ==========================================
+// AUTO-HANDWRITING BACKGROUND ANIMATION
+// ==========================================
+const hwNotes = gsap.utils.toArray('.hw-note');
+let hwQueueTimer = null;
+let currentNoteIndex = 0;
+let activeZones = [];
+
+// 5 strictly separated zones so words NEVER spawn close to each other
+const outerSafeZones = [
+    { topMin: 10, topMax: 15, leftMin: 6,  leftMax: 14, tiltMin: -12, tiltMax: -5 }, // 1. Top-Left
+    { topMin: 10, topMax: 15, leftMin: 75, leftMax: 83, tiltMin: 5,   tiltMax: 12 }, // 2. Top-Right
+    { topMin: 48, topMax: 55, leftMin: 83, leftMax: 88, tiltMin: 6,   tiltMax: 12 }, // 3. Far-Right Middle
+    { topMin: 89, topMax: 92, leftMin: 7,  leftMax: 16, tiltMin: -2,  tiltMax: 2  }, // 4. Bottom-Left (Straight landscape)
+    { topMin: 90, topMax: 93, leftMin: 42, leftMax: 54, tiltMin: -1,  tiltMax: 1  }  // 5. Bottom-Center Red Box (Straight landscape)
+];
+
+// 1. Split each phrase into individual letter spans
+hwNotes.forEach(note => {
+    const text = note.textContent;
+    note.innerHTML = '';
+    text.split('').forEach(char => {
+        const span = document.createElement('span');
+        span.className = 'hw-char';
+        span.innerHTML = char === ' ' ? '&nbsp;' : char;
+        note.appendChild(span);
+    });
+});
+
+// Helper: Write a single note in its own separated zone, then wiggle on standby
+const spawnNextHandwritingNote = () => {
+    if (currentNoteIndex >= hwNotes.length) return;
+
+    const note = hwNotes[currentNoteIndex];
+    const zone = activeZones[currentNoteIndex];
+    const chars = note.querySelectorAll('.hw-char');
+
+    // Pick random coordinates & zone-specific tilt (keeps bottom ones straight landscape!)
+    const randomTop = gsap.utils.random(zone.topMin, zone.topMax);
+    const randomLeft = gsap.utils.random(zone.leftMin, zone.leftMax);
+    const randomTilt = gsap.utils.random(zone.tiltMin, zone.tiltMax);
+
+    gsap.set(note, {
+        top: `${randomTop}%`,
+        left: `${randomLeft}%`,
+        rotation: randomTilt
+    });
+
+    gsap.killTweensOf(chars);
+
+    // Step A: Write out letter-by-letter
+    gsap.fromTo(chars,
+        { opacity: 0, y: 6, scale: 0.8 },
+        {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.1,
+            stagger: 0.045,
+            ease: "power1.out",
+            onComplete: () => {
+                // Step B: Standby "Alive" Wiggle after writing finishes
+                chars.forEach((char, i) => {
+                    gsap.to(char, {
+                        y: () => gsap.utils.random(-2.5, 2.5),
+                        x: () => gsap.utils.random(-1.2, 1.2),
+                        rotation: () => gsap.utils.random(-5, 5),
+                        duration: gsap.utils.random(0.45, 0.75),
+                        repeat: -1,
+                        yoyo: true,
+                        ease: "sine.inOut",
+                        delay: i * 0.03
+                    });
+                });
+            }
+        }
+    );
+
+    currentNoteIndex++;
+
+    // Queue the next phrase to write out after the current one finishes
+    if (currentNoteIndex < hwNotes.length) {
+        const writeDuration = (chars.length * 45) + 450;
+        hwQueueTimer = setTimeout(spawnNextHandwritingNote, writeDuration);
+    }
+};
+
+// 2. Trigger one-by-one when hovering the 3 project items
+const projectListWrapper = document.querySelector('.project-list-wrapper');
+
+projectItems.forEach(item => {
+    item.addEventListener('mouseenter', () => {
+        // If starting fresh from idle, shuffle phrases and zones and start with 1 word
+        if (currentNoteIndex === 0) {
+            gsap.utils.shuffle(hwNotes);
+            activeZones = gsap.utils.shuffle([...outerSafeZones]);
+            spawnNextHandwritingNote();
+        } else if (currentNoteIndex < hwNotes.length) {
+            // Moving to the next topic immediately triggers the next word
+            clearTimeout(hwQueueTimer);
+            spawnNextHandwritingNote();
+        }
+    });
+});
+
+// 3. Fade out and reset when mouse leaves the project list completely
+if (projectListWrapper) {
+    projectListWrapper.addEventListener('mouseleave', () => {
+        clearTimeout(hwQueueTimer);
+        currentNoteIndex = 0;
+        const allChars = document.querySelectorAll('.hw-char');
+        gsap.killTweensOf(allChars);
+        gsap.to(allChars, {
+            opacity: 0,
+            duration: 0.25,
+            ease: "power1.in"
+        });
+    });
+}
