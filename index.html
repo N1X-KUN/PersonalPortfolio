@@ -51,35 +51,77 @@
     </div>
 
     <audio id="bg-music" loop preload="auto">
-        <source src="assets/videos/Instrumental.mp3" type="audio/mpeg">
+        <source src="assets/videos/Instrumentals.mp3" type="audio/mpeg">
     </audio>
 
-    <header class="site-header">
-        <button class="burger-btn" id="burger-btn">
-            <span class="burger-line"></span>
-            <span class="burger-line"></span>
-        </button>
+<header class="site-header" id="site-header">
+        <div class="header-left-group">
+            <!-- Burger Button (Follows on all pages except pop-ups) -->
+            <button class="burger-btn" id="burger-btn" title="Socials &amp; Audio">
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+            </button>
 
+            <!-- Unboxed GX Letter Icon + Gerard Portfolio (GX follows on scroll, text stays on Home) -->
+            <a href="#" class="gx-brand-link" id="gx-brand-link">
+                <span class="gx-only-letters">GX</span>
+                <span class="gx-brand-text nav-home-only">GERARD PORTFOLIO</span>
+            </a>
+
+            <span class="header-divider nav-home-only"></span>
+
+            <!-- Flat Top Navigation Bar (Only visible on Homepage) -->
+            <nav class="top-navbar nav-home-only">
+                <a href="#" class="top-nav-item" data-nav="gerard">About Me</a>
+                <div class="nav-dropdown-trigger-wrap" id="nav-projects-wrap">
+                    <button type="button" class="top-nav-item has-dropdown" id="nav-projects-btn">
+                        Projects <span class="nav-chevron">&#8964;</span>
+                    </button>
+                </div>
+                <a href="#" class="top-nav-item" data-nav="contact">Contact Me</a>
+            </nav>
+        </div>
+
+        <!-- Right Side: GET IN TOUCH -> MSG ME HERE + Hover QR (Follows on all pages except pop-ups) -->
         <div class="whatsapp-wrapper">
             <div class="qr-tooltip">
                 <img src="assets/images/WhatsApp-QR.jpg" alt="Scan to WhatsApp">
                 <p>Scan to Chat!</p>
             </div>
-            <a href="https://wa.me/qr/4GG36UBSFRWQI1" target="_blank" class="wa-btn">
-                <svg viewBox="0 0 448 512" class="wa-icon"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-23.2-115-65.1-157zM223.9 414.8c-33.2 0-65.8-8.9-94-25.7l-6.7-4-69.8 18.3L72 334.1l-4.4-7.1c-18.9-30.2-28.9-65-28.9-101 0-104 84.6-188.6 188.8-188.6 50.4 0 97.8 19.6 133.4 55.3s55.2 83.1 55.2 133.5c0 104-84.6 188.6-188.7 188.6zm103.6-141.7c-5.7-2.8-33.8-16.7-39-18.6-5.2-1.9-9-2.8-12.8 2.8s-14.7 18.6-18 22.4c-3.3 3.8-6.6 4.3-12.3 1.4-5.7-2.8-24.1-8.9-45.9-25.3-17-12.7-28.5-28.4-31.9-34.1-3.3-5.7-.4-8.8 2.4-11.6 2.6-2.6 5.7-6.6 8.5-9.9 2.8-3.3 3.8-5.7 5.7-9.5 1.9-3.8.9-7.1-.5-9.9-1.4-2.8-12.8-30.9-17.5-42.3-4.6-11.1-9.3-9.6-12.8-9.8-3.3-.2-7.1-.2-10.9-.2s-9.9 1.4-15.1 7.1c-5.2 5.7-20.3 19.9-20.3 48.5s20.8 56.3 23.7 60.1c2.8 3.8 41 62.7 99.3 85.5 14.1 5.5 25.1 8.8 33.7 11.2 14.1 4.5 27 3.8 37.1 2.3 11.4-1.7 33.8-13.8 38.6-27.1 4.7-13.3 4.7-24.7 3.3-27.1-1.4-2.5-5.2-3.9-10.9-6.7z"/></svg>
+            <a href="https://wa.me/qr/4GG36UBSFRWQI1" target="_blank" rel="noopener noreferrer" class="get-in-touch-btn" id="get-in-touch-btn">
+                <span class="git-text git-default">GET IN TOUCH &rarr;</span>
+                <span class="git-text git-hover">MSG ME HERE &rarr;</span>
             </a>
+        </div>
+
+        <!-- Reference Image 4 Style Hover Sub-Navigation Bar -->
+        <div class="projects-subnav-bar nav-home-only" id="projects-subnav-bar">
+            <div class="subnav-cards-grid">
+                <div class="subnav-card" data-open-modal="video">
+                    <div class="subnav-card-bottom">
+                        <h3 class="subnav-card-title">VIDEO<br>EDITS</h3>
+                        <span class="subnav-double-arrow">&#9658;&#9658;</span>
+                    </div>
+                </div>
+                <div class="subnav-card" data-open-modal="web">
+                    <div class="subnav-card-bottom">
+                        <h3 class="subnav-card-title">WEB<br>DEVELOPMENTS</h3>
+                        <span class="subnav-double-arrow">&#9658;&#9658;</span>
+                    </div>
+                </div>
+                <div class="subnav-card" data-open-modal="cs">
+                    <div class="subnav-card-bottom">
+                        <h3 class="subnav-card-title">SERVICES /<br>EXPERIENCES</h3>
+                        <span class="subnav-double-arrow">&#9658;&#9658;</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
+    <!-- Burger Overlay (Socials & Music Toggle) -->
     <div class="menu-overlay" id="menu-overlay">
         <div class="menu-content">
-            <ul class="menu-links">
-                <li><a href="#" class="nav-link" data-target="home">HOME</a></li>
-                <li><a href="#" class="nav-link" data-target="about">ABOUT ME</a></li>
-                <li><a href="#" class="nav-link" data-target="work">DISCOVER ME</a></li>
-                <li><a href="#" class="nav-link" data-target="contact">CONTACT ME</a></li>
-            </ul>
-
             <div class="menu-socials">
                 <p>CONNECT</p>
                 <div class="social-row">
@@ -99,19 +141,34 @@
     </div>
 
     <section class="pinned-hero-about">
+        <!-- REMODELED HOMEPAGE HERO (Centered Massive Title + Left-Indented Dynamic Subtitle) -->
         <div class="page1-content">
-            <div class="genix-container">
-                <h1 class="bg-text">
-                    <span>G</span><span>E</span><span>N</span><span>I</span><span>X</span>
+                <div class="hero-main-stage">
+                <h1 class="hero-b2p-title">
+                    <span class="b2p-row-top">
+                        <span class="b2p-word-top">MY CREATIONS</span>
+                        <span class="b2p-card-gap" aria-hidden="true"></span>
+                        <span class="b2p-accent-num">4</span>
+                    </span>
+                    <span class="b2p-row-bottom">UR CONNECTIONS</span>
                 </h1>
+
+                <!-- Left-Indented Dynamic Subtitle Underneath (Colored 4 removed) -->
+                <p class="hero-dynamic-subtitle">
+                    The <span class="hero-changing-word" id="hero-changing-word">GAMES</span> I Create are for People to Remember...
+                </p>
             </div>
-            <div class="hero-titles">
-                <h2 class="title-line">MY PERSONAL</h2>
-                <h2 class="highlight-title">PORTFOLIO</h2>
-                <p class="subtitle" style="letter-spacing: 0.35em;">Gerard Matthew Guanco Fernandez</p>
+
+            <!-- Bottom-Left Corner Description Block -->
+            <div class="hero-corner-bio">
+                <p class="hero-bio-paragraph">
+                    <strong>Gerard Matthew Guanco Fernandez</strong> is a multidisciplinary digital media specialist turning creative concepts into memorable experiences. Front-end web production, high-retention video editing, and interactive brand storytelling working as one.
+                </p>
+                <span class="hero-bio-rule"></span>
             </div>
         </div>
 
+        <!-- 3 Core Cards + 2 Stream Cards (Runs as Tilted Carousel on Page 1 -> Falls into Center Slot on Page 2) -->
         <div class="magnetic-gallery">
             <div class="img-wrapper wrap1">
                 <img src="assets/images/MoonKnight.jpg" class="mag-img" alt="Image 1">
@@ -121,6 +178,19 @@
             </div>
             <div class="img-wrapper wrap3">
                 <img src="assets/images/Grad.jpg" class="mag-img" alt="Image 3">
+            </div>
+            <div class="img-wrapper wrap-extra wrap-extra1">
+                <img src="assets/images/Graduation.jpg" class="mag-img" alt="Stream Image 4">
+            </div>
+            <div class="img-wrapper wrap-extra wrap-extra2">
+                <img src="assets/images/Friend.jpg" class="mag-img" alt="Stream Image 5">
+            </div>
+            <!-- Seamless Loop Buffer Duplicates -->
+            <div class="img-wrapper wrap-extra wrap-extra3">
+                <img src="assets/images/Shop.jpg" class="mag-img" alt="Image 6">
+            </div>
+            <div class="img-wrapper wrap-extra wrap-extra4">
+                <img src="assets/images/Bowling.jpg" class="mag-img" alt="Image 7">
             </div>
         </div>
 
@@ -185,9 +255,9 @@
                 </article>
                 <article class="gerard-card gerard-card--right">
                     <div class="gerard-triptych">
-                        <img src="assets/images/MoonKnight.jpg" alt="Preview right 1">
-                        <img src="assets/images/PlushPeace.jpg" alt="Preview right 2">
-                        <img src="assets/images/Grad.jpg" alt="Preview right 3">
+                        <img src="assets/images/Party1.jpg" alt="Preview right1">
+                        <img src="assets/images/Party2.jpg" alt="Preview right2">
+                        <img src="assets/images/Party3.jpg" alt="Preview right3">
                     </div>
                     <span class="gerard-card-fade"></span>
                 </article>
@@ -215,17 +285,17 @@
     <h2 class="project-section-title">PERSONAL PROJECTS</h2>
     <div class="project-list-wrapper">
         
-        <div class="project-item" data-media="assets/videos/Digital Storytellin Animatic.mp4" data-type="video">
+        <div class="project-item" id="trigger-video" data-media="assets/videos/Yt outro.mp4" data-type="video">
             <h2 class="project-title">VIDEO EDITOR</h2>
             <p class="project-desc">01 &nbsp; Edit videos about some goofy people for fun.</p>
         </div>
 
-        <div class="project-item" data-media="assets/videos/MarvelRival A1.mp4" data-type="video">
+        <div class="project-item" id="trigger-web" data-media="assets/videos/AnakEssentials.mp4" data-type="video">
             <h2 class="project-title">WEB DEVELOPMENT</h2>
             <p class="project-desc">02 &nbsp; 100% just ai the entire website creation for fun</p>
         </div>
 
-<div class="project-item" id="trigger-cs" data-media="assets/images/MoonKnight.jpg" data-type="image">
+<div class="project-item" id="trigger-cs" data-media="assets/images/BusRep.jpg" data-type="image">
     <h2 class="project-title">CUSTOMER SERVICES</h2>
     <p class="project-desc">03 &nbsp; Helped others find fun before I find it.</p>
 </div>
@@ -429,6 +499,138 @@
                 </ul>
             </div>
             
+        </div>
+    </div>
+
+    <!-- ==========================================
+         WEB DEVELOPMENT POP-UP MODAL
+         ========================================== -->
+    <div class="project-modal" id="modal-web-dev">
+        
+        <!-- The Floating Close Button -->
+        <button class="modal-close-btn">
+            <span class="esc-text">ESC</span>
+            <svg viewBox="0 0 24 24" class="close-icon"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+
+        <div class="web-modal-wrapper">
+            
+            <!-- Top Header Row -->
+            <div class="web-header-top">
+                <h2 class="web-main-title">
+                    Web Creation<sup class="web-count">(05)</sup>
+                </h2>
+                <div class="web-feature-label">
+                    <span class="web-asterisk">*</span> LIVE BUILDS &amp; PROJECTS
+                </div>
+            </div>
+
+            <!-- Table Column Headers -->
+            <div class="web-table-head">
+                <span>WEBSITE</span>
+                <span>THEME</span>
+                <span>YEAR</span>
+                <span>TASK</span>
+                <span></span>
+            </div>
+
+            <!-- Clickable URL Rows (Opens in a new browser tab while keeping your modal open) -->
+            <div class="web-table-body">
+                
+                <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="web-row">
+                    <span class="web-col-site">Temporary Project 01 — Interactive Web</span>
+                    <span class="web-col-theme">Gaming / Interactive</span>
+                    <span class="web-col-year">2026</span>
+                    <span class="web-col-task">UI/UX &amp; Frontend Dev</span>
+                    <span class="web-col-arrow">↗</span>
+                </a>
+
+                <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="web-row">
+                    <span class="web-col-site">Temporary Project 02 — Client Showcase</span>
+                    <span class="web-col-theme">Modern Agency</span>
+                    <span class="web-col-year">2026</span>
+                    <span class="web-col-task">Full Frontend &amp; Hosting</span>
+                    <span class="web-col-arrow">↗</span>
+                </a>
+
+                <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="web-row">
+                    <span class="web-col-site">Temporary Project 03 — Digital Experience</span>
+                    <span class="web-col-theme">Creative Media</span>
+                    <span class="web-col-year">2025</span>
+                    <span class="web-col-task">Visual Design &amp; Motion</span>
+                    <span class="web-col-arrow">↗</span>
+                </a>
+
+                <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="web-row">
+                    <span class="web-col-site">Temporary Project 04 — Brand Landing Page</span>
+                    <span class="web-col-theme">E-Commerce / Promo</span>
+                    <span class="web-col-year">2025</span>
+                    <span class="web-col-task">Responsive Layout &amp; UI</span>
+                    <span class="web-col-arrow">↗</span>
+                </a>
+
+                <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="web-row">
+                    <span class="web-col-site">Temporary Project 05 — Web Prototype</span>
+                    <span class="web-col-theme">Experimental</span>
+                    <span class="web-col-year">2024</span>
+                    <span class="web-col-task">Concept &amp; Coding</span>
+                    <span class="web-col-arrow">↗</span>
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+<!-- ==========================================
+         VIDEO EDITOR POP-UP MODAL
+         ========================================== -->
+    <div class="project-modal" id="modal-video-editor">
+        
+        <!-- Floating ESC / Close Button -->
+        <button class="modal-close-btn" id="ve-close-btn">
+            <span class="esc-text" id="ve-esc-label">ESC</span>
+            <svg viewBox="0 0 24 24" class="close-icon"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+
+        <div class="ve-modal-layout" id="ve-modal-layout">
+            
+            <!-- LEFT / MAIN SECTION (Hero + Roulette Carousel) -->
+            <div class="ve-left-section">
+                <div class="ve-hero-block">
+                    <h2 class="ve-main-title">EDITS OF DIFFERENT GENRES<br>CUTS &amp; CONTENTS PER INTEREST</h2>
+                    <p class="ve-sub-text">
+                        High-energy gaming montages, vlogs, cinematic animatics, and promotional reels—every clip paced and edited to match the vibe.
+                    </p>
+                    
+                    <!-- Reactive Diagonal-Fill Button -> Opens YouTube in New Tab -->
+                    <a href="https://www.youtube.com/@NTX-KUN" target="_blank" rel="noopener noreferrer" class="ve-channel-btn">
+                        <span class="ve-btn-label">CHECK MY CHANNEL &rarr;</span>
+                    </a>
+                </div>
+
+                <!-- STATE 1: Right-to-Left Travellator Video Roulette -->
+                <div class="ve-roulette-viewport" id="ve-roulette-viewport">
+                    <div class="ve-roulette-track" id="ve-roulette-track"></div>
+                </div>
+
+                <!-- STATE 2: 3-Column Angled Up/Down Roulette (Fills the Purple Box Space) -->
+                <div class="ve-angled-viewport" id="ve-angled-viewport">
+                    <div class="ve-angled-stage">
+                        <div class="ve-angled-col col-down" id="ve-col-1"></div>
+                        <div class="ve-angled-col col-up" id="ve-col-2"></div>
+                        <div class="ve-angled-col col-down" id="ve-col-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SECTION (Scrollable Navy Video Boxes - Hidden Until a Video is Clicked) -->
+            <div class="ve-right-section" id="ve-right-section">
+                <div class="ve-navy-list" id="ve-navy-list">
+                    <!-- JS automatically populates the Navy Blue video player boxes here in matching order -->
+                </div>
+            </div>
+
         </div>
     </div>
 

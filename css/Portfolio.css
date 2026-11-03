@@ -130,83 +130,151 @@ body {
     font-size: 1rem;
 }
 
-/* --- HERO TYPOGRAPHY & LAYOUT --- */
-.genix-container {
+/* --- REMODELED HERO TYPOGRAPHY & LAYOUT (Centered Giant Title + Left Subtitle) --- */
+.page1-content {
     position: absolute;
-    top: 1vh; 
-    width: 100%;
-    text-align: center;
-    z-index: 1;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 4;
+    pointer-events: none;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 4vw;
 }
 
-.bg-text {
-    font-size: 24vw; 
-    font-family: 'Luckiest Guy', cursive; 
-    font-weight: 800;
-    color: #0A192F; 
-    letter-spacing: 1rem; 
-    margin: 0 auto;
-    max-width: 90vw; 
-}
-
-.bg-text span {
-    display: inline-block;
-    transition: transform 0.3s ease; 
-    cursor: default;
-    pointer-events: auto; 
-    position: relative;
-    z-index: 10;
-}
-
-.hero-titles {
-    position: absolute;
-    bottom: 3rem;
-    left: 4rem;
-    z-index: 10;
+.hero-main-stage {
     width: max-content;
-    max-width: clamp(240px, calc(50vw - 300px), 460px);
+    max-width: 96vw;
+    margin: -3vh auto 0;
+    /* <--- MANUAL TWEAK: Make -1.5vw more negative (e.g. -3vw) to nudge the whole title left, or 0vw to center it */
+    transform: translateX(-1.5vw);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    pointer-events: auto;
 }
 
-.subtitle {
-    font-size: clamp(0.72rem, 0.9vw, 0.92rem);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.28em;
-    color: #8892b0;
-    margin-top: 0.65rem;
-    margin-bottom: 0;
-    line-height: 1.35;
-    white-space: nowrap;
-    display: block;
-    width: max-content;
+.hero-b2p-title {
+    font-family: 'Luckiest Guy', cursive;
+    display: inline-flex;
+    flex-direction: column;
+    width: 100%;
+    line-height: 0.88;
+    user-select: none;
+    margin: 0;
 }
 
-.title-line {
-    font-size: clamp(1.7rem, 2.4vw, 2.35rem);
-    font-family: 'Gveret Levin', cursive;
+/* Row 1: MY CREATIONS + fitted card slot + 4 */
+.b2p-row-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    width: 100%;
+    /* <--- MANUAL TWEAK: Middle value (8.9vw) controls the top line "MY CREATIONS 4" size */
+    font-size: clamp(4.2rem, 8.9vw, 9.8rem);
+    letter-spacing: 2px;
     color: #0A192F;
-    line-height: 1;
+    white-space: nowrap;
 }
 
-.highlight-title {
-    font-size: clamp(2.6rem, 4.4vw, 4.2rem);
-    font-family: 'Luckiest Guy', cursive; 
-    font-weight: 800;
-    color: #FFD700; 
-    line-height: 0.85;
-    margin-top: 0.1rem;
-    letter-spacing: 0.08em; 
-    -webkit-text-stroke: 2px #FFFFFF;
-    width: max-content;
+.b2p-word-top {
+    color: #0A192F;
+}
+
+/* Exact slot width for the tilted image carousel between MY CREATIONS and 4 */
+.b2p-card-gap {
+    display: inline-block;
+    /* <--- MANUAL TWEAK: Increase 17.5vw (e.g. 20vw) to widen the empty gap before "4", or decrease to tighten */
+    width: clamp(160px, 17.5vw, 270px);
+    flex-shrink: 0;
+}
+
+.b2p-accent-num {
+    color: #FFD700;
+    -webkit-text-stroke: 3.5px #0A192F;
+    paint-order: stroke fill;
+    font-size: 1.05em;
+    text-shadow: 6px 6px 0px #0A192F;
+}
+
+/* Row 2: UR CONNECTIONS spans the exact same outer width beneath Row 1 */
+.b2p-row-bottom {
     display: block;
+    width: 100%;
+    text-align: justify;
+    text-align-last: justify;
+    /* <--- MANUAL TWEAK: Middle value (10.6vw) controls the bottom line "UR CONNECTIONS" size */
+    font-size: clamp(4.8rem, 10.6vw, 11.6rem);
+    letter-spacing: 3px;
+    color: #0A192F;
+    -webkit-text-stroke: 3px #FFFFFF;
+    paint-order: stroke fill;
+    margin-top: 0.04em;
+    white-space: nowrap;
 }
 
-/* --- MAGNETIC GALLERY --- */
+/* Left-Indented Dynamic Subtitle Underneath */
+.hero-dynamic-subtitle {
+    font-family: 'Gveret Levin', cursive;
+    font-size: clamp(1.35rem, 2.05vw, 2rem);
+    font-weight: 700;
+    color: #0A192F;
+    margin-top: 1rem;
+    padding-left: 0.4vw;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+}
+
+.hero-changing-word {
+    font-family: 'Luckiest Guy', cursive;
+    display: inline-block;
+    color: #FFD700;
+    -webkit-text-stroke: 1.8px #0A192F;
+    paint-order: stroke fill;
+    letter-spacing: 1.5px;
+    padding: 0 0.15rem;
+    text-shadow: 3px 3px 0px #0A192F;
+    will-change: transform, opacity;
+}
+
+/* Bottom-Left Corner Description Block */
+.hero-corner-bio {
+    position: absolute;
+    bottom: 2.8rem;
+    left: 4vw;
+    max-width: 440px;
+    pointer-events: auto;
+}
+
+.hero-bio-paragraph {
+    font-family: 'Gveret Levin', cursive;
+    font-size: clamp(0.85rem, 0.98vw, 0.98rem);
+    font-weight: 700;
+    color: rgba(10, 25, 47, 0.78);
+    line-height: 1.55;
+    margin-bottom: 0.85rem;
+}
+
+.hero-bio-paragraph strong {
+    color: #0A192F;
+}
+
+.hero-bio-rule {
+    display: block;
+    width: 75px;
+    height: 2px;
+    background-color: rgba(10, 25, 47, 0.25);
+}
+
+/* --- MAGNETIC GALLERY (RESTORED ORIGINAL LARGE SIZES FOR ABOUT ME PAGE!) --- */
 .magnetic-gallery {
     position: relative;
-    width: 70vw;
-    height: 60vh;
+    width: 100vw;
+    height: 100vh;
     z-index: 3;
     display: flex;
     justify-content: center;
@@ -214,19 +282,27 @@ body {
     pointer-events: none; 
 }
 
+/* Restored to 260x380 and 300x440 so the About Me page stack is full-sized again */
 .img-wrapper {
     position: absolute;
     width: 260px;
     height: 380px;
-    pointer-events: auto; 
+    pointer-events: auto;
+    will-change: transform, opacity;
 }
 
-.wrap1 { transform: rotate(-12deg) translateX(-180px); z-index: 1; } 
-.wrap2 { z-index: 5; width: 300px; height: 440px; } 
-.wrap3 { transform: rotate(12deg) translateX(180px); z-index: 2; } 
+.wrap2 {
+    width: 300px;
+    height: 440px;
+}
 
 .mag-img {
-    width: 100%; height: 100%; object-fit: cover; border-radius: 15px; box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 3px solid #0A192F;
+    box-shadow: 0 15px 35px rgba(10, 25, 47, 0.25);
     transition: transform 0.1s ease-out; 
 }
 
@@ -316,6 +392,17 @@ body {
 .gerard-card--right {
     margin-left: -15vw; 
     transform: rotate(14deg);
+    clip-path: polygon(8% 0, 100% 0, 94% 100%, 0 100%); /* Opens up the corners slightly */
+}
+
+/* Purple Circle (Preview 1): Shifts photo so your full face sits inside the strip */
+.gerard-triptych img:nth-child(1) {
+    object-position: 30% center; /* Nudge between 15% and 35% if you want it further left/right */
+}
+
+/* Orange Circle (Preview 3): Pulls the right side inward so your thumbs-up is centered */
+.gerard-triptych img:nth-child(3) {
+    object-position: 70% center; /* Nudge between 75% and 95% to fine-tune */
 }
 
 .gerard-triptych {
@@ -605,10 +692,18 @@ body {
     color: #FFD700; /* Solid yellow fill */
     -webkit-text-stroke: 2px #0A192F; /* Thick black outline */
 }
+/* Default hover stays simple Navy Blue */
 .project-item:hover .project-desc {
-    color: #FFD700; /* Changes to yellow on hover */
-    -webkit-text-stroke: 0.6px #0A192F; /* Crisp dark edge for readability over videos/images */
-    text-shadow: 0 0 12px rgba(255, 215, 0, 0.75), 0 0 24px rgba(255, 215, 0, 0.4); /* Yellow glow */
+    color: #0A192F;
+    -webkit-text-stroke: 0px;
+    text-shadow: none;
+}
+
+/* Turns Yellow ONLY when the floating media box is physically behind the subtext */
+.project-desc.media-behind {
+    color: #FFD700 !important;
+    -webkit-text-stroke: 0.6px #0A192F;
+    text-shadow: 0 2px 10px rgba(10, 25, 47, 0.65);
 }
 
 /* Floating Media Box */
@@ -652,18 +747,23 @@ body {
 /* ==========================================
    WATERMARK
    ========================================== */
-   .gerard-watermark {
+.gerard-watermark {
     position: fixed;
     bottom: 2rem;
-    right: 2rem; /* MOVED TO THE RIGHT SIDE */
+    right: 2rem;
     font-family: 'Luckiest Guy', cursive;
     font-size: 1.5rem;
     z-index: 100;
-    pointer-events: none; /* So it doesn't block clicks */
-    
-    /* --- THE CHAMELEON MAGIC TRICK --- */
-    color: #FFFFFF; /* Base color MUST be white for the math to work */
-    mix-blend-mode: difference; /* Auto-inverts the color based on what is exactly behind it! */
+    pointer-events: none;
+    color: #FFFFFF;
+    mix-blend-mode: difference;
+    opacity: 0.35; /* Lowered opacity so it sits subtly in the bottom-right corner */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+body.modal-open .gerard-watermark {
+    opacity: 0 !important;
+    visibility: hidden !important;
 }
 
 /* ==========================================
@@ -856,18 +956,20 @@ body {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 0; /* Sits behind the project list and media box */
+    z-index: 0;
     overflow: hidden;
 }
 
 .hw-note {
     position: absolute;
+    top: -9999px; /* Prevents clustering in top-left corner before hover */
+    left: -9999px;
     font-family: 'Gveret Levin', cursive;
     font-size: clamp(1.35rem, 2vw, 1.85rem);
     font-weight: 700;
-    color: rgba(255, 215, 0, 0.22); /* Lowered opacity so it sits faintly in the background */
-    -webkit-text-stroke: 0.5px rgba(10, 25, 47, 0.08); /* Softer outline */
-    text-shadow: 0 0 8px rgba(255, 215, 0, 0.12); /* Fainter yellow glow */
+    color: rgba(10, 25, 47, 0.14); /* Faint Navy Blue */
+    -webkit-text-stroke: 0px;
+    text-shadow: none;
     white-space: nowrap;
     user-select: none;
 }
@@ -1025,78 +1127,336 @@ body {
 }
 
 /* ==========================================
-   HEADER NAVIGATION (Burger & WhatsApp)
+   HEADER NAVIGATION (Frameless Reference Style + Hover Sub-Nav)
    ========================================== */
 .site-header {
-    position: fixed; top: 0; left: 0; width: 100vw;
-    padding: 2.5rem 3rem; display: flex; justify-content: space-between; align-items: center;
-    z-index: 9998; pointer-events: none; /* Allows clicking through empty space */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    padding: 1.5rem 4vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 9998;
+    pointer-events: none;
+    transition: background-color 0.3s ease, opacity 0.35s ease, visibility 0.35s ease;
+}
+
+/* Turns solid white cleanly when the hover sub-nav is open (Matches Image 4) */
+.site-header.subnav-active {
+    background-color: #FFFFFF;
+}
+
+/* Completely hides Header inside any Pop-Up Modal */
+body.modal-open .site-header {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Hides ONLY the Nav Bar & "GERARD PORTFOLIO" text when scrolling past Homepage */
+.nav-home-only {
+    transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s ease;
+}
+
+.site-header.scrolled-past-home .nav-home-only {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translateY(-8px);
+}
+
+.header-left-group {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    pointer-events: auto;
+    background: transparent; /* No box/pill border */
+    border: none;
+    box-shadow: none;
+    padding: 0;
 }
 
 /* Burger Button */
 .burger-btn {
     background-color: #FFFFFF; 
-    border: none;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%; /* Perfect circle */
+    border: 2px solid #0A192F;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
     display: flex; 
     flex-direction: column; 
     justify-content: center;
     align-items: center;
-    gap: 6px; 
+    gap: 5px; 
     z-index: 9999;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.15); /* Shadow to pop off the white background */
+    box-shadow: 0 4px 12px rgba(10, 25, 47, 0.12);
     cursor: pointer; 
     pointer-events: auto;
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.3s ease;
 }
 .burger-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    transform: scale(1.06);
 }
 .burger-line {
-    width: 25px; /* Shortened to fit perfectly inside the circle */
-    height: 3px; 
-    background-color: #0A192F; /* Navy Blue lines */
+    width: 19px;
+    height: 2.5px; 
+    background-color: #0A192F;
     border-radius: 4px;
     transition: all 0.3s ease; 
 }
-/* Burger Animation States (Turns into an X) */
-.burger-btn.open .burger-line:nth-child(1) { transform: translateY(4px) rotate(45deg); background-color: #FFD700; }
-.burger-btn.open .burger-line:nth-child(2) { transform: translateY(-5px) rotate(-45deg); background-color: #FFD700; }
+.burger-btn.open .burger-line:nth-child(1) { transform: translateY(3.5px) rotate(45deg); background-color: #FFD700; }
+.burger-btn.open .burger-line:nth-child(2) { transform: translateY(-4px) rotate(-45deg); background-color: #FFD700; }
 
-/* WhatsApp Button & Tooltip */
-.whatsapp-wrapper { position: relative; pointer-events: auto; display: flex; align-items: center;}
-.wa-btn {
-    width: 60px; height: 60px; background-color: #25D366; border-radius: 50%;
-    display: flex; justify-content: center; align-items: center;
-    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4); transition: transform 0.3s;
+/* Unboxed GX Letter Design + Gerard Portfolio Text */
+.gx-brand-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    text-decoration: none;
+    cursor: pointer;
+    pointer-events: auto;
 }
-.wa-btn:hover { transform: scale(1.1); }
-.wa-icon { width: 35px; height: 35px; fill: #FFFFFF; }
+
+.gx-only-letters {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 2.1rem;
+    line-height: 1;
+    letter-spacing: 1px;
+    color: #0A192F; /* Navy Blue fill */
+    -webkit-text-stroke: 2px #FFD700; /* Yellow outline */
+    paint-order: stroke fill;
+    display: inline-block;
+    transform: skewX(-12deg);
+    filter: drop-shadow(2px 2px 0px #0A192F);
+    transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.gx-brand-link:hover .gx-only-letters {
+    transform: skewX(-12deg) scale(1.08);
+    color: #FFD700;
+    -webkit-text-stroke: 2px #0A192F;
+}
+
+.gx-brand-text {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 1.15rem;
+    color: #0A192F;
+    letter-spacing: 1.5px;
+}
+
+.header-divider {
+    width: 1px;
+    height: 24px;
+    background-color: rgba(10, 25, 47, 0.2);
+}
+
+/* Flat Top Navigation Links (Matches Image 2 & Image 4 Reference) */
+.top-navbar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.top-nav-item {
+    font-family: 'Gveret Levin', cursive;
+    font-size: 1rem;
+    font-weight: 700;
+    color: rgba(10, 25, 47, 0.72);
+    background: transparent;
+    border: none;
+    padding: 0.55rem 1.05rem;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.top-nav-item:hover,
+.top-nav-item.active {
+    background-color: #f2f2f2;
+    color: #0A192F;
+}
+
+.nav-chevron {
+    font-size: 0.85rem;
+    line-height: 1;
+    display: inline-block;
+    transition: transform 0.25s ease;
+}
+
+.top-nav-item.active .nav-chevron {
+    transform: rotate(180deg);
+}
+
+/* Right Side: GET IN TOUCH -> MSG ME HERE + Hover QR */
+.whatsapp-wrapper {
+    position: relative;
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+}
+
+.get-in-touch-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 180px;
+    height: 46px;
+    padding: 0 1.4rem;
+    background-color: #0A192F;
+    color: #FFFFFF;
+    border: 2px solid #0A192F;
+    border-radius: 4px;
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 0.92rem;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+    overflow: hidden;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.git-text {
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease;
+    white-space: nowrap;
+}
+
+.git-hover {
+    position: absolute;
+    color: #0A192F;
+    opacity: 0;
+    transform: translateY(18px);
+}
+
+.whatsapp-wrapper:hover .get-in-touch-btn {
+    background-color: #FFD700;
+}
+
+.whatsapp-wrapper:hover .git-default {
+    opacity: 0;
+    transform: translateY(-18px);
+}
+
+.whatsapp-wrapper:hover .git-hover {
+    opacity: 1;
+    transform: translateY(0);
+}
 
 .qr-tooltip {
     position: absolute; 
-    right: 0; /* Aligns perfectly with the right edge of the WhatsApp button */
-    top: 75px; /* Drops it exactly underneath the button (60px button + 15px gap) */
-    transform-origin: top right; /* Makes the pop-up animation grow downward from the button */
+    right: 0;
+    top: 58px;
+    transform-origin: top right;
     transform: scale(0.9);
-    
-    background-color: #FFFFFF; padding: 15px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    background-color: #FFFFFF;
+    border: 3px solid #0A192F;
+    padding: 14px;
+    border-radius: 15px;
+    box-shadow: 6px 6px 0px #0A192F;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
     pointer-events: none;
 }
-.qr-tooltip img { width: 150px; height: 150px; border-radius: 8px; }
-.qr-tooltip p { font-family: 'Luckiest Guy', cursive; color: #0A192F; margin: 0; font-size: 1.1rem; }
+.qr-tooltip img { width: 145px; height: 145px; border-radius: 8px; }
+.qr-tooltip p { font-family: 'Luckiest Guy', cursive; color: #0A192F; margin: 0; font-size: 1.05rem; }
 
-/* Show QR on Hover */
 .whatsapp-wrapper:hover .qr-tooltip { 
     opacity: 1; 
     visibility: visible; 
-    transform: scale(1); /* Removed the translateY so it drops straight down */
+    transform: scale(1);
     pointer-events: auto; 
+}
+
+/* Reference Image 4 Style Full-Width Sub-Nav Sheet */
+.projects-subnav-bar {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100vw;
+    background-color: #FFFFFF;
+    padding: 1.5rem 4vw 2.4rem;
+    box-shadow: 0 25px 50px rgba(10, 25, 47, 0.12);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.25, 1, 0.5, 1), visibility 0s 0.28s;
+}
+
+.projects-subnav-bar.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+    transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.25, 1, 0.5, 1), visibility 0s;
+}
+
+.subnav-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.4rem;
+}
+
+.subnav-card {
+    background-color: #f3f3f3;
+    border: none;
+    border-radius: 2px;
+    height: 290px; /* Tall square-like proportions matching Image 4 */
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+/* Yellow Halftone Dot Highlight on Hover (Matches Reference Image 4) */
+.subnav-card:hover {
+    background-color: #FFD700;
+    background-image: radial-gradient(rgba(10, 25, 47, 0.14) 1.5px, transparent 1.5px);
+    background-size: 8px 8px;
+}
+
+.subnav-card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+}
+
+.subnav-card-title {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: clamp(1.75rem, 2.5vw, 2.45rem);
+    color: #0A192F;
+    line-height: 0.98;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.subnav-double-arrow {
+    font-size: 1.4rem;
+    color: #0A192F;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+    line-height: 1;
+}
+
+.subnav-card:hover .subnav-double-arrow {
+    opacity: 1;
+    transform: translateX(0);
 }
 
 /* ==========================================
@@ -1268,4 +1628,750 @@ body {
     opacity: 0; /* Hidden initially, GSAP will show them */
     font-size: 3rem; /* BIGGER! Matches your footer style */
     color: rgba(255, 255, 255, 0.4); /* Your signature faded background color */
+}
+
+/* ==========================================
+   WEB DEVELOPMENT MODAL (Recognition Table Style)
+   ========================================== */
+.web-modal-wrapper {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 14vh 5vw 10vh;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.web-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 5rem;
+}
+
+.web-main-title {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: clamp(3.5rem, 6vw, 5.5rem);
+    color: #0A192F;
+    line-height: 1;
+    letter-spacing: 2px;
+    position: relative;
+}
+
+.web-count {
+    font-family: 'Gveret Levin', cursive;
+    font-size: clamp(1.2rem, 2vw, 1.8rem);
+    color: #FF7A59;
+    font-weight: 700;
+    margin-left: 10px;
+    vertical-align: top;
+    position: relative;
+    top: -0.4em;
+}
+
+.web-feature-label {
+    font-family: 'Gveret Levin', cursive;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: rgba(10, 25, 47, 0.55);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 0.5rem;
+}
+
+.web-asterisk {
+    font-family: 'Luckiest Guy', cursive;
+    color: #FF7A59;
+    font-size: 1.4rem;
+    line-height: 0;
+}
+
+/* 4-Column + Arrow Grid Structure */
+.web-table-head,
+.web-row {
+    display: grid;
+    grid-template-columns: 2.4fr 1.3fr 0.7fr 1.3fr 50px;
+    align-items: center;
+    column-gap: 1.5rem;
+}
+
+.web-table-head {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid rgba(10, 25, 47, 0.12);
+    border-bottom: 1px solid rgba(10, 25, 47, 0.12);
+    font-family: 'Gveret Levin', cursive;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: rgba(10, 25, 47, 0.45);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+}
+
+.web-table-body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Individual Clickable Row */
+.web-row {
+    position: relative;
+    padding: 2rem 1.5rem;
+    border-bottom: 1px solid rgba(10, 25, 47, 0.12);
+    text-decoration: none;
+    color: #0A192F;
+    cursor: pointer;
+    overflow: hidden;
+    transition: color 0.35s ease, padding 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 1;
+}
+
+/* Full-Bleed Dark Highlight Bar on Hover */
+.web-row::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: #0A192F;
+    transform: scaleY(0);
+    transform-origin: center;
+    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: -1;
+}
+
+.web-row:hover::before {
+    transform: scaleY(1);
+}
+
+.web-row:hover {
+    padding-left: 2.2rem;
+    padding-right: 2.2rem;
+}
+
+/* Column Typography */
+.web-col-site {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+    letter-spacing: 1px;
+    color: #0A192F;
+    transition: color 0.35s ease;
+}
+
+.web-col-theme,
+.web-col-task {
+    font-family: 'Gveret Levin', cursive;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0A192F;
+    transition: color 0.35s ease;
+}
+
+.web-col-year {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 0.95rem;
+    letter-spacing: 1.5px;
+    color: #0A192F;
+    transition: color 0.35s ease;
+}
+
+.web-col-arrow {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 1.5rem;
+    color: #FF7A59;
+    justify-self: end;
+    display: inline-block;
+    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), color 0.35s ease;
+}
+
+/* Hover Text & Arrow States */
+.web-row:hover .web-col-site {
+    color: #FFD700;
+}
+
+.web-row:hover .web-col-theme,
+.web-row:hover .web-col-year,
+.web-row:hover .web-col-task {
+    color: #FFFFFF;
+}
+
+.web-row:hover .web-col-arrow {
+    color: #FFD700;
+    transform: translateX(4px) rotate(45deg);
+}
+
+/* ==========================================
+   VIDEO EDITOR MODAL (Resized Single-Screen & Moderate Box)
+   ========================================== */
+#modal-video-editor {
+    background-color: #f4f4f4;
+    background-image: radial-gradient(rgba(10, 25, 47, 0.07) 1.5px, transparent 1.5px);
+    background-size: 22px 22px;
+    overflow: hidden; /* Locks State 1 to exact screen height with zero extra scroll space */
+}
+
+#modal-video-editor.split-scroll-enabled {
+    overflow-y: auto; /* Enables scrolling only in State 2 when browsing Navy boxes */
+    overflow-x: hidden;
+}
+
+.ve-modal-layout {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 8vh 5vw 4vh;
+    position: relative;
+    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.ve-modal-layout.split-active {
+    height: auto;
+    min-height: 100vh;
+}
+
+/* --- STATE 1: FITS PERFECTLY IN ONE SCREEN --- */
+.ve-left-section {
+    width: 100%;
+    height: 88vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.ve-hero-block {
+    max-width: 960px; /* Wide enough so your custom title stays on 2 clean lines */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.ve-main-title {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: clamp(2.2rem, 3.8vw, 3.5rem);
+    color: #0A192F;
+    line-height: 1.05;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 0;
+    transition: font-size 0.5s ease;
+}
+
+.ve-sub-text {
+    font-family: 'Gveret Levin', cursive;
+    font-size: clamp(0.95rem, 1.1vw, 1.08rem);
+    font-weight: 700;
+    color: rgba(10, 25, 47, 0.78);
+    line-height: 1.55;
+    max-width: 540px;
+    margin: 0;
+}
+
+/* Diagonal Fill CTA Button */
+.ve-channel-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.9rem;
+    background-color: #FFD700;
+    border: 3px solid #0A192F;
+    box-shadow: 5px 5px 0px #0A192F;
+    text-decoration: none;
+    overflow: hidden;
+    cursor: pointer;
+    margin-top: 0.2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ve-channel-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -25%;
+    width: 150%;
+    height: 100%;
+    background-color: #0A192F;
+    transform: translateX(-105%) skewX(-32deg);
+    transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 0;
+}
+
+.ve-channel-btn:hover::before {
+    transform: translateX(0%) skewX(-32deg);
+}
+
+.ve-channel-btn:hover {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0px #FF7A59;
+}
+
+.ve-btn-label {
+    position: relative;
+    z-index: 1;
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    color: #0A192F;
+    transition: color 0.35s ease;
+}
+
+.ve-channel-btn:hover .ve-btn-label {
+    color: #FFD700;
+}
+
+/* --- TRAVELLATOR ROULETTE CAROUSEL (Fits Inside Red Box Area) --- */
+.ve-roulette-viewport {
+    width: 100vw;
+    margin-left: -5vw;
+    padding: 1.8rem 0 1rem;
+    overflow: hidden;
+    position: relative;
+    transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1), margin-left 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.ve-roulette-track {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: max-content;
+    will-change: transform;
+    padding: 0 12px;
+}
+
+/* Moderately Sized Landscape Video Cards */
+.ve-roulette-card {
+    position: relative;
+    width: 280px;
+    height: 162px;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 3px solid #0A192F;
+    background-color: #0A192F;
+    box-shadow: 0 10px 22px rgba(10, 25, 47, 0.16);
+    cursor: pointer;
+    flex-shrink: 0;
+    transform: scale(1);
+    transition: width 0.5s cubic-bezier(0.25, 1, 0.5, 1),
+                height 0.5s cubic-bezier(0.25, 1, 0.5, 1),
+                transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+                box-shadow 0.4s ease,
+                border-color 0.3s ease;
+    z-index: 1;
+}
+
+.ve-roulette-card:hover {
+    transform: scale(1.13) translateY(-6px);
+    border-color: #FFD700;
+    box-shadow: 0 18px 36px rgba(10, 25, 47, 0.34);
+    z-index: 10;
+}
+
+.ve-card-video,
+.ve-card-thumb {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+.ve-card-thumb {
+    z-index: 2;
+    opacity: 1;
+    transition: opacity 0.35s ease;
+}
+
+.ve-roulette-card.is-previewing .ve-card-thumb {
+    opacity: 0;
+}
+
+.ve-card-badge {
+    position: absolute;
+    bottom: 10px;
+    left: 12px;
+    z-index: 3;
+    background: rgba(10, 25, 47, 0.88);
+    color: #FFD700;
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 0.75rem;
+    letter-spacing: 1.2px;
+    padding: 0.28rem 0.65rem;
+    border-radius: 6px;
+    border: 1.5px solid #FFD700;
+    pointer-events: none;
+}
+
+/* --- STATE 2: FULL-BLEED FADED RECTANGLE ROULETTE (Hidden in State 1) --- */
+.ve-angled-viewport {
+    display: none;
+    position: absolute;
+    top: -8vh;
+    left: -5vw;
+    width: 100vw; /* Spans full screen width so the 3rd column is NEVER sliced off */
+    height: 100vh;
+    overflow: hidden;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    z-index: 1;
+    pointer-events: none; /* Lets clicks pass through empty space on the right */
+    /* Fades out over the top text/button area */
+    -webkit-mask-image: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.10) 0%,
+        rgba(0, 0, 0, 0.14) 38%,
+        rgba(0, 0, 0, 0.85) 54%,
+        rgba(0, 0, 0, 1) 66%,
+        rgba(0, 0, 0, 1) 92%,
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.10) 0%,
+        rgba(0, 0, 0, 0.14) 38%,
+        rgba(0, 0, 0, 0.85) 54%,
+        rgba(0, 0, 0, 1) 66%,
+        rgba(0, 0, 0, 1) 92%,
+        transparent 100%
+    );
+}
+
+.ve-angled-stage {
+    position: absolute;
+    top: -18%;
+    bottom: -18%;
+    left: 2vw;
+    width: 52vw;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    transform: rotate(10deg);
+    align-items: start;
+    pointer-events: auto;
+    /* Fades out the right edge (Red Drawn Area) so it softly disappears into the white background before hitting the media player */
+    -webkit-mask-image: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 1) 0%,
+        rgba(0, 0, 0, 1) 72%,
+        rgba(0, 0, 0, 0.25) 88%,
+        transparent 98%
+    );
+    mask-image: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 1) 0%,
+        rgba(0, 0, 0, 1) 72%,
+        rgba(0, 0, 0, 0.25) 88%,
+        transparent 98%
+    );
+}
+
+.ve-angled-col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    will-change: transform;
+}
+
+/* Landscape Rectangle Video Cards */
+.ve-angled-card {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2.5px solid #0A192F;
+    background-color: #0A192F;
+    box-shadow: 0 10px 22px rgba(10, 25, 47, 0.22);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform 0.35s ease, border-color 0.3s ease;
+}
+
+.ve-angled-card:hover {
+    transform: scale(1.06);
+    border-color: #FFD700;
+    z-index: 5;
+}
+
+.ve-angled-card .ve-card-video,
+.ve-angled-card .ve-card-thumb {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+.ve-angled-card .ve-card-thumb {
+    z-index: 2;
+    opacity: 1;
+    transition: opacity 0.35s ease;
+}
+
+.ve-angled-card.is-previewing .ve-card-thumb {
+    opacity: 0;
+}
+
+.ve-angled-card .ve-card-badge {
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+    font-size: 0.62rem;
+    padding: 0.2rem 0.45rem;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- STATE 2: SPLIT VIEW LAYOUT --- */
+.ve-modal-layout.split-active .ve-left-section {
+    width: 42%;
+    position: sticky;
+    top: 8vh;
+    height: 88vh;
+    justify-content: flex-start;
+    gap: 1rem;
+}
+
+/* Keeps Title, Text & Button cleanly above the faded top of the roulette */
+.ve-modal-layout.split-active .ve-hero-block {
+    position: relative;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.ve-modal-layout.split-active .ve-channel-btn {
+    pointer-events: auto;
+}
+
+.ve-modal-layout.split-active .ve-main-title {
+    font-size: clamp(1.65rem, 2.4vw, 2.3rem);
+    text-shadow: 0 2px 14px rgba(244, 244, 244, 0.95);
+}
+
+.ve-modal-layout.split-active .ve-sub-text {
+    color: #0A192F;
+    text-shadow: 0 1px 10px rgba(244, 244, 244, 0.95);
+}
+
+/* Hide State 1 horizontal strip & show State 2 full-height angled carousel */
+.ve-modal-layout.split-active .ve-roulette-viewport {
+    display: none;
+}
+
+.ve-modal-layout.split-active .ve-angled-viewport {
+    display: block;
+}
+
+/* Right Column: Extended Width to Match Red Marker */
+.ve-right-section {
+    display: none;
+    width: 0;
+    opacity: 0;
+}
+
+.ve-modal-layout.split-active .ve-right-section {
+    display: flex;
+    justify-content: flex-end;
+    width: 56%; /* Expanded width to let the player box stretch wider */
+    opacity: 1;
+    position: relative;
+    z-index: 4;
+    animation: veSlideInRight 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes veSlideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.ve-navy-list {
+    width: 100%;
+    max-width: 680px; /* Extended horizontally from 500px -> 680px for a longer rectangle look */
+    margin-top: 6.5vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2.2rem;
+    padding-bottom: 10vh;
+}
+
+/* Unified Card: Yellow Box (Top Media Player) + Orange Box (Bottom Navy Info) */
+.ve-navy-box {
+    background-color: transparent;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 3.5px solid #0A192F;
+    box-shadow: 8px 8px 0px #FFD700;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    color: #FFFFFF;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ve-navy-box.active-box {
+    border-color: #0A192F;
+    box-shadow: 8px 8px 0px #FF7A59;
+}
+
+/* Top Section: Media Player (Yellow Box in Reference) */
+.ve-player-stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 8.2; /* Sleeker, wider rectangle proportion */
+    background-color: #050d1a;
+    overflow: hidden;
+    border-bottom: 3px solid #0A192F;
+}
+
+.ve-main-video,
+.ve-main-thumb {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ve-main-thumb {
+    z-index: 2;
+    opacity: 1;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.ve-navy-box.is-playing .ve-main-thumb {
+    opacity: 0;
+}
+
+.ve-center-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #FFD700;
+    border: 3px solid #0A192F;
+    color: #0A192F;
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 1.35rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 4px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+    transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
+}
+
+.ve-center-play-btn:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    background-color: #FFFFFF;
+}
+
+.ve-navy-box.is-playing .ve-center-play-btn {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.ve-controls-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 4;
+    background: linear-gradient(to top, rgba(10, 25, 47, 0.95), rgba(10, 25, 47, 0.4) 80%, transparent);
+    padding: 0.55rem 0.85rem 0.45rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ve-ctrl-btn {
+    background: transparent;
+    border: none;
+    color: #FFD700;
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 2px 5px;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.ve-ctrl-btn:hover {
+    color: #FFFFFF;
+    transform: scale(1.12);
+}
+
+.ve-progress-slider {
+    flex: 1;
+    accent-color: #FFD700;
+    cursor: pointer;
+    height: 4px;
+}
+
+.ve-volume-wrap {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.ve-volume-slider {
+    width: 55px;
+    accent-color: #FFD700;
+    cursor: pointer;
+    height: 4px;
+}
+
+/* Bottom Section: Navy Blue Info Box (Orange Box in Reference) */
+.ve-navy-info {
+    background-color: #0A192F;
+    padding: 1.05rem 1.35rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.ve-box-tag {
+    font-family: 'Gveret Levin', cursive;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #FFD700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+}
+
+.ve-box-title {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: clamp(1.25rem, 1.65vw, 1.5rem);
+    color: #FFD700;
+    letter-spacing: 1.2px;
+    line-height: 1.08;
+    margin: 0;
+}
+
+.ve-box-desc {
+    font-family: 'Gveret Levin', cursive;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1.45;
+    margin: 0;
 }

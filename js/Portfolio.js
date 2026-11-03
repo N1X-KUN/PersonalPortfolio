@@ -7,7 +7,7 @@ const bgMusic = document.getElementById('bg-music');
 const musicToggleBtn = document.getElementById('music-toggle');
 let isMusicPlaying = false;
 
-const MUSIC_VOLUME = 0.25;
+const MUSIC_VOLUME = 0.15;
 const setMusicVolumeHalf = () => {
     bgMusic.volume = MUSIC_VOLUME;
 };
@@ -65,53 +65,167 @@ loaderTl.from(".loader-text", { opacity: 0, scale: 0.8, duration: 1, ease: "powe
         .to(".panel-bottom", { y: "100vh", duration: 1, ease: "power2.inOut" }, "split"); // Slide bottom piece down
 
 // ==========================================
-// 2. HAMBURGER MENU & NAVIGATION LOGIC
+// 2. HEADER, HOVER SUB-NAV, [GX] LOGO & WORD CHANGER
 // ==========================================
+const siteHeader = document.getElementById('site-header');
 const burgerBtn = document.getElementById('burger-btn');
 const menuOverlay = document.getElementById('menu-overlay');
-const navLinks = document.querySelectorAll('.nav-link');
+const gxBrandLink = document.getElementById('gx-brand-link');
+const navProjectsWrap = document.getElementById('nav-projects-wrap');
+const navProjectsBtn = document.getElementById('nav-projects-btn');
+const projectsSubnavBar = document.getElementById('projects-subnav-bar');
+const topNavLinks = document.querySelectorAll('.top-nav-item[data-nav]');
+const subnavCards = document.querySelectorAll('.subnav-card[data-open-modal]');
 
-// Toggle Menu Open/Close
-burgerBtn.addEventListener('click', () => {
-    burgerBtn.classList.toggle('open');
-    menuOverlay.classList.toggle('open');
-});
+let subnavCloseTimer = null;
 
-// Custom Smooth Scrolling for GSAP Pinned Sections
-// Custom Smooth Scrolling for GSAP Pinned Sections
-navLinks.forEach(link => {
+const openProjectsSubnav = () => {
+    if (window.scrollY > 120) return; // Only active on Homepage
+    clearTimeout(subnavCloseTimer);
+    if (projectsSubnavBar) projectsSubnavBar.classList.add('open');
+    if (navProjectsBtn) navProjectsBtn.classList.add('active');
+    if (siteHeader) siteHeader.classList.add('subnav-active');
+};
+
+const closeProjectsSubnav = () => {
+    clearTimeout(subnavCloseTimer);
+    if (projectsSubnavBar) projectsSubnavBar.classList.remove('open');
+    if (navProjectsBtn) navProjectsBtn.classList.remove('active');
+    if (siteHeader) siteHeader.classList.remove('subnav-active');
+};
+
+const scheduleCloseProjectsSubnav = () => {
+    clearTimeout(subnavCloseTimer);
+    subnavCloseTimer = setTimeout(closeProjectsSubnav, 140);
+};
+
+// 1. Automatic Hover Open/Close for "Projects" Sub-Nav Bar
+if (navProjectsWrap && projectsSubnavBar) {
+    navProjectsWrap.addEventListener('mouseenter', openProjectsSubnav);
+    navProjectsWrap.addEventListener('mouseleave', scheduleCloseProjectsSubnav);
+    projectsSubnavBar.addEventListener('mouseenter', openProjectsSubnav);
+    projectsSubnavBar.addEventListener('mouseleave', scheduleCloseProjectsSubnav);
+}
+
+// 2. Hide Nav Bar When Scrolling Past Homepage (Burger, GX & Get In Touch Keep Following)
+const updateHeaderOnScroll = () => {
+    if (!siteHeader) return;
+    if (window.scrollY > 120) {
+        siteHeader.classList.add('scrolled-past-home');
+        closeProjectsSubnav();
+    } else {
+        siteHeader.classList.remove('scrolled-past-home');
+    }
+};
+window.addEventListener('scroll', updateHeaderOnScroll, { passive: true });
+updateHeaderOnScroll();
+
+// 3. Burger Button (Opens Socials & Audio Overlay)
+if (burgerBtn && menuOverlay) {
+    burgerBtn.addEventListener('click', () => {
+        burgerBtn.classList.toggle('open');
+        menuOverlay.classList.toggle('open');
+        closeProjectsSubnav();
+    });
+}
+
+// 4. [GX] Click -> Scroll to Top Homepage (or Reload if already at Top)
+if (gxBrandLink) {
+    gxBrandLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeProjectsSubnav();
+        if (window.scrollY < 40) {
+            window.location.reload();
+        } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    });
+}
+
+// 5. Top Nav Links: "About Me" -> Gerard Page | "Contact Me" -> Contact Footer
+topNavLinks.forEach(link => {
+    link.addEventListener('mouseenter', closeProjectsSubnav);
     link.addEventListener('click', (e) => {
-        e.preventDefault(); 
-        
-        // Close the menu
-        burgerBtn.classList.remove('open');
-        menuOverlay.classList.remove('open');
+        e.preventDefault();
+        closeProjectsSubnav();
+        if (burgerBtn) burgerBtn.classList.remove('open');
+        if (menuOverlay) menuOverlay.classList.remove('open');
 
-        // OPTIMIZATION: Force Page 4 to drop its invisible wall instantly so it doesn't block the scroll jump!
-        gsap.set(".content-section", { pointerEvents: "none" });
-
-        const target = link.getAttribute('data-target');
+        const navTarget = link.getAttribute('data-nav');
         let scrollY = 0;
 
-        if (target === "home") {
-            scrollY = 0;
-        } else if (target === "about") {
-            const st = aboutTl.scrollTrigger;
-            scrollY = st ? st.start + (st.end - st.start) * 0.92 : 1100;
-        } else if (target === "work") {
+        if (navTarget === "gerard") {
             const st = revealTl.scrollTrigger;
-            scrollY = st ? st.end - 40 : 4000;
-        } else if (target === "contact") {
-            scrollY = document.body.scrollHeight; 
+            scrollY = st ? st.start : 2400;
+        } else if (navTarget === "contact") {
+            scrollY = document.body.scrollHeight;
         }
 
-        // Execute the smooth scroll
-        window.scrollTo({
-            top: scrollY,
-            behavior: 'smooth'
-        });
+        window.scrollTo({ top: scrollY, behavior: 'smooth' });
     });
 });
+
+// 6. Sub-Nav Cards -> Auto-Scroll to Personal Projects & Open Specific Pop-Up Modal
+subnavCards.forEach(card => {
+    card.addEventListener('click', () => {
+        const modalType = card.getAttribute('data-open-modal');
+        closeProjectsSubnav();
+
+        const st = revealTl.scrollTrigger;
+        const targetScrollY = st ? st.end - 40 : 4000;
+
+        window.scrollTo({ top: targetScrollY, behavior: 'smooth' });
+
+        setTimeout(() => {
+            if (modalType === 'video' && typeof modalVE !== 'undefined') {
+                exitVeSplitState();
+                openModal(modalVE);
+            } else if (modalType === 'web' && typeof modalWeb !== 'undefined') {
+                openModal(modalWeb);
+            } else if (modalType === 'cs' && typeof modalCS !== 'undefined') {
+                openModal(modalCS);
+            }
+        }, 650);
+    });
+});
+
+// 7. Subtitle Random Changing Word ("Games - Experience - Service - Website - Development - Programming - Apps - Designs")
+const heroWordEl = document.getElementById('hero-changing-word');
+const heroWordsList = [
+    "GAMES",
+    "EXPERIENCE",
+    "SERVICE",
+    "WEBSITE",
+    "DEVELOPMENT",
+    "PROGRAMMING",
+    "APPS",
+    "DESIGNS"
+];
+let currentHeroWordIdx = 0;
+
+if (heroWordEl) {
+    setInterval(() => {
+        let nextIdx = Math.floor(Math.random() * heroWordsList.length);
+        if (nextIdx === currentHeroWordIdx) {
+            nextIdx = (nextIdx + 1) % heroWordsList.length;
+        }
+        currentHeroWordIdx = nextIdx;
+
+        gsap.to(heroWordEl, {
+            y: -14,
+            opacity: 0,
+            duration: 0.2,
+            ease: "power2.in",
+            onComplete: () => {
+                heroWordEl.textContent = heroWordsList[currentHeroWordIdx];
+                gsap.fromTo(heroWordEl,
+                    { y: 14, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.26, ease: "back.out(1.6)" }
+                );
+            }
+        });
+    }, 2200);
+}
 
 // ==========================================
 // GLOBAL & HOVER EFFECTS (Runs instantly)
@@ -195,11 +309,102 @@ const aboutLayouts = {
     }
 };
 
+// ==========================================
+// Tilted Background Carousel Engine for Page 1 (True Infinite Loop)
+// ==========================================
+const homeCarouselCards = gsap.utils.toArray('.magnetic-gallery .img-wrapper');
+const CAROUSEL_TILT_DEG = 8;
+const CAROUSEL_TILT_RAD = CAROUSEL_TILT_DEG * (Math.PI / 180);
+
+const CAROUSEL_STEP = 320; 
+const CAROUSEL_TOTAL = CAROUSEL_STEP * homeCarouselCards.length;
+let carouselScrollOffset = 0;
+let isHomeCarouselLooping = true;
+
+const getHomeCarouselSlot = (index) => {
+    // Pure mathematical wrapping prevents any sudden snapping or blank stops
+    const rawDist = (index * CAROUSEL_STEP) - carouselScrollOffset;
+    const wrappedDist = gsap.utils.wrap(-CAROUSEL_TOTAL / 2, CAROUSEL_TOTAL / 2, rawDist);
+
+    const xBase = window.innerWidth * 0.24; // Inside the gap between MY CREATIONS and 4
+    const yPos = wrappedDist * Math.cos(CAROUSEL_TILT_RAD);
+
+    const focalY = -window.innerHeight * 0.06;
+    const distFromFocal = yPos - focalY;
+
+    const cardEl = homeCarouselCards[index];
+    const widthNormalize = (cardEl && cardEl.classList.contains('wrap2')) ? (260 / 300) : 1;
+    const maxScale = 0.78 * widthNormalize;
+
+    let scale = maxScale;
+    let opacity = 1;
+
+    if (distFromFocal > 0) {
+        const bottomProg = gsap.utils.clamp(0, 1, distFromFocal / (window.innerHeight * 0.58));
+        scale = gsap.utils.interpolate(maxScale, maxScale * 0.55, bottomProg);
+        opacity = gsap.utils.interpolate(1, 0, Math.pow(bottomProg, 1.25));
+    } else {
+        const topProg = gsap.utils.clamp(0, 1, Math.abs(distFromFocal) / (window.innerHeight * 0.48));
+        scale = gsap.utils.interpolate(maxScale, maxScale * 0.78, topProg);
+        opacity = gsap.utils.interpolate(1, 0, Math.pow(topProg, 1.35));
+    }
+
+    return {
+        x: xBase - wrappedDist * Math.sin(CAROUSEL_TILT_RAD),
+        y: yPos,
+        rotation: CAROUSEL_TILT_DEG,
+        scale,
+        opacity: Math.max(0, opacity),
+        zIndex: Math.round((1 - Math.min(1, Math.abs(distFromFocal) / 600)) * 5)
+    };
+};
+
+// Continuous seamless upward loop using safe offset wrapping
+gsap.ticker.add((_, deltaTime) => {
+    if (!isHomeCarouselLooping || aboutGalleryActive) return;
+    
+    // Smooth frame-rate independent increment
+    carouselScrollOffset += (deltaTime || 16.6) * 0.045;
+    
+    // Keep offset safely inside bounds without causing visual jumps
+    carouselScrollOffset = carouselScrollOffset % CAROUSEL_TOTAL;
+
+    homeCarouselCards.forEach((card, i) => {
+        const slot = getHomeCarouselSlot(i);
+        gsap.set(card, {
+            x: slot.x,
+            y: slot.y,
+            rotation: slot.rotation,
+            scale: slot.scale,
+            opacity: slot.opacity,
+            zIndex: slot.zIndex
+        });
+    });
+});
+
 const restoreHomeGallery = () => {
-    gsap.to(".wrap1", { x: -180, y: 0, rotation: -12, scale: 1, zIndex: 1, duration: 0.7, ease: "power2.inOut" });
-    gsap.to(".wrap2", { x: 0, y: 0, rotation: 0, scale: 1, zIndex: 5, duration: 0.7, ease: "power2.inOut" });
-    gsap.to(".wrap3", { x: 180, y: 0, rotation: 12, scale: 1, zIndex: 2, duration: 0.7, ease: "power2.inOut" });
+    isHomeCarouselLooping = false;
     gsap.to("body", { backgroundColor: "#f4f4f4", duration: 0.7, ease: "power2.inOut" });
+    gsap.to(".wrap-extra", { visibility: "visible", duration: 0 });
+
+    homeCarouselCards.forEach((card, i) => {
+        const slot = getHomeCarouselSlot(i);
+        gsap.to(card, {
+            x: slot.x,
+            y: slot.y,
+            rotation: slot.rotation,
+            scale: slot.scale,
+            opacity: slot.opacity,
+            zIndex: slot.zIndex,
+            duration: 0.7,
+            ease: "power2.inOut",
+            onComplete: () => {
+                if (i === 0 && !aboutGalleryActive) {
+                    isHomeCarouselLooping = true;
+                }
+            }
+        });
+    });
 };
 
 const aboutThemes = {
@@ -279,6 +484,8 @@ const applyGerardTheme = (panelId, duration = 0.7) => {
 };
 
 const applyAboutPanel = (panelId, animate = true) => {
+    isHomeCarouselLooping = false;
+    gsap.to(".wrap-extra", { autoAlpha: 0, scale: 0.75, duration: 0.45, ease: "power2.inOut" });
     lastAboutPanel = panelId;
     const duration = animate ? 0.7 : 0;
     const ease = "power2.inOut";
@@ -312,9 +519,9 @@ const applyAboutPanel = (panelId, animate = true) => {
         });
     });
 
-    gsap.to(".wrap1", { ...layout.wrap1, duration, ease });
-    gsap.to(".wrap2", { ...layout.wrap2, duration, ease });
-    gsap.to(".wrap3", { ...layout.wrap3, duration, ease });
+    gsap.to(".wrap1", { ...layout.wrap1, opacity: 1, duration, ease });
+    gsap.to(".wrap2", { ...layout.wrap2, opacity: 1, duration, ease });
+    gsap.to(".wrap3", { ...layout.wrap3, opacity: 1, duration, ease });
 };
 
 const aboutTl = gsap.timeline({
@@ -425,13 +632,33 @@ revealRects.forEach(({ el, outline, targetY, startAt }) => {
 revealTl.fromTo(coverRect, { attr: { y: 1.12 } }, { attr: { y: 0 }, duration: 0.35, ease: "none" }, 0.58);
 
 // ==========================================
-// PAGE 4: PROJECT PAGE HOVER LOGIC (3D Tilt)
+// PAGE 4: PROJECT PAGE HOVER LOGIC (3D Tilt + Subtext Overlap)
 // ==========================================
 
 const projectItems = document.querySelectorAll('.project-item');
+const projectDescs = document.querySelectorAll('.project-desc');
 const hoverContainer = document.querySelector('.hover-media-container');
 const hoverVideo = document.querySelector('.hover-video');
 const hoverImage = document.querySelector('.hover-image');
+
+// Helper: Check if the floating media box is physically behind any of the 3 subtexts
+const updateSubtextOverlapColor = () => {
+    if (!hoverContainer || !hoverContainer.classList.contains('active')) {
+        projectDescs.forEach(desc => desc.classList.remove('media-behind'));
+        return;
+    }
+    const mediaRect = hoverContainer.getBoundingClientRect();
+    projectDescs.forEach(desc => {
+        const descRect = desc.getBoundingClientRect();
+        const isOverlapping = !(
+            mediaRect.right < descRect.left ||
+            mediaRect.left > descRect.right ||
+            mediaRect.bottom < descRect.top ||
+            mediaRect.top > descRect.bottom
+        );
+        desc.classList.toggle('media-behind', isOverlapping);
+    });
+};
 
 // Center perfectly on cursor & set 3D perspective
 gsap.set(hoverContainer, { xPercent: -50, yPercent: -50, transformPerspective: 1000 });
@@ -447,7 +674,8 @@ document.addEventListener('mousemove', (e) => {
             rotationY: xPos * 40, 
             rotationX: -yPos * 40, 
             duration: 0.6,
-            ease: "power3.out"
+            ease: "power3.out",
+            onUpdate: updateSubtextOverlapColor
         });
     }
 });
@@ -481,11 +709,18 @@ projectItems.forEach(item => {
         }
         
         hoverContainer.classList.add('active');
-        gsap.to(hoverContainer, { scale: 1, duration: 0.5, ease: "back.out(1.5)" });
+        updateSubtextOverlapColor();
+        gsap.to(hoverContainer, {
+            scale: 1,
+            duration: 0.5,
+            ease: "back.out(1.5)",
+            onUpdate: updateSubtextOverlapColor
+        });
     });
 
     item.addEventListener('mouseleave', () => {
         hoverContainer.classList.remove('active');
+        projectDescs.forEach(desc => desc.classList.remove('media-behind'));
         gsap.to(hoverContainer, { scale: 0.7, duration: 0.4, ease: "power2.in" });
         setTimeout(() => {
             if(!hoverContainer.classList.contains('active')) hoverVideo.pause();
@@ -627,50 +862,495 @@ loaderTl.call(handleMobileLockout);
 window.addEventListener('resize', handleMobileLockout); 
 
 // ==========================================
-// MODAL POP-UP LOGIC
+// MODAL POP-UP LOGIC (All 3 Modals + 2-Step ESC + Audio Ducking)
 // ==========================================
 
 const modalCS = document.getElementById('modal-customer-service');
 const triggerCS = document.getElementById('trigger-cs');
+
+const modalWeb = document.getElementById('modal-web-dev');
+const triggerWeb = document.getElementById('trigger-web');
+
+const modalVE = document.getElementById('modal-video-editor');
+const triggerVE = document.getElementById('trigger-video');
+const veLayout = document.getElementById('ve-modal-layout');
+const veEscLabel = document.getElementById('ve-esc-label');
+
+const allModals = document.querySelectorAll('.project-modal');
 const closeBtns = document.querySelectorAll('.modal-close-btn');
 
-// 1. Open the Modal when clicking "Customer Services"
-if (triggerCS && modalCS) {
-    // Add the event listener, but pass 'e' (the event) to handle the exact click target
-    triggerCS.addEventListener('click', (e) => {
-        // Prevent any default link behavior or bubbling issues
-        e.preventDefault();
-        
-        modalCS.classList.add('active');
-        document.body.style.overflow = "hidden"; // Freeze background scrolling
-        
-        // Force the 3D media box to vanish instantly
-        gsap.set('.hover-media-container', { opacity: 0, display: "none" });
-    });
-} else {
-    console.error("Modal or Trigger ID not found! Check your HTML.");
-}
-
-// Function to smoothly close the modal
-const closeModal = () => {
-    if (modalCS.classList.contains('active')) {
-        modalCS.classList.remove('active');
-        document.body.style.overflow = "auto"; // Unfreeze background
-        
-        // Clear both opacity AND display so the 3D media box works again!
-        gsap.set('.hover-media-container', { clearProps: "opacity,display" });
+// Background Music Auto-Pause & Smooth Resume Helpers
+const pauseBgMusicForVideo = () => {
+    if (bgMusic && isMusicPlaying && !bgMusic.muted) {
+        gsap.killTweensOf(bgMusic);
+        gsap.to(bgMusic, {
+            volume: 0,
+            duration: 0.35,
+            ease: "power1.out",
+            onComplete: () => {
+                bgMusic.pause();
+            }
+        });
     }
 };
 
-// 2. Close when clicking the 'X' button
-closeBtns.forEach(btn => {
-    btn.addEventListener('click', closeModal);
+const resumeBgMusicAfterVideo = () => {
+    if (bgMusic && isMusicPlaying && !bgMusic.muted) {
+        gsap.killTweensOf(bgMusic);
+        if (bgMusic.paused) {
+            bgMusic.volume = 0;
+            bgMusic.play().catch(() => {});
+        }
+        gsap.to(bgMusic, {
+            volume: MUSIC_VOLUME,
+            duration: 1.4,
+            ease: "sine.inOut"
+        });
+    }
+};
+
+// Video Projects Data (Numbering Removed)
+const videoProjectsData = [
+    {
+        tag: "Rotoscope Animatic",
+        title: "Lost in Paradise (JJK Ending Animatic)",
+        desc: "Self drawn 2D rotoscope animatic for Year End Class Video in Highschool. Used FLipaclip and Capcut Editor.",
+        videoSrc: "assets/videos/AnimationExe1.mp4",
+        thumbSrc: "assets/images/Animatic1.jpg"
+    },
+    {
+        tag: "Website Prototyping",
+        title: "Old Website Prototype Before This Portfolio",
+        desc: "Just wanted to show my old website prototype before this portfolio. This was for school project.",
+        videoSrc: "assets/videos/Old Website.mp4",
+        thumbSrc: "assets/images/Oldwebsite.jpg"
+    },
+    {
+        tag: "School Project Promotion",
+        title: "Welcome to Metaverse [PROMO]",
+        desc: "Promotional motion piece crafted for a school project to test our knowledge in video editing.",
+        videoSrc: "assets/videos/Welcome to Metavers.mp4",
+        thumbSrc: "assets/images/Promo.jpg"
+    },
+    {
+        tag: "Short Animatic Meme",
+        title: "RPG Meme But its my friends",
+        desc: "Short animatic meme commisioned by my friends. I used Capcut Editor and Flipaclip to make this.",
+        videoSrc: "assets/videos/AnimationExe2.mp4",
+        thumbSrc: "assets/images/Animatic2.jpg"
+    },
+    {
+        tag: "An App Review",
+        title: "How and What is Discord?",
+        desc: "Tasked with creating an engaging youtube content where we review any app of our choice. Used Capcut to edit everything.",
+        videoSrc: "assets/videos/App Review A2.mp4",
+        thumbSrc: "assets/images/Appreview.jpg"
+    },
+    {
+        tag: "Game.exe - Literally a game content",
+        title: "Forgotten Strinova Clips Compilation...",
+        desc: "Game Themed content solely for fun and to test my editing skills with many memes and references for entertainment.",
+        videoSrc: "assets/videos/GameExe1.mp4",
+        thumbSrc: "assets/images/Gameexe1.jpg"
+    },
+    {
+        tag: "Team Web Development Project",
+        title: "Meet the Team behind Anak Essentials",
+        desc: "Eye catching introduction for a video explaination, the school has asked us to create a video of our progression as we develop a website for our client.",
+        videoSrc: "assets/videos/AnakEssentials.mp4",
+        thumbSrc: "assets/images/Webdev1.jpg"
+    },
+    {
+        tag: "Mini Vlog Content",
+        title: "Repeat It - Class Activity",
+        desc: "Edited for fun, this is a short psycology activity that I enchanced a bit with some little edits to create a vlog content.",
+        videoSrc: "assets/videos/VlogExe1.mp4",
+        thumbSrc: "assets/images/Vlog1.jpg"
+    },
+    {
+        tag: "Random Editing Skit Experiment",
+        title: "Forgot the Mic wasn't muted.",
+        desc: "Was experimenting with different editing techniques using jpg images to recreate a story with characters in Capcut.",
+        videoSrc: "assets/videos/RandomExe1.mp4",
+        thumbSrc: "assets/images/Random1.jpg"
+    },
+    {
+        tag: "Game Development Project",
+        title: "Chuwayo - Trickal Fan Game",
+        desc: "Team development project and this one is simply a showcase of our game beta.",
+        videoSrc: "assets/videos/Chuwayo Guide Download.mp4",
+        thumbSrc: "assets/images/Gamedev2.jpg"
+    },
+    {
+        tag: "Social Media Content",
+        title: "Team Behind Chuwayo - Trickal Fan Game",
+        desc: "A Reel content to introduce our team behind the game development project.",
+        videoSrc: "assets/videos/PromotionExe1.mp4",
+        thumbSrc: "assets/images/Advertisment.jpg"
+    },
+        {
+        tag: "Shoft Vlog Reel Content",
+        title: "Team Behind Chuwayo - Trickal Fan Game",
+        desc: "A Reel content to introduce our team behind the game development project.",
+        videoSrc: "assets/videos/VlogExe2.mp4",
+        thumbSrc: "assets/images/Vlog2.jpg"
+    }
+];
+
+const veTrack = document.getElementById('ve-roulette-track');
+const veNavyList = document.getElementById('ve-navy-list');
+const veCol1 = document.getElementById('ve-col-1');
+const veCol2 = document.getElementById('ve-col-2');
+const veCol3 = document.getElementById('ve-col-3');
+
+let veMarqueeTween = null;
+let veColTweens = [];
+const allNavyBoxes = [];
+let activeFocusedBox = null;
+
+// Helper to wire hover preview & click on any carousel card (State 1 or State 2)
+const bindCarouselCardEvents = (card, realIndex, pauseTweensFn, resumeTweensFn) => {
+    const previewVid = card.querySelector('.ve-card-video');
+
+    card.addEventListener('mouseenter', () => {
+        pauseTweensFn();
+        card.classList.add('is-previewing');
+        if (previewVid.readyState >= 1 && previewVid.duration) {
+            previewVid.currentTime = gsap.utils.random(0.4, Math.max(1, previewVid.duration * 0.75));
+        }
+        previewVid.muted = true;
+        previewVid.play().catch(() => {});
+    });
+
+    card.addEventListener('mouseleave', () => {
+        card.classList.remove('is-previewing');
+        previewVid.pause();
+        resumeTweensFn();
+    });
+
+    card.addEventListener('click', (e) => {
+        e.stopPropagation();
+        enterVeSplitState(realIndex);
+    });
+};
+
+if (veTrack && veNavyList) {
+    // 1. Build State 1 Horizontal Roulette Cards
+    const fullCarouselList = [...videoProjectsData, ...videoProjectsData];
+
+    fullCarouselList.forEach((item, idx) => {
+        const realIndex = idx % videoProjectsData.length;
+        const card = document.createElement('div');
+        card.className = 've-roulette-card';
+        card.innerHTML = `
+            <video class="ve-card-video" src="${item.videoSrc}" muted loop playsinline preload="metadata"></video>
+            <img class="ve-card-thumb" src="${item.thumbSrc}" alt="${item.title}">
+            <span class="ve-card-badge">${item.title}</span>
+        `;
+
+        bindCarouselCardEvents(
+            card,
+            realIndex,
+            () => { if (veMarqueeTween) gsap.to(veMarqueeTween, { timeScale: 0, duration: 0.5, ease: "power2.out" }); },
+            () => { if (veMarqueeTween) gsap.to(veMarqueeTween, { timeScale: 1, duration: 0.7, ease: "power2.inOut" }); }
+        );
+
+        veTrack.appendChild(card);
+    });
+
+    veMarqueeTween = gsap.to(veTrack, {
+        xPercent: -50,
+        duration: 28,
+        ease: "none",
+        repeat: -1
+    });
+
+// 2. Build State 2 3-Column Angled Roulette (Col 1 Up, Col 2 Down, Col 3 Up)
+    const angledColumns = [
+        { el: veCol1, dir: "up",   offset: 0 },
+        { el: veCol2, dir: "down", offset: 2 },
+        { el: veCol3, dir: "up",   offset: 4 }
+    ];
+
+    angledColumns.forEach(({ el, dir, offset }) => {
+        if (!el) return;
+        const rotated = videoProjectsData.map((_, i) => {
+            const realIndex = (i + offset) % videoProjectsData.length;
+            return { item: videoProjectsData[realIndex], realIndex };
+        });
+        const colItems = [...rotated, ...rotated];
+
+        colItems.forEach(({ item, realIndex }) => {
+            const card = document.createElement('div');
+            card.className = 've-angled-card';
+            card.innerHTML = `
+                <video class="ve-card-video" src="${item.videoSrc}" muted loop playsinline preload="metadata"></video>
+                <img class="ve-card-thumb" src="${item.thumbSrc}" alt="${item.title}">
+                <span class="ve-card-badge">${item.title}</span>
+            `;
+
+            bindCarouselCardEvents(
+                card,
+                realIndex,
+                () => veColTweens.forEach(t => gsap.to(t, { timeScale: 0, duration: 0.45, ease: "power2.out" })),
+                () => veColTweens.forEach(t => gsap.to(t, { timeScale: 1, duration: 0.65, ease: "power2.inOut" }))
+            );
+
+            el.appendChild(card);
+        });
+
+        // Col 1 & 3 move Downwards (-50% -> 0%), Col 2 moves Upwards (0% -> -50%)
+        const tween = gsap.fromTo(el,
+            { yPercent: dir === "down" ? -50 : 0 },
+            {
+                yPercent: dir === "down" ? 0 : -50,
+                duration: 22,
+                ease: "none",
+                repeat: -1
+            }
+        );
+        veColTweens.push(tween);
+    });
+
+    // 3. Build Right-Side Player Cards (Yellow Media Player on Top + Orange Navy Info Box Below)
+    videoProjectsData.forEach((item, index) => {
+        const box = document.createElement('article');
+        box.className = 've-navy-box';
+        box.setAttribute('data-original-index', index);
+        box.innerHTML = `
+            <div class="ve-player-stage">
+                <video class="ve-main-video" src="${item.videoSrc}" playsinline preload="metadata"></video>
+                <img class="ve-main-thumb" src="${item.thumbSrc}" alt="${item.title}">
+                <button type="button" class="ve-center-play-btn" title="Play Video">&#9654;</button>
+                <div class="ve-controls-bar">
+                    <button type="button" class="ve-ctrl-btn ve-play-toggle" title="Play/Pause (Space)">&#9654;</button>
+                    <input type="range" class="ve-progress-slider" min="0" max="100" value="0" step="0.1">
+                    <div class="ve-volume-wrap">
+                        <button type="button" class="ve-ctrl-btn ve-mute-toggle" title="Mute/Unmute">&#128266;</button>
+                        <input type="range" class="ve-volume-slider" min="0" max="1" value="0.8" step="0.05">
+                    </div>
+                    <button type="button" class="ve-ctrl-btn ve-fullscreen-btn" title="Fullscreen">&#x26F6;</button>
+                </div>
+            </div>
+            <div class="ve-navy-info">
+                <span class="ve-box-tag">${item.tag}</span>
+                <h3 class="ve-box-title">${item.title}</h3>
+                <p class="ve-box-desc">${item.desc}</p>
+            </div>
+        `;
+
+        veNavyList.appendChild(box);
+        allNavyBoxes.push(box);
+    });
+}
+
+// Helper: Check if any video in State 2 is currently playing
+const isAnyModalVideoPlaying = () => {
+    return allNavyBoxes.some(box => {
+        const vid = box.querySelector('.ve-main-video');
+        return vid && !vid.paused;
+    });
+};
+
+// Helper: Stop & Reset a specific Navy Box back to 0:00 + thumbnail
+const resetNavyBoxVideo = (box) => {
+    const vid = box.querySelector('.ve-main-video');
+    const playToggle = box.querySelector('.ve-play-toggle');
+    const prog = box.querySelector('.ve-progress-slider');
+    if (vid) {
+        vid.pause();
+        vid.currentTime = 0;
+    }
+    box.classList.remove('is-playing');
+    if (playToggle) playToggle.innerHTML = '&#9654;';
+    if (prog) prog.value = 0;
+};
+
+// Helper: Toggle Play/Pause on a specific Navy Box
+const toggleNavyBoxPlay = (box) => {
+    const vid = box.querySelector('.ve-main-video');
+    const playToggle = box.querySelector('.ve-play-toggle');
+
+    activeFocusedBox = box;
+    allNavyBoxes.forEach(b => b.classList.remove('active-box'));
+    box.classList.add('active-box');
+
+    if (vid.paused) {
+        // Stop & reset all other videos to 0:00
+        allNavyBoxes.forEach(otherBox => {
+            if (otherBox !== box) {
+                resetNavyBoxVideo(otherBox);
+            }
+        });
+
+        // Pause background music while video plays
+        pauseBgMusicForVideo();
+
+        vid.play().catch(() => {});
+        box.classList.add('is-playing');
+        playToggle.innerHTML = '&#10074;&#10074;';
+    } else {
+        vid.pause();
+        box.classList.remove('is-playing');
+        playToggle.innerHTML = '&#9654;';
+
+        // Smoothly fade background music back in when video pauses
+        if (!isAnyModalVideoPlaying()) {
+            resumeBgMusicAfterVideo();
+        }
+    }
+};
+
+allNavyBoxes.forEach((box) => {
+    const vid = box.querySelector('.ve-main-video');
+    const centerPlayBtn = box.querySelector('.ve-center-play-btn');
+    const playToggle = box.querySelector('.ve-play-toggle');
+    const progressSlider = box.querySelector('.ve-progress-slider');
+    const muteToggle = box.querySelector('.ve-mute-toggle');
+    const volumeSlider = box.querySelector('.ve-volume-slider');
+    const fullscreenBtn = box.querySelector('.ve-fullscreen-btn');
+    const playerStage = box.querySelector('.ve-player-stage');
+
+    vid.volume = 0.8;
+
+    centerPlayBtn.addEventListener('click', () => toggleNavyBoxPlay(box));
+    playToggle.addEventListener('click', () => toggleNavyBoxPlay(box));
+    vid.addEventListener('click', () => toggleNavyBoxPlay(box));
+
+    vid.addEventListener('timeupdate', () => {
+        if (vid.duration) {
+            progressSlider.value = (vid.currentTime / vid.duration) * 100;
+        }
+    });
+
+    progressSlider.addEventListener('input', () => {
+        if (vid.duration) {
+            vid.currentTime = (progressSlider.value / 100) * vid.duration;
+        }
+    });
+
+    vid.addEventListener('ended', () => {
+        resetNavyBoxVideo(box);
+        if (!isAnyModalVideoPlaying()) {
+            resumeBgMusicAfterVideo();
+        }
+    });
+
+    volumeSlider.addEventListener('input', () => {
+        vid.volume = parseFloat(volumeSlider.value);
+        vid.muted = vid.volume === 0;
+        muteToggle.innerHTML = vid.muted ? '&#128263;' : '&#128266;';
+    });
+
+    muteToggle.addEventListener('click', () => {
+        vid.muted = !vid.muted;
+        muteToggle.innerHTML = vid.muted ? '&#128263;' : '&#128266;';
+    });
+
+    fullscreenBtn.addEventListener('click', () => {
+        if (document.fullscreenElement) {
+            document.exitFullscreen();
+        } else if (playerStage.requestFullscreen) {
+            playerStage.requestFullscreen();
+        } else if (vid.webkitEnterFullscreen) {
+            vid.webkitEnterFullscreen();
+        }
+    });
 });
 
-// 3. Close when pressing 'Escape'
+// Enter State 2: Dynamically Reorder Right-Side List Starting with Clicked Video!
+const enterVeSplitState = (targetIndex) => {
+    if (!veLayout || !modalVE || !veNavyList) return;
+
+    // Stop any playing video before reordering
+    allNavyBoxes.forEach(box => resetNavyBoxVideo(box));
+    resumeBgMusicAfterVideo();
+
+    // Circular Loop Reorder: targetIndex goes to the very top, followed by the rest in loop order
+    const total = allNavyBoxes.length;
+    for (let i = 0; i < total; i++) {
+        const circularIdx = (targetIndex + i) % total;
+        const box = allNavyBoxes[circularIdx];
+        box.classList.toggle('active-box', i === 0);
+        veNavyList.appendChild(box);
+    }
+
+    activeFocusedBox = allNavyBoxes[targetIndex];
+
+    veLayout.classList.add('split-active');
+    modalVE.classList.add('split-scroll-enabled');
+    if (veEscLabel) veEscLabel.textContent = "ESC (BACK)";
+
+    // Always start right at the top since the selected video is now #1 in the list
+    modalVE.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+const exitVeSplitState = () => {
+    if (!veLayout || !modalVE) return;
+    allNavyBoxes.forEach(box => resetNavyBoxVideo(box));
+    resumeBgMusicAfterVideo();
+    veLayout.classList.remove('split-active');
+    modalVE.classList.remove('split-scroll-enabled');
+    if (veEscLabel) veEscLabel.textContent = "ESC";
+    modalVE.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+const openModal = (modalEl) => {
+    if (!modalEl) return;
+    modalEl.classList.add('active');
+    document.body.classList.add('modal-open'); // Hides [GX] Header & Get In Touch while in pop-up
+    document.body.style.overflow = "hidden";
+    gsap.set('.hover-media-container', { opacity: 0, display: "none" });
+};
+
+const handleEscapeOrClose = () => {
+    if (modalVE && modalVE.classList.contains('active') && veLayout && veLayout.classList.contains('split-active')) {
+        exitVeSplitState();
+        return;
+    }
+
+    allNavyBoxes.forEach(box => resetNavyBoxVideo(box));
+    resumeBgMusicAfterVideo();
+    allModals.forEach(modal => modal.classList.remove('active'));
+    document.body.classList.remove('modal-open'); // Restores [GX] Header & Get In Touch
+    document.body.style.overflow = "auto";
+    gsap.set('.hover-media-container', { clearProps: "opacity,display" });
+};
+
+if (triggerVE && modalVE) {
+    triggerVE.addEventListener('click', (e) => {
+        e.preventDefault();
+        exitVeSplitState();
+        openModal(modalVE);
+    });
+}
+
+if (triggerWeb && modalWeb) {
+    triggerWeb.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal(modalWeb);
+    });
+}
+
+if (triggerCS && modalCS) {
+    triggerCS.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal(modalCS);
+    });
+}
+
+closeBtns.forEach(btn => {
+    btn.addEventListener('click', handleEscapeOrClose);
+});
+
 document.addEventListener('keydown', (e) => {
     if (e.key === "Escape") {
-        closeModal();
+        handleEscapeOrClose();
+    } else if (e.code === "Space" && modalVE && modalVE.classList.contains('active') && veLayout && veLayout.classList.contains('split-active')) {
+        e.preventDefault();
+        if (activeFocusedBox) {
+            toggleNavyBoxPlay(activeFocusedBox);
+        }
     }
 });
 
@@ -688,7 +1368,7 @@ const outerSafeZones = [
     { topMin: 10, topMax: 15, leftMin: 75, leftMax: 83, tiltMin: 5,   tiltMax: 12 }, // 2. Top-Right
     { topMin: 48, topMax: 55, leftMin: 83, leftMax: 88, tiltMin: 6,   tiltMax: 12 }, // 3. Far-Right Middle
     { topMin: 89, topMax: 92, leftMin: 7,  leftMax: 16, tiltMin: -2,  tiltMax: 2  }, // 4. Bottom-Left (Straight landscape)
-    { topMin: 90, topMax: 93, leftMin: 42, leftMax: 54, tiltMin: -1,  tiltMax: 1  }  // 5. Bottom-Center Red Box (Straight landscape)
+    { topMin: 90, topMax: 93, leftMin: 42, leftMax: 54, tiltMin: -1,  tiltMax: 1  }  // 5. Bottom-Center (Straight landscape)
 ];
 
 // 1. Split each phrase into individual letter spans
@@ -711,7 +1391,6 @@ const spawnNextHandwritingNote = () => {
     const zone = activeZones[currentNoteIndex];
     const chars = note.querySelectorAll('.hw-char');
 
-    // Pick random coordinates & zone-specific tilt (keeps bottom ones straight landscape!)
     const randomTop = gsap.utils.random(zone.topMin, zone.topMax);
     const randomLeft = gsap.utils.random(zone.leftMin, zone.leftMax);
     const randomTilt = gsap.utils.random(zone.tiltMin, zone.tiltMax);
@@ -724,7 +1403,6 @@ const spawnNextHandwritingNote = () => {
 
     gsap.killTweensOf(chars);
 
-    // Step A: Write out letter-by-letter
     gsap.fromTo(chars,
         { opacity: 0, y: 6, scale: 0.8 },
         {
@@ -735,7 +1413,6 @@ const spawnNextHandwritingNote = () => {
             stagger: 0.045,
             ease: "power1.out",
             onComplete: () => {
-                // Step B: Standby "Alive" Wiggle after writing finishes
                 chars.forEach((char, i) => {
                     gsap.to(char, {
                         y: () => gsap.utils.random(-2.5, 2.5),
@@ -754,32 +1431,27 @@ const spawnNextHandwritingNote = () => {
 
     currentNoteIndex++;
 
-    // Queue the next phrase to write out after the current one finishes
     if (currentNoteIndex < hwNotes.length) {
         const writeDuration = (chars.length * 45) + 450;
         hwQueueTimer = setTimeout(spawnNextHandwritingNote, writeDuration);
     }
 };
 
-// 2. Trigger one-by-one when hovering the 3 project items
 const projectListWrapper = document.querySelector('.project-list-wrapper');
 
 projectItems.forEach(item => {
     item.addEventListener('mouseenter', () => {
-        // If starting fresh from idle, shuffle phrases and zones and start with 1 word
         if (currentNoteIndex === 0) {
             gsap.utils.shuffle(hwNotes);
             activeZones = gsap.utils.shuffle([...outerSafeZones]);
             spawnNextHandwritingNote();
         } else if (currentNoteIndex < hwNotes.length) {
-            // Moving to the next topic immediately triggers the next word
             clearTimeout(hwQueueTimer);
             spawnNextHandwritingNote();
         }
     });
 });
 
-// 3. Fade out and reset when mouse leaves the project list completely
 if (projectListWrapper) {
     projectListWrapper.addEventListener('mouseleave', () => {
         clearTimeout(hwQueueTimer);
