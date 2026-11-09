@@ -1,68 +1,131 @@
 gsap.registerPlugin(ScrollTrigger);
 
 // ==========================================
-// BACKGROUND MUSIC LOGIC
+// 0. EXACT TRANSPARENT "GX" FAVICON GENERATOR
 // ==========================================
-const bgMusic = document.getElementById('bg-music');
+const generateExactGXFavicon = async () => {
+    if (document.fonts && document.fonts.ready) {
+        await document.fonts.ready; // Wait for 'Luckiest Guy' Google Font to load
+    }
+    const canvas = document.createElement('canvas');
+    canvas.width = 256;
+    canvas.height = 256;
+    const ctx = canvas.getContext('2d');
+
+    ctx.clearRect(0, 0, 256, 256); // 100% Transparent Background
+    ctx.save();
+    ctx.translate(128, 142);
+    ctx.transform(1, 0, -0.22, 1, 0, 0); // Matches skewX(-12deg) from .gx-only-letters
+
+    // Scaled to 148px inside a 256x256 square so the G and X are NEVER clipped on the edges!
+    ctx.font = '148px "Luckiest Guy", cursive';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.lineJoin = 'round';
+    ctx.miterLimit = 2;
+
+    // 1. Hard Navy Drop Shadow
+    ctx.fillStyle = '#0A192F';
+    ctx.fillText('GX', 8, 8);
+
+    // 2. Thick Yellow Outline (#FFD700)
+    ctx.lineWidth = 26;
+    ctx.strokeStyle = '#FFD700';
+    ctx.strokeText('GX', 0, 0);
+
+    // 3. Navy Blue Inner Fill (#0A192F)
+    ctx.fillStyle = '#0A192F';
+    ctx.fillText('GX', 0, 0);
+    ctx.restore();
+
+    const dataUrl = canvas.toDataURL('image/png');
+    let fav = document.getElementById('dynamic-favicon') || document.querySelector("link[rel*='icon']");
+    if (!fav) {
+        fav = document.createElement('link');
+        fav.rel = 'icon';
+        document.head.appendChild(fav);
+    }
+    fav.type = 'image/png';
+    fav.href = dataUrl;
+
+    // Optional helper: Type downloadGXLogo() in your browser F12 console anytime to save the transparent PNG file!
+    window.downloadGXLogo = () => {
+        const a = document.createElement('a');
+        a.href = dataUrl;
+        a.download = 'GX-Logo.png';
+        a.click();
+    };
+};
+generateExactGXFavicon();
+
+// ==========================================
+// BACKGROUND MUSIC LOGIC (Locked at 5% Volume)
+// ==========================================
+const bgMusic = document.getElementById("bg-music");
 const musicToggleBtn = document.getElementById('music-toggle');
 let isMusicPlaying = false;
 
-const MUSIC_VOLUME = 0.15;
-const setMusicVolumeHalf = () => {
-    bgMusic.volume = MUSIC_VOLUME;
+const MUSIC_VOLUME = 0.05; // 5% volume on both Desktop and Mobile
+const setMusicVolume = () => {
+    if (bgMusic) bgMusic.volume = MUSIC_VOLUME;
 };
-setMusicVolumeHalf();
-bgMusic.addEventListener('loadedmetadata', setMusicVolumeHalf);
-bgMusic.addEventListener('play', setMusicVolumeHalf);
+setMusicVolume();
+if (bgMusic) {
+    bgMusic.addEventListener('loadedmetadata', setMusicVolume);
+    bgMusic.addEventListener('play', setMusicVolume);
+}
 
-// Browsers block autoplay. This waits for the user's VERY FIRST click anywhere on the page to start the music.
 const startMusicOnInteraction = () => {
-    if (!isMusicPlaying) {
-        setMusicVolumeHalf();
-        bgMusic.play();
+    if (!isMusicPlaying && bgMusic) {
+        setMusicVolume();
+        bgMusic.play().catch(() => {});
         isMusicPlaying = true;
-        musicToggleBtn.innerHTML = "🔊 MUTE MUSIC";
-        // Remove this listener so it doesn't keep firing
+        if (musicToggleBtn) musicToggleBtn.innerHTML = "🔊 MUTE MUSIC";
         document.removeEventListener('click', startMusicOnInteraction);
+        document.removeEventListener('touchstart', startMusicOnInteraction);
     }
 };
 document.addEventListener('click', startMusicOnInteraction);
+document.addEventListener('touchstart', startMusicOnInteraction, { passive: true });
 
-// Mute/Unmute Logic for the Hamburger Menu Button
-musicToggleBtn.addEventListener('click', (e) => {
-    e.stopPropagation(); // Stops this click from triggering other events
-    
-    if (bgMusic.muted) {
-        bgMusic.muted = false;
-        musicToggleBtn.innerHTML = "🔊 MUTE MUSIC";
-        musicToggleBtn.style.backgroundColor = "transparent";
-        musicToggleBtn.style.color = "#FFD700";
-    } else {
-        bgMusic.muted = true;
-        musicToggleBtn.innerHTML = "🔇 PLAY MUSIC";
-        // Make it solid yellow when muted so it's visually obvious
-        musicToggleBtn.style.backgroundColor = "#FFD700";
-        musicToggleBtn.style.color = "#0A192F";
-    }
-});
+if (musicToggleBtn && bgMusic) {
+    musicToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (bgMusic.muted) {
+            bgMusic.muted = false;
+            musicToggleBtn.innerHTML = "🔊 MUTE MUSIC";
+            musicToggleBtn.style.backgroundColor = "transparent";
+            musicToggleBtn.style.color = "#FFD700";
+        } else {
+            bgMusic.muted = true;
+            musicToggleBtn.innerHTML = "🔇 PLAY MUSIC";
+            musicToggleBtn.style.backgroundColor = "#FFD700";
+            musicToggleBtn.style.color = "#0A192F";
+        }
+    });
+}
 
 // ==========================================
-// 1. INITIAL LOADING SCREEN ANIMATION
+// 1. INITIAL LOADING SCREEN ANIMATION (2.5s Desktop / 5s Mobile with Dancing GIF)
 // ==========================================
-// Freeze scrolling while loading
 document.body.style.overflow = "hidden";
+
+const isMobileStartup = window.innerWidth <= 1024;
+const loaderHoldSeconds = isMobileStartup ? 3.0 : 0.5; // 5s total on mobile, 2.5s total on desktop
 
 const loaderTl = gsap.timeline({
     onComplete: () => {
-        document.body.style.overflow = "auto"; // Re-enable scrolling
-        gsap.set(".loader-wrapper", { display: "none" }); // Remove from DOM to prevent clicking issues
+        // Keep overflow locked on mobile so it stays a strict single-screen experience
+        document.body.style.overflow = window.innerWidth <= 1024 ? "hidden" : "auto";
+        gsap.set(".loader-wrapper", { display: "none" });
     }
 });
 
-loaderTl.from(".loader-text", { opacity: 0, scale: 0.8, duration: 1, ease: "power2.out" }) // Fade in text
-        .to(".loader-text", { opacity: 0, y: -20, duration: 0.5, delay: 0.5 }) // Fade out text
-        .to(".panel-top", { y: "-100vh", duration: 1, ease: "power2.inOut" }, "split") // Slide top piece up
-        .to(".panel-bottom", { y: "100vh", duration: 1, ease: "power2.inOut" }, "split"); // Slide bottom piece down
+loaderTl.from(".loader-center-stack", { opacity: 0, scale: 0.85, duration: 0.7, ease: "power2.out" })
+        .to("#loader-progress-bar", { width: "100%", duration: loaderHoldSeconds, ease: "none" })
+        .to(".loader-center-stack", { opacity: 0, y: -20, duration: 0.35 })
+        .to(".panel-top", { y: "-100vh", duration: 0.95, ease: "power2.inOut" }, "split")
+        .to(".panel-bottom", { y: "100vh", duration: 0.95, ease: "power2.inOut" }, "split");
 
 // ==========================================
 // 2. HEADER, HOVER SUB-NAV, [GX] LOGO & WORD CHANGER
@@ -359,15 +422,16 @@ const getHomeCarouselSlot = (index) => {
     };
 };
 
-// Continuous seamless upward loop using safe offset wrapping
-gsap.ticker.add((_, deltaTime) => {
+// Continuous seamless upward loop (Immune to tab-switching & scroll interruptions)
+gsap.ticker.add(() => {
     if (!isHomeCarouselLooping || aboutGalleryActive) return;
-    
-    // Smooth frame-rate independent increment
-    carouselScrollOffset += (deltaTime || 16.6) * 0.045;
-    
-    // Keep offset safely inside bounds without causing visual jumps
-    carouselScrollOffset = carouselScrollOffset % CAROUSEL_TOTAL;
+
+    // Clamped deltaRatio guarantees smooth speed and NEVER explodes after switching tabs
+    const safeRatio = Math.min(gsap.ticker.deltaRatio(60) || 1, 2.5);
+    carouselScrollOffset = (carouselScrollOffset + 0.75 * safeRatio) % CAROUSEL_TOTAL;
+
+    // Safety guard against NaN
+    if (isNaN(carouselScrollOffset)) carouselScrollOffset = 0;
 
     homeCarouselCards.forEach((card, i) => {
         const slot = getHomeCarouselSlot(i);
@@ -376,16 +440,19 @@ gsap.ticker.add((_, deltaTime) => {
             y: slot.y,
             rotation: slot.rotation,
             scale: slot.scale,
-            opacity: slot.opacity,
+            autoAlpha: slot.opacity,
             zIndex: slot.zIndex
         });
     });
 });
 
 const restoreHomeGallery = () => {
-    isHomeCarouselLooping = false;
+    gsap.killTweensOf(homeCarouselCards);
+    gsap.killTweensOf(".wrap-extra");
     gsap.to("body", { backgroundColor: "#f4f4f4", duration: 0.7, ease: "power2.inOut" });
-    gsap.to(".wrap-extra", { visibility: "visible", duration: 0 });
+
+    // Resume looping immediately so cards never freeze or vanish on scroll-back
+    isHomeCarouselLooping = true;
 
     homeCarouselCards.forEach((card, i) => {
         const slot = getHomeCarouselSlot(i);
@@ -394,15 +461,11 @@ const restoreHomeGallery = () => {
             y: slot.y,
             rotation: slot.rotation,
             scale: slot.scale,
-            opacity: slot.opacity,
+            autoAlpha: slot.opacity,
             zIndex: slot.zIndex,
-            duration: 0.7,
-            ease: "power2.inOut",
-            onComplete: () => {
-                if (i === 0 && !aboutGalleryActive) {
-                    isHomeCarouselLooping = true;
-                }
-            }
+            duration: 0.55,
+            ease: "power2.out",
+            overwrite: "auto"
         });
     });
 };
@@ -485,10 +548,11 @@ const applyGerardTheme = (panelId, duration = 0.7) => {
 
 const applyAboutPanel = (panelId, animate = true) => {
     isHomeCarouselLooping = false;
-    gsap.to(".wrap-extra", { autoAlpha: 0, scale: 0.75, duration: 0.45, ease: "power2.inOut" });
+    // Fade out buffer cards with a gentle scale-down
+    gsap.to(".wrap-extra", { autoAlpha: 0, scale: 0.7, duration: 0.5, ease: "power2.inOut" });
     lastAboutPanel = panelId;
-    const duration = animate ? 0.7 : 0;
-    const ease = "power2.inOut";
+    const duration = animate ? 0.85 : 0; // Slightly longer duration for a luxurious, fluid glide
+    const ease = "power3.out"; // Smooth deceleration curve so cards land organically without stiffness
     const layout = aboutLayouts[panelId];
     const theme = aboutThemes[panelId];
 
@@ -519,9 +583,40 @@ const applyAboutPanel = (panelId, animate = true) => {
         });
     });
 
-    gsap.to(".wrap1", { ...layout.wrap1, opacity: 1, duration, ease });
-    gsap.to(".wrap2", { ...layout.wrap2, opacity: 1, duration, ease });
-    gsap.to(".wrap3", { ...layout.wrap3, opacity: 1, duration, ease });
+    // Organic Card Glide Transition: Smoothly interpolates position, rotation, and scale from the carousel stream
+    gsap.to(".wrap1", { 
+        x: layout.wrap1.x, 
+        y: layout.wrap1.y, 
+        rotation: layout.wrap1.rotation, 
+        scale: layout.wrap1.scale, 
+        zIndex: layout.wrap1.zIndex, 
+        autoAlpha: 1, 
+        overwrite: "auto", 
+        duration, 
+        ease 
+    });
+    gsap.to(".wrap2", { 
+        x: layout.wrap2.x, 
+        y: layout.wrap2.y, 
+        rotation: layout.wrap2.rotation, 
+        scale: layout.wrap2.scale, 
+        zIndex: layout.wrap2.zIndex, 
+        autoAlpha: 1, 
+        overwrite: "auto", 
+        duration, 
+        ease 
+    });
+    gsap.to(".wrap3", { 
+        x: layout.wrap3.x, 
+        y: layout.wrap3.y, 
+        rotation: layout.wrap3.rotation, 
+        scale: layout.wrap3.scale, 
+        zIndex: layout.wrap3.zIndex, 
+        autoAlpha: 1, 
+        overwrite: "auto", 
+        duration, 
+        ease 
+    });
 };
 
 const aboutTl = gsap.timeline({
@@ -566,7 +661,8 @@ aboutTl.to(".page1-content", { y: "-100vh", duration: 1, ease: "power2.inOut" },
 
 rebuildAboutGerardColorScroll();
 
-const gerardPinDistance = 1400;
+/* <--- MANUAL TWEAK: Lower 650 (e.g. 500) to make the glitch transition even faster, or raise to 850 */
+const gerardPinDistance = 650;
 const clipRoot = document.getElementById("caseRevealClip");
 const outlineRoot = document.querySelector(".glitch-outlines");
 const ns = "http://www.w3.org/2000/svg";
@@ -611,7 +707,7 @@ const revealTl = gsap.timeline({
         start: "top top",
         end: `+=${gerardPinDistance}`,
         pin: true,
-        scrub: 1,
+        scrub: 0.6,
         onUpdate: (self) => {
             gsap.set(".project-page-container", {
                 pointerEvents: self.progress > 0.72 ? "auto" : "none"
@@ -729,137 +825,120 @@ projectItems.forEach(item => {
 });
 
 // ==========================================
-// PAGE 5: FOOTER UNRAVEL, SCATTER, & FALL
+// PAGE 5: STAGGERED HORIZONTAL CINEMATIC SWEEPS & BACKGROUND AUDIO LEVELLING
 // ==========================================
 
-const emojis = gsap.utils.toArray('.float-emoji');
-
-const safeZones = [
-    { left: 10, top: 20 }, { left: 30, top: 10 }, { left: 70, top: 10 }, { left: 90, top: 20 },
-    { left: 8,  top: 50 }, { left: 92, top: 50 }, { left: 15, top: 80 }, { left: 35, top: 85 },
-    { left: 65, top: 85 }, { left: 85, top: 80 }
-];
-
-emojis.forEach((emoji, index) => {
-    let zone = safeZones[index % safeZones.length];
-    gsap.set(emoji, {
-        left: zone.left + "%", top: zone.top + "%",
-        xPercent: -50, yPercent: -50,
-        rotation: gsap.utils.random(-30, 30)
-    });
-    
-    gsap.to(emoji, {
-        y: gsap.utils.random(-15, 15), x: gsap.utils.random(-15, 15), 
-        rotation: "+=" + gsap.utils.random(-20, 20),
-        duration: gsap.utils.random(2.5, 4),
-        yoyo: true, repeat: -1, ease: "sine.inOut"
-    });
-});
-
-// THE KILL SWITCH: Notice the onEnter and onLeaveBack commands here.
 const footerTl = gsap.timeline({
     scrollTrigger: {
         trigger: ".footer-scroll-trigger",
-        start: "top top", 
-        end: "bottom bottom", 
-        scrub: 1.5,
-        onEnter: () => gsap.set(".page5-container", { autoAlpha: 1 }),      // Turns ON when scrolling down
-        onLeaveBack: () => gsap.set(".page5-container", { autoAlpha: 0 }) // KILL SWITCH: Forces it OFF when scrolling up
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1.2,
+        onEnter: () => {
+            gsap.set(".page5-container", { autoAlpha: 1 });
+            // Drop target music levels if scrolling down on larger devices
+            if (window.innerWidth > 768 && bgMusic) {
+                gsap.to(bgMusic, { volume: 0.08, duration: 1 });
+            }
+        },
+        onLeaveBack: () => {
+            gsap.set(".page5-container", { autoAlpha: 0 });
+            if (window.innerWidth > 768 && bgMusic) {
+                gsap.to(bgMusic, { volume: 0.22, duration: 1 });
+            }
+        }
     }
 });
 
-// The set() is gone from here, animations remain exactly the same.
+// Overlapping slide sweep stagger based on Horizontal panel sweeps
 footerTl.add("unravel")
-        .to(".blind-up", { y: "-100vh", duration: 1, ease: "power2.inOut" }, "unravel")
-        .to(".blind-down", { y: "100vh", duration: 1, ease: "power2.inOut" }, "unravel")
-        .to({}, { duration: 0.5 })
-        .add("footerUp")
-        .to(".footer-video-bg", { filter: "blur(12px) brightness(0.4)", duration: 1 }, "footerUp")
-        .to(".navy-footer-box", { opacity: 1, scale: 1, duration: 1, ease: "power2.out" }, "footerUp")
-        .from(".giant-genix-outline span", { 
-            y: -250,                                
-            scale: 1.2,                             
-            opacity: 0,                             
-            rotation: () => gsap.utils.random(-25, 25), 
-            duration: 1.2,
-            stagger: { each: 0.15, from: "random" },
-            ease: "back.out(1.5)"                   
-        }, "footerUp+=0.1");
+        .to(".blind-left", { x: "-100vw", duration: 1.2, stagger: 0.15, ease: "power2.inOut" }, "unravel")
+        .to(".blind-right", { x: "100vw", duration: 1.2, stagger: 0.15, ease: "power2.inOut" }, "unravel")
+        .add("stageIn", "-=0.3")
+        .from(".contact-left-col > *", {
+            x: -30,
+            opacity: 0,
+            stagger: 0.12,
+            duration: 0.75,
+            ease: "power2.out"
+        }, "stageIn")
+        .from(".contact-dispatch-card", {
+            x: 40,
+            scale: 0.97,
+            opacity: 0,
+            duration: 0.8,
+            ease: "back.out(1.2)"
+        }, "stageIn+=0.1");
 
-// ==========================================
-// MOBILE WARNING & FLOATING EMOJI LOGIC
-// ==========================================
-let emojisAnimated = false; // Flag to prevent re-running the animation
+// Click-to-Copy Clipboard Engine for Discord ID & Gmail (Works in both Contact Page & Burger Menu)
+const copyTriggerBtns = document.querySelectorAll('.copy-trigger-btn');
 
-function handleMobileLockout() {
-    const warningOverlay = document.getElementById('mobile-warning-overlay');
+copyTriggerBtns.forEach(btn => {
+    const revealSpan = btn.querySelector('.copy-reveal-label');
+    const originalRevealText = revealSpan ? revealSpan.textContent : '';
 
-    // Check if the screen is mobile/tablet width
-    if (window.innerWidth <= 1024) {
-        warningOverlay.style.display = 'flex';
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const textToCopy = btn.getAttribute('data-copy');
+        if (!textToCopy) return;
 
-        // Animate the emojis ONLY if they haven't been animated yet
-        if (!emojisAnimated) {
-            const emojisM = gsap.utils.toArray('.emoji-m');
-            
-            // STRICT SAFE ZONES: Corners, far edges, top, and bottom. Away from the center!
-            const mobileSafeZones = [
-                { left: 15, top: 12 }, { left: 85, top: 12 }, // Top Corners
-                { left: 35, top: 8 },  { left: 65, top: 8 },  // Top Middle
-                { left: 15, top: 88 }, { left: 85, top: 88 }, // Bottom Corners
-                { left: 35, top: 92 }, { left: 65, top: 92 }, // Bottom Middle
-                { left: 8, top: 50 },  { left: 92, top: 50 }  // Left & Right Edges
-            ];
+        const showCopiedFeedback = () => {
+            btn.classList.add('copied-flash');
+            if (revealSpan) {
+                revealSpan.textContent = `COPIED: ${textToCopy} ✓`;
+            }
+            setTimeout(() => {
+                btn.classList.remove('copied-flash');
+                if (revealSpan) {
+                    revealSpan.textContent = originalRevealText;
+                }
+            }, 1800);
+        };
 
-            emojisM.forEach((emoji, index) => {
-                let zone = mobileSafeZones[index % mobileSafeZones.length];
-                
-                // Snap them to their safe zones
-                gsap.set(emoji, {
-                    opacity: 1,
-                    left: zone.left + "%",
-                    top: zone.top + "%",
-                    xPercent: -50,
-                    yPercent: -50,
-                    scale: gsap.utils.random(0.8, 1.2),
-                    rotation: gsap.utils.random(-45, 45)
-                });
-
-                // Tighter float animation so they don't wander into the yellow box
-                gsap.to(emoji, {
-                    x: gsap.utils.random(-15, 15),
-                    y: gsap.utils.random(-15, 15),
-                    rotation: "+=" + gsap.utils.random(-30, 30),
-                    duration: gsap.utils.random(15, 25),
-                    repeat: -1,
-                    yoyo: true,
-                    ease: "sine.inOut"
-                });
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(textToCopy).then(showCopiedFeedback).catch(() => {
+                const tempInput = document.createElement('input');
+                tempInput.value = textToCopy;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                showCopiedFeedback();
             });
-            emojisAnimated = true; 
+        } else {
+            const tempInput = document.createElement('input');
+            tempInput.value = textToCopy;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showCopiedFeedback();
         }
+    });
+});
 
-        // Ensure background music continues
-        const bgMusic = document.getElementById('bg-music');
-        if (bgMusic && bgMusic.paused && !bgMusic.ended) {
-            document.addEventListener('click', () => { bgMusic.volume = MUSIC_VOLUME; bgMusic.play(); isMusicPlaying = true; }, { once: true });
-        }
+// ==========================================
+// MOBILE TAP-TO-OPEN WHATSAPP QR HANDLER
+// ==========================================
+const whatsappWrapper = document.getElementById('whatsapp-wrapper');
+const getInTouchBtn = document.getElementById('get-in-touch-btn');
 
-    } else {
-        warningOverlay.style.display = 'none';
-        
-        const bgMusic = document.getElementById('bg-music');
-        if (bgMusic && bgMusic.paused && !bgMusic.ended) {
-             document.addEventListener('click', () => { bgMusic.volume = MUSIC_VOLUME; bgMusic.play(); isMusicPlaying = true; }, { once: true });
+if (getInTouchBtn && whatsappWrapper) {
+    getInTouchBtn.addEventListener('click', (e) => {
+        if (window.innerWidth <= 1024) {
+            // On mobile, tapping GET IN TOUCH toggles the QR code popup
+            e.preventDefault();
+            e.stopPropagation();
+            whatsappWrapper.classList.toggle('mobile-qr-open');
         }
-    }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 1024 && !whatsappWrapper.contains(e.target)) {
+            whatsappWrapper.classList.remove('mobile-qr-open');
+        }
+    });
 }
-
-// -------------------------------------------------------------
-// UNIFIED TRIGGERS
-// -------------------------------------------------------------
-loaderTl.call(handleMobileLockout);
-window.addEventListener('resize', handleMobileLockout); 
 
 // ==========================================
 // MODAL POP-UP LOGIC (All 3 Modals + 2-Step ESC + Audio Ducking)
@@ -910,11 +989,15 @@ const resumeBgMusicAfterVideo = () => {
 };
 
 // Video Projects Data (Numbering Removed)
+// Default audio level for all video players (45%)
+const DEFAULT_VIDEO_VOLUME = 0.45;
+
+// Video Projects Data (Add isReel: true to any 9:16 portrait Reel video!)
 const videoProjectsData = [
     {
         tag: "Rotoscope Animatic",
         title: "Lost in Paradise (JJK Ending Animatic)",
-        desc: "Self drawn 2D rotoscope animatic for Year End Class Video in Highschool. Used FLipaclip and Capcut Editor.",
+        desc: "Self drawn 2D rotoscope animatic for Year End Class Video in Highschool. Used FlipaClip and CapCut Editor.",
         videoSrc: "assets/videos/AnimationExe1.mp4",
         thumbSrc: "assets/images/Animatic1.jpg"
     },
@@ -935,14 +1018,14 @@ const videoProjectsData = [
     {
         tag: "Short Animatic Meme",
         title: "RPG Meme But its my friends",
-        desc: "Short animatic meme commisioned by my friends. I used Capcut Editor and Flipaclip to make this.",
+        desc: "Short animatic meme commissioned by my friends. I used CapCut Editor and FlipaClip to make this.",
         videoSrc: "assets/videos/AnimationExe2.mp4",
         thumbSrc: "assets/images/Animatic2.jpg"
     },
     {
         tag: "An App Review",
         title: "How and What is Discord?",
-        desc: "Tasked with creating an engaging youtube content where we review any app of our choice. Used Capcut to edit everything.",
+        desc: "Tasked with creating an engaging YouTube content where we review any app of our choice. Used CapCut to edit everything.",
         videoSrc: "assets/videos/App Review A2.mp4",
         thumbSrc: "assets/images/Appreview.jpg"
     },
@@ -956,21 +1039,21 @@ const videoProjectsData = [
     {
         tag: "Team Web Development Project",
         title: "Meet the Team behind Anak Essentials",
-        desc: "Eye catching introduction for a video explaination, the school has asked us to create a video of our progression as we develop a website for our client.",
+        desc: "Eye catching introduction for a video explanation, the school has asked us to create a video of our progression as we develop a website for our client.",
         videoSrc: "assets/videos/AnakEssentials.mp4",
         thumbSrc: "assets/images/Webdev1.jpg"
     },
     {
         tag: "Mini Vlog Content",
         title: "Repeat It - Class Activity",
-        desc: "Edited for fun, this is a short psycology activity that I enchanced a bit with some little edits to create a vlog content.",
+        desc: "Edited for fun, this is a short psychology activity that I enhanced a bit with some little edits to create a vlog content.",
         videoSrc: "assets/videos/VlogExe1.mp4",
         thumbSrc: "assets/images/Vlog1.jpg"
     },
     {
         tag: "Random Editing Skit Experiment",
         title: "Forgot the Mic wasn't muted.",
-        desc: "Was experimenting with different editing techniques using jpg images to recreate a story with characters in Capcut.",
+        desc: "Was experimenting with different editing techniques using jpg images to recreate a story with characters in CapCut.",
         videoSrc: "assets/videos/RandomExe1.mp4",
         thumbSrc: "assets/images/Random1.jpg"
     },
@@ -986,14 +1069,16 @@ const videoProjectsData = [
         title: "Team Behind Chuwayo - Trickal Fan Game",
         desc: "A Reel content to introduce our team behind the game development project.",
         videoSrc: "assets/videos/PromotionExe1.mp4",
-        thumbSrc: "assets/images/Advertisment.jpg"
+        thumbSrc: "assets/images/Advertisment.jpg",
+        isReel: true
     },
-        {
-        tag: "Shoft Vlog Reel Content",
-        title: "Team Behind Chuwayo - Trickal Fan Game",
-        desc: "A Reel content to introduce our team behind the game development project.",
+    {
+        tag: "Short Vlog Reel Content",
+        title: "Should He Open It or Keep it Sealed?",
+        desc: "Mini Vlog in a reel content format.",
         videoSrc: "assets/videos/VlogExe2.mp4",
-        thumbSrc: "assets/images/Vlog2.jpg"
+        thumbSrc: "assets/images/Vlog2.jpg",
+        isReel: true
     }
 ];
 
@@ -1008,18 +1093,28 @@ let veColTweens = [];
 const allNavyBoxes = [];
 let activeFocusedBox = null;
 
-// Helper to wire hover preview & click on any carousel card (State 1 or State 2)
+// Helper to wire hover preview & click on any carousel card (Lazy-loads video on hover so browser never hits decoder limit!)
 const bindCarouselCardEvents = (card, realIndex, pauseTweensFn, resumeTweensFn) => {
     const previewVid = card.querySelector('.ve-card-video');
 
     card.addEventListener('mouseenter', () => {
         pauseTweensFn();
         card.classList.add('is-previewing');
-        if (previewVid.readyState >= 1 && previewVid.duration) {
-            previewVid.currentTime = gsap.utils.random(0.4, Math.max(1, previewVid.duration * 0.75));
-        }
         previewVid.muted = true;
-        previewVid.play().catch(() => {});
+
+        const playRandomScene = () => {
+            if (previewVid.duration) {
+                previewVid.currentTime = gsap.utils.random(0.4, Math.max(1, previewVid.duration * 0.75));
+            }
+            previewVid.play().catch(() => {});
+        };
+
+        if (previewVid.readyState >= 1) {
+            playRandomScene();
+        } else {
+            previewVid.addEventListener('loadedmetadata', playRandomScene, { once: true });
+            previewVid.load();
+        }
     });
 
     card.addEventListener('mouseleave', () => {
@@ -1041,10 +1136,11 @@ if (veTrack && veNavyList) {
     fullCarouselList.forEach((item, idx) => {
         const realIndex = idx % videoProjectsData.length;
         const card = document.createElement('div');
-        card.className = 've-roulette-card';
+        card.className = `ve-roulette-card${item.isReel ? ' is-reel-card' : ''}`;
         card.innerHTML = `
-            <video class="ve-card-video" src="${item.videoSrc}" muted loop playsinline preload="metadata"></video>
-            <img class="ve-card-thumb" src="${item.thumbSrc}" alt="${item.title}">
+            <video class="ve-card-video" src="${encodeURI(item.videoSrc)}" muted loop playsinline preload="none"></video>
+            <img class="ve-card-thumb" src="${encodeURI(item.thumbSrc)}" alt="${item.title}">
+            ${item.isReel ? '<span class="ve-reel-pill">REEL 9:16</span>' : ''}
             <span class="ve-card-badge">${item.title}</span>
         `;
 
@@ -1060,32 +1156,35 @@ if (veTrack && veNavyList) {
 
     veMarqueeTween = gsap.to(veTrack, {
         xPercent: -50,
-        duration: 28,
+        duration: 38,
         ease: "none",
         repeat: -1
     });
 
-// 2. Build State 2 3-Column Angled Roulette (Col 1 Up, Col 2 Down, Col 3 Up)
+    // 2. Build State 2 3-Column Angled Roulette (Partitioned into 3 unique groups so the same video never appears across multiple columns!)
+    const colBuckets = [[], [], []];
+    videoProjectsData.forEach((item, realIndex) => {
+        colBuckets[realIndex % 3].push({ item, realIndex });
+    });
+
     const angledColumns = [
-        { el: veCol1, dir: "up",   offset: 0 },
-        { el: veCol2, dir: "down", offset: 2 },
-        { el: veCol3, dir: "up",   offset: 4 }
+        { el: veCol1, dir: "up",   bucket: colBuckets[0], duration: 24 },
+        { el: veCol2, dir: "down", bucket: colBuckets[1], duration: 28 },
+        { el: veCol3, dir: "up",   bucket: colBuckets[2], duration: 26 }
     ];
 
-    angledColumns.forEach(({ el, dir, offset }) => {
-        if (!el) return;
-        const rotated = videoProjectsData.map((_, i) => {
-            const realIndex = (i + offset) % videoProjectsData.length;
-            return { item: videoProjectsData[realIndex], realIndex };
-        });
-        const colItems = [...rotated, ...rotated];
+    angledColumns.forEach(({ el, dir, bucket, duration }) => {
+        if (!el || bucket.length === 0) return;
+        // Duplicate the unique bucket once for seamless -50% vertical looping
+        const colItems = [...bucket, ...bucket];
 
         colItems.forEach(({ item, realIndex }) => {
             const card = document.createElement('div');
-            card.className = 've-angled-card';
+            card.className = `ve-angled-card${item.isReel ? ' is-reel-card' : ''}`;
             card.innerHTML = `
-                <video class="ve-card-video" src="${item.videoSrc}" muted loop playsinline preload="metadata"></video>
-                <img class="ve-card-thumb" src="${item.thumbSrc}" alt="${item.title}">
+                <video class="ve-card-video" src="${encodeURI(item.videoSrc)}" muted loop playsinline preload="none"></video>
+                <img class="ve-card-thumb" src="${encodeURI(item.thumbSrc)}" alt="${item.title}">
+                ${item.isReel ? '<span class="ve-reel-pill">REEL</span>' : ''}
                 <span class="ve-card-badge">${item.title}</span>
             `;
 
@@ -1099,12 +1198,11 @@ if (veTrack && veNavyList) {
             el.appendChild(card);
         });
 
-        // Col 1 & 3 move Downwards (-50% -> 0%), Col 2 moves Upwards (0% -> -50%)
         const tween = gsap.fromTo(el,
             { yPercent: dir === "down" ? -50 : 0 },
             {
                 yPercent: dir === "down" ? 0 : -50,
-                duration: 22,
+                duration: duration,
                 ease: "none",
                 repeat: -1
             }
@@ -1112,22 +1210,22 @@ if (veTrack && veNavyList) {
         veColTweens.push(tween);
     });
 
-    // 3. Build Right-Side Player Cards (Yellow Media Player on Top + Orange Navy Info Box Below)
+    // 3. Build Right-Side Player Cards (Automatically uses 9:16 vertical layout when item.isReel is true)
     videoProjectsData.forEach((item, index) => {
         const box = document.createElement('article');
-        box.className = 've-navy-box';
+        box.className = `ve-navy-box${item.isReel ? ' is-reel-box' : ''}`;
         box.setAttribute('data-original-index', index);
         box.innerHTML = `
             <div class="ve-player-stage">
-                <video class="ve-main-video" src="${item.videoSrc}" playsinline preload="metadata"></video>
-                <img class="ve-main-thumb" src="${item.thumbSrc}" alt="${item.title}">
+                <video class="ve-main-video" src="${encodeURI(item.videoSrc)}" playsinline preload="metadata"></video>
+                <img class="ve-main-thumb" src="${encodeURI(item.thumbSrc)}" alt="${item.title}">
                 <button type="button" class="ve-center-play-btn" title="Play Video">&#9654;</button>
                 <div class="ve-controls-bar">
                     <button type="button" class="ve-ctrl-btn ve-play-toggle" title="Play/Pause (Space)">&#9654;</button>
                     <input type="range" class="ve-progress-slider" min="0" max="100" value="0" step="0.1">
                     <div class="ve-volume-wrap">
                         <button type="button" class="ve-ctrl-btn ve-mute-toggle" title="Mute/Unmute">&#128266;</button>
-                        <input type="range" class="ve-volume-slider" min="0" max="1" value="0.8" step="0.05">
+                        <input type="range" class="ve-volume-slider" min="0" max="1" value="${DEFAULT_VIDEO_VOLUME}" step="0.05">
                     </div>
                     <button type="button" class="ve-ctrl-btn ve-fullscreen-btn" title="Fullscreen">&#x26F6;</button>
                 </div>
@@ -1176,30 +1274,49 @@ const toggleNavyBoxPlay = (box) => {
     box.classList.add('active-box');
 
     if (vid.paused) {
-        // Stop & reset all other videos to 0:00
         allNavyBoxes.forEach(otherBox => {
             if (otherBox !== box) {
                 resetNavyBoxVideo(otherBox);
             }
         });
 
-        // Pause background music while video plays
         pauseBgMusicForVideo();
 
-        vid.play().catch(() => {});
         box.classList.add('is-playing');
         playToggle.innerHTML = '&#10074;&#10074;';
+
+        if (vid.readyState === 0) {
+            vid.load();
+        }
+        vid.play().then(() => {
+            // Ensure audio ducking stays locked while video is actively playing
+            if (vid.paused) resumeBgMusicAfterVideo();
+        }).catch((err) => {
+            console.warn("Video play error:", vid.src, err);
+            resumeBgMusicAfterVideo();
+        });
     } else {
         vid.pause();
         box.classList.remove('is-playing');
         playToggle.innerHTML = '&#9654;';
 
-        // Smoothly fade background music back in when video pauses
         if (!isAnyModalVideoPlaying()) {
             resumeBgMusicAfterVideo();
         }
     }
 };
+
+// Robust Fullscreen Change Handler: Always checks if any modal video is still playing before deciding to resume background music
+document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+        // Short delay to let browser settle state
+        setTimeout(() => {
+            if (!isAnyModalVideoPlaying()) {
+                resumeBgMusicAfterVideo();
+            }
+        }, 100);
+    }
+});
 
 allNavyBoxes.forEach((box) => {
     const vid = box.querySelector('.ve-main-video');
@@ -1211,7 +1328,8 @@ allNavyBoxes.forEach((box) => {
     const fullscreenBtn = box.querySelector('.ve-fullscreen-btn');
     const playerStage = box.querySelector('.ve-player-stage');
 
-    vid.volume = 0.8;
+    // Lock default audio level to 45% (0.45)
+    vid.volume = DEFAULT_VIDEO_VOLUME;
 
     centerPlayBtn.addEventListener('click', () => toggleNavyBoxPlay(box));
     playToggle.addEventListener('click', () => toggleNavyBoxPlay(box));
@@ -1258,21 +1376,47 @@ allNavyBoxes.forEach((box) => {
     });
 });
 
-// Enter State 2: Dynamically Reorder Right-Side List Starting with Clicked Video!
+// Enter State 2: Smart Reorder with Side-by-Side 2-Reel Grid Support ([landscape], [reel][reel])
 const enterVeSplitState = (targetIndex) => {
     if (!veLayout || !modalVE || !veNavyList) return;
 
-    // Stop any playing video before reordering
     allNavyBoxes.forEach(box => resetNavyBoxVideo(box));
     resumeBgMusicAfterVideo();
 
-    // Circular Loop Reorder: targetIndex goes to the very top, followed by the rest in loop order
+    veNavyList.innerHTML = '';
+
     const total = allNavyBoxes.length;
-    for (let i = 0; i < total; i++) {
-        const circularIdx = (targetIndex + i) % total;
-        const box = allNavyBoxes[circularIdx];
-        box.classList.toggle('active-box', i === 0);
-        veNavyList.appendChild(box);
+    let i = 0;
+
+    while (i < total) {
+        const currentIdx = (targetIndex + i) % total;
+        const currentBox = allNavyBoxes[currentIdx];
+        const currentItem = videoProjectsData[currentIdx];
+
+        // Check if current and next are both reels -> group into side-by-side [reel][reel] row!
+        if (i + 1 < total) {
+            const nextIdx = (targetIndex + i + 1) % total;
+            const nextBox = allNavyBoxes[nextIdx];
+            const nextItem = videoProjectsData[nextIdx];
+
+            if (currentItem.isReel && nextItem.isReel) {
+                const gridRow = document.createElement('div');
+                gridRow.className = 've-reel-grid-row';
+                
+                currentBox.classList.toggle('active-box', i === 0);
+                nextBox.classList.toggle('active-box', false);
+
+                gridRow.appendChild(currentBox);
+                gridRow.appendChild(nextBox);
+                veNavyList.appendChild(gridRow);
+                i += 2;
+                continue;
+            }
+        }
+
+        currentBox.classList.toggle('active-box', i === 0);
+        veNavyList.appendChild(currentBox);
+        i++;
     }
 
     activeFocusedBox = allNavyBoxes[targetIndex];
@@ -1281,14 +1425,18 @@ const enterVeSplitState = (targetIndex) => {
     modalVE.classList.add('split-scroll-enabled');
     if (veEscLabel) veEscLabel.textContent = "ESC (BACK)";
 
-    // Always start right at the top since the selected video is now #1 in the list
     modalVE.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 const exitVeSplitState = () => {
-    if (!veLayout || !modalVE) return;
+    if (!veLayout || !modalVE || !veNavyList) return;
     allNavyBoxes.forEach(box => resetNavyBoxVideo(box));
     resumeBgMusicAfterVideo();
+
+    // Restore original flat order in DOM
+    veNavyList.innerHTML = '';
+    allNavyBoxes.forEach(box => veNavyList.appendChild(box));
+
     veLayout.classList.remove('split-active');
     modalVE.classList.remove('split-scroll-enabled');
     if (veEscLabel) veEscLabel.textContent = "ESC";

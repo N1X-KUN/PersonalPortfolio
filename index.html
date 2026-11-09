@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GMF | PORTFOLIO</title>
-    <link rel="icon" type="image/png" href="assets/images/Logo.png">
-    <link rel="shortcut icon" type="image/png" href="assets/images/Logo.png">
-    <link rel="apple-touch-icon" href="assets/images/Logo.png">
+    <!-- Favicon fallback utilizing the exact custom GX visual dynamically -->
+    <link rel="icon" id="dynamic-favicon" type="image/png" href="assets/images/Logo.jpg">
+    <link rel="shortcut icon" type="image/png" href="assets/images/Logo.jpg">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,39 +15,19 @@
     <link rel="stylesheet" href="css/Portfolio.css">
 </head>
 <body>
-    <div class="mobile-warning" id="mobile-warning-overlay">
-        <a href="https://wa.me/393282498223?text=Hey%20Let's%20Work%20Together!" target="_blank" class="whatsapp-btn warning-whatsapp">
-            <svg viewBox="0 0 448 512" style="width: 45px; height: 45px; fill: #25D366;"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-23.2-115-65.1-157zM223.9 414.8c-33.2 0-65.8-8.9-94-25.7l-6.7-4-69.8 18.3L72 334.1l-4.4-7.1c-18.9-30.2-28.9-65-28.9-101 0-104 84.6-188.6 188.8-188.6 50.4 0 97.8 19.6 133.4 55.3s55.2 83.1 55.2 133.5c0 104-84.6 188.6-188.7 188.6zm103.6-141.7c-5.7-2.8-33.8-16.7-39-18.6-5.2-1.9-9-2.8-12.8 2.8s-14.7 18.6-18 22.4c-3.3 3.8-6.6 4.3-12.3 1.4-5.7-2.8-24.1-8.9-45.9-25.3-17-12.7-28.5-28.4-31.9-34.1-3.3-5.7-.4-8.8 2.4-11.6 2.6-2.6 5.7-6.6 8.5-9.9 2.8-3.3 3.8-5.7 5.7-9.5 1.9-3.8.9-7.1-.5-9.9-1.4-2.8-12.8-30.9-17.5-42.3-4.6-11.1-9.3-9.6-12.8-9.8-3.3-.2-7.1-.2-10.9-.2s-9.9 1.4-15.1 7.1c-5.2 5.7-20.3 19.9-20.3 48.5s20.8 56.3 23.7 60.1c2.8 3.8 41 62.7 99.3 85.5 14.1 5.5 25.1 8.8 33.7 11.2 14.1 4.5 27 3.8 37.1 2.3 11.4-1.7 33.8-13.8 38.6-27.1 4.7-13.3 4.7-24.7 3.3-27.1-1.4-2.5-5.2-3.9-10.9-6.7z"/></svg>
-        </a>
-        <p class="watermark warning-watermark">@GERARD.26</p>
-
-        <div class="floating-emojis-mobile">
-            <div class="emoji-m">🤣</div>
-            <div class="emoji-m">😩</div>
-            <div class="emoji-m">😴</div>
-            <div class="emoji-m">🤪</div>
-            <div class="emoji-m">🤡</div>
-            <div class="emoji-m">🤓</div>
-            <div class="emoji-m">😇</div>
-            <div class="emoji-m">🤨</div>
-            <div class="emoji-m">😲</div>
-            <div class="emoji-m">😱</div>
-        </div>
-
-        <div class="warning-content">
-            <img class="warning-gif" src="assets/images/버터_Groggy.gif" alt="Animated Genix">
-
-            <span class="warning-icon">💻</span>
-            <h2>Desktop Recommended!</h2>
-            <p>Yes you only see this lol.</p>
-            <p>Please view this experience on a Laptop or PC for the optimal creative journey!</p>
-        </div>
-    </div>
-    
-    <div class="loader-wrapper">
+<div class="loader-wrapper">
         <div class="loader-panel panel-top"></div>
         <div class="loader-panel panel-bottom"></div>
-        <h1 class="loader-text">GENIX</h1>
+        <div class="loader-center-stack">
+            <img class="loader-mobile-gif" src="assets/images/버터_Groggy.gif" alt="Dancing Genix">
+            <h1 class="loader-text">GENIX</h1>
+            <div class="loader-mobile-notice">
+                <p class="loader-notice-text">💻 Better experienced in desktop format</p>
+                <div class="loader-progress-track">
+                    <div class="loader-progress-bar" id="loader-progress-bar"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <audio id="bg-music" loop preload="auto">
@@ -82,11 +62,12 @@
             </nav>
         </div>
 
-        <!-- Right Side: GET IN TOUCH -> MSG ME HERE + Hover QR (Follows on all pages except pop-ups) -->
-        <div class="whatsapp-wrapper">
-            <div class="qr-tooltip">
+<!-- Right Side: GET IN TOUCH -> MSG ME HERE + Hover/Tap QR -->
+        <div class="whatsapp-wrapper" id="whatsapp-wrapper">
+            <div class="qr-tooltip" id="qr-tooltip">
                 <img src="assets/images/WhatsApp-QR.jpg" alt="Scan to WhatsApp">
                 <p>Scan to Chat!</p>
+                <a href="https://wa.me/qr/4GG36UBSFRWQI1" target="_blank" rel="noopener noreferrer" class="qr-direct-link">Open WhatsApp &nearr;</a>
             </div>
             <a href="https://wa.me/qr/4GG36UBSFRWQI1" target="_blank" rel="noopener noreferrer" class="get-in-touch-btn" id="get-in-touch-btn">
                 <span class="git-text git-default">GET IN TOUCH &rarr;</span>
@@ -119,23 +100,77 @@
         </div>
     </header>
 
-    <!-- Burger Overlay (Socials & Music Toggle) -->
+<!-- Burger Overlay (Redesigned Quick-Access Hub: All 5 Socials, Dual CV Downloads & Audio Toggle) -->
     <div class="menu-overlay" id="menu-overlay">
-        <div class="menu-content">
-            <div class="menu-socials">
-                <p>CONNECT</p>
-                <div class="social-row">
-                    <a href="https://github.com/N1X-KUN" target="_blank">
-                        <svg class="menu-social-icon" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        <div class="menu-hub-wrapper">
+            
+            <div class="menu-hub-header">
+                <span class="menu-hub-tag">QUICK DIRECTORY &bull; DUBAI, UAE</span>
+                <h2 class="menu-hub-title">CONNECT &amp; RESUME</h2>
+            </div>
+
+            <!-- 5 Social Pills (Direct Links + Hover-Reveal Copy for Discord & Gmail) -->
+            <div class="menu-social-grid">
+                <a href="https://www.linkedin.com/in/gerard-matthew-fernandez-9aa8a8374/" target="_blank" rel="noopener noreferrer" class="menu-social-card">
+                    <svg class="menu-sc-icon" viewBox="0 0 448 512"><path d="M100.28 148.14L100.28 148.14c-28.02 0-46.28-18.51-46.28-41.67 0-23.64 18.74-41.68 47.26-41.68 28.5 0 46.27 18.04 46.75 41.68 0 23.16-18.25 41.67-47.73 41.67zm-30.82 283.84h61.64V179.9H69.46v252.08zm267.06-259c-32.9 0-47.72 18.15-56.02 30.93v-26.6h-61.65c.81 17.43 0 254.67 0 254.67h61.65V280.97c0-7.39.53-14.78 2.69-20.08 5.92-14.77 19.34-30.06 41.9-30.06 29.58 0 41.44 22.56 41.44 55.61v145.54h61.65V278.43c0-82.4-43.98-120.73-102.34-120.73z"/></svg>
+                    <div class="menu-sc-text">
+                        <span class="menu-sc-name">LINKEDIN</span>
+                        <span class="menu-sc-sub">Professional Profile &nearr;</span>
+                    </div>
+                </a>
+
+                <a href="https://www.youtube.com/@NTX-KUN" target="_blank" rel="noopener noreferrer" class="menu-social-card">
+                    <svg class="menu-sc-icon" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.781 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
+                    <div class="menu-sc-text">
+                        <span class="menu-sc-name">YOUTUBE</span>
+                        <span class="menu-sc-sub">@NTX-KUN Channel &nearr;</span>
+                    </div>
+                </a>
+
+                <a href="https://github.com/N1X-KUN" target="_blank" rel="noopener noreferrer" class="menu-social-card">
+                    <svg class="menu-sc-icon" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    <div class="menu-sc-text">
+                        <span class="menu-sc-name">GITHUB</span>
+                        <span class="menu-sc-sub">@N1X-KUN Repos &nearr;</span>
+                    </div>
+                </a>
+
+                <button type="button" class="menu-social-card copy-trigger-btn" data-copy="612114025530261517">
+                    <svg class="menu-sc-icon" viewBox="0 0 640 512"><path d="M524.531,69.836a1.5,1.5,0,0,0-.764-.7A485.065,485.065,0,0,0,404.081,32.03a1.816,1.816,0,0,0-1.923.91,337.461,337.461,0,0,0-14.9,30.6,447.848,447.848,0,0,0-134.426,0,309.541,309.541,0,0,0-15.135-30.6,1.89,1.89,0,0,0-1.924-.91A483.689,483.689,0,0,0,116.085,69.137a1.712,1.712,0,0,0-.788.676C39.068,183.651,18.186,294.69,28.43,404.354a2.016,2.016,0,0,0,.765,1.375A487.666,487.666,0,0,0,176.02,479.918a1.9,1.9,0,0,0,2.063-.276c8.3-11.455,15.894-23.475,22.846-35.96a1.884,1.884,0,0,0-1.058-2.617,314.168,314.168,0,0,1-44.821-21.365,1.88,1.88,0,0,1-.188-3.155c3.08-2.316,6.138-4.7,9.088-7.144a1.834,1.834,0,0,1,1.924-.225c95.234,43.518,198.374,43.518,292.368,0a1.841,1.841,0,0,1,1.924.225c2.95,2.44,6.008,4.828,9.112,7.144a1.884,1.884,0,0,1-.164,3.155,310.573,310.573,0,0,1-44.869,21.365,1.88,1.88,0,0,0-1.035,2.617c6.976,12.485,14.568,24.5,22.822,35.96a1.894,1.894,0,0,0,2.063.276A486.2,486.2,0,0,0,611.534,405.729a1.882,1.882,0,0,0,.765-1.352C623.729,277.594,590.933,167.465,524.531,69.836ZM222.491,337.58c-28.972,0-52.844-26.587-52.844-59.239S193.056,219.1,222.491,219.1c29.665,0,53.306,26.82,52.843,59.239C275.334,310.993,251.924,337.58,222.491,337.58Zm195.38,0c-28.971,0-52.843-26.587-52.843-59.239S388.437,219.1,417.871,219.1c29.667,0,53.307,26.82,52.844,59.239C470.715,310.993,447.538,337.58,417.871,337.58Z"/></svg>
+                    <div class="menu-sc-text">
+                        <span class="menu-sc-name">DISCORD ID</span>
+                        <span class="menu-sc-sub copy-default-label">Hover to Reveal &bull; Click to Copy</span>
+                        <span class="menu-sc-sub copy-reveal-label">612114025530261517 (Click to Copy)</span>
+                    </div>
+                </button>
+
+                <button type="button" class="menu-social-card copy-trigger-btn" data-copy="gerardmf55@gmail.com">
+                    <svg class="menu-sc-icon" viewBox="0 0 512 512"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+                    <div class="menu-sc-text">
+                        <span class="menu-sc-name">GMAIL DIRECT</span>
+                        <span class="menu-sc-sub copy-default-label">Hover to Reveal &bull; Click to Copy</span>
+                        <span class="menu-sc-sub copy-reveal-label">gerardmf55@gmail.com (Click to Copy)</span>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Dual CV Download Dock inside Burger Menu -->
+            <div class="menu-cv-dock">
+                <span class="menu-cv-label">CURRICULUM VITAE OPTIONS</span>
+                <div class="menu-cv-buttons">
+                    <!-- <-- Put your Creative CV file path in href below -->
+                    <a href="assets/GerardMatthew CV 26.pdf" download class="menu-cv-btn primary-cv">
+                        <span>DOWNLOAD CREATIVE CV</span>
+                        <span>&darr;</span>
                     </a>
-                    <a href="https://www.youtube.com/@NTX-KUN" target="_blank">
-                        <svg class="menu-social-icon" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.781 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
-                    </a>
-                    <a href="https://www.linkedin.com/in/gerard-matthew-fernandez-9aa8a8374/" target="_blank">
-                        <svg class="menu-social-icon" viewBox="0 0 448 512"><path d="M100.28 148.14L100.28 148.14c-28.02 0-46.28-18.51-46.28-41.67 0-23.64 18.74-41.68 47.26-41.68 28.5 0 46.27 18.04 46.75 41.68 0 23.16-18.25 41.67-47.73 41.67zm-30.82 283.84h61.64V179.9H69.46v252.08zm267.06-259c-32.9 0-47.72 18.15-56.02 30.93v-26.6h-61.65c.81 17.43 0 254.67 0 254.67h61.65V280.97c0-7.39.53-14.78 2.69-20.08 5.92-14.77 19.34-30.06 41.9-30.06 29.58 0 41.44 22.56 41.44 55.61v145.54h61.65V278.43c0-82.4-43.98-120.73-102.34-120.73z"/></svg>
+                    <!-- <-- Put your ATS CV file path in href below -->
+                    <a href="assets/GerardMatthew_ATS_CV.pdf" download class="menu-cv-btn ats-cv">
+                        <span>DOWNLOAD ATS-FRIENDLY CV</span>
+                        <span>&darr;</span>
                     </a>
                 </div>
             </div>
+
         </div>
         <button id="music-toggle" class="music-btn">🔊SILENCE</button>
     </div>
@@ -159,12 +194,52 @@
                 </p>
             </div>
 
-            <!-- Bottom-Left Corner Description Block -->
+<!-- Bottom-Left Corner Description Block -->
             <div class="hero-corner-bio">
                 <p class="hero-bio-paragraph">
                     <strong>Gerard Matthew Guanco Fernandez</strong> is a multidisciplinary digital media specialist turning creative concepts into memorable experiences. Front-end web production, high-retention video editing, and interactive brand storytelling working as one.
                 </p>
                 <span class="hero-bio-rule"></span>
+            </div>
+
+            <!-- MOBILE-ONLY HOMESCREEN DOCK (CV Downloads + Socials + Tap-to-Copy Discord/Gmail) -->
+            <div class="mobile-home-dock">
+                <div class="mobile-dock-cvs">
+                    <a href="assets/GerardMatthew CV 26.pdf" download class="mobile-dock-cv-btn primary">
+                        CREATIVE CV &darr;
+                    </a>
+                    <a href="assets/GerardMatthew_ATS_CV.pdf" download class="mobile-dock-cv-btn secondary">
+                        ATS CV &darr;
+                    </a>
+                </div>
+
+                <div class="mobile-dock-socials">
+                    <a href="https://www.linkedin.com/in/gerard-matthew-fernandez-9aa8a8374/" target="_blank" rel="noopener noreferrer" class="mob-social-pill">
+                        <svg viewBox="0 0 448 512"><path d="M100.28 148.14L100.28 148.14c-28.02 0-46.28-18.51-46.28-41.67 0-23.64 18.74-41.68 47.26-41.68 28.5 0 46.27 18.04 46.75 41.68 0 23.16-18.25 41.67-47.73 41.67zm-30.82 283.84h61.64V179.9H69.46v252.08zm267.06-259c-32.9 0-47.72 18.15-56.02 30.93v-26.6h-61.65c.81 17.43 0 254.67 0 254.67h61.65V280.97c0-7.39.53-14.78 2.69-20.08 5.92-14.77 19.34-30.06 41.9-30.06 29.58 0 41.44 22.56 41.44 55.61v145.54h61.65V278.43c0-82.4-43.98-120.73-102.34-120.73z"/></svg>
+                        <span>LINKEDIN</span>
+                    </a>
+                    <a href="https://www.youtube.com/@NTX-KUN" target="_blank" rel="noopener noreferrer" class="mob-social-pill">
+                        <svg viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.781 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
+                        <span>YOUTUBE</span>
+                    </a>
+                    <a href="https://github.com/N1X-KUN" target="_blank" rel="noopener noreferrer" class="mob-social-pill">
+                        <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        <span>GITHUB</span>
+                    </a>
+                </div>
+
+                <div class="mobile-dock-copy-row">
+                    <button type="button" class="mob-copy-pill copy-trigger-btn" data-copy="612114025530261517">
+                        <span class="mob-copy-title">DISCORD ID</span>
+                        <span class="copy-default-label">Tap to Copy ID</span>
+                        <span class="copy-reveal-label">612114025530261517</span>
+                    </button>
+                    <button type="button" class="mob-copy-pill copy-trigger-btn" data-copy="gerardmf55@gmail.com">
+                        <span class="mob-copy-title">GMAIL</span>
+                        <span class="copy-default-label">Tap to Copy Email</span>
+                        <span class="copy-reveal-label">gerardmf55@gmail.com</span>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -313,98 +388,160 @@
 
     <section class="footer-scroll-trigger"></section>
 
+<!-- ==========================================
+         PAGE 5: REMODELED CONTACT ME HUB (No Video Bg)
+         ========================================== -->
     <div class="page5-container">
-        <video class="footer-video-bg" src="assets/videos/Welcome to Metavers.mp4" autoplay loop muted playsinline></video>
         
-        <div class="yellow-blinds">
-            <div class="blind blind-up"></div>
-            <div class="blind blind-down"></div>
-            <div class="blind blind-up"></div>
-            <div class="blind blind-down"></div>
-            <div class="blind blind-up"></div>
+<!-- OVERLAPPING WHITE/SILVER CASCADE TRANSITION SWEEPS -->
+        <div class="white-blinds">
+            <div class="blind blind-left"></div>
+            <div class="blind blind-right"></div>
+            <div class="blind blind-left"></div>
+            <div class="blind blind-right"></div>
+            <div class="blind blind-left"></div>
         </div>
 
-        <div class="navy-footer-box">
-            <div class="footer-grid">
-                
-                <div class="grid-top">
-                    <div class="contact-header-box">
-                        <h4>CONTACT ME</h4>
-                    </div>
+        <!-- Infinite Top Marquee Ribbon -->
+        <div class="contact-marquee-bar">
+            <div class="contact-marquee-track">
+                <span>LET'S BUILD SOMETHING MEMORABLE</span><span class="marquee-star">&#9733;</span>
+                <span>FRONT-END WEB PRODUCTION</span><span class="marquee-star">&#9733;</span>
+                <span>HIGH-RETENTION VIDEO EDITING</span><span class="marquee-star">&#9733;</span>
+                <span>CREATIVE COMPUTING</span><span class="marquee-star">&#9733;</span>
+                <span>LET'S BUILD SOMETHING MEMORABLE</span><span class="marquee-star">&#9733;</span>
+                <span>FRONT-END WEB PRODUCTION</span><span class="marquee-star">&#9733;</span>
+                <span>HIGH-RETENTION VIDEO EDITING</span><span class="marquee-star">&#9733;</span>
+                <span>CREATIVE COMPUTING</span><span class="marquee-star">&#9733;</span>
+            </div>
+        </div>
 
-                    <div class="emoji-container">
-                        <span class="float-emoji">😔</span>
-                        <span class="float-emoji">💀</span>
-                        <span class="float-emoji">😭</span>
-                        <span class="float-emoji">😏</span>
-                        <span class="float-emoji">🤷</span>
-                        <span class="float-emoji">🤣</span>
-                        <span class="float-emoji">6️⃣</span>
-                        <span class="float-emoji">7️⃣</span>
-                        <span class="float-emoji">🙉</span>
-                        <span class="float-emoji">🎅🏿</span>
-                    </div>
-                    
-                    <h1 class="giant-genix-outline">
-                        <span>G</span><span>E</span><span>N</span><span>I</span><span>X</span>
-                    </h1>
+        <!-- Main Contact Stage -->
+        <div class="contact-stage-wrapper">
+            
+            <!-- LEFT COLUMN: Headline + Interactive 5-Row Social Directory + Dual CV Dock -->
+            <div class="contact-left-col">
+                <div class="contact-hero-head">
+                    <span class="contact-status-pill">
+                        <span class="status-dot"></span> AVAILABLE FOR PROJECTS &amp; ROLES
+                    </span>
+                    <h2 class="contact-giant-title">
+                        LET'S <span class="yellow-stroke-word">CONNECT</span><br>&amp; COLLABORATE.
+                    </h2>
                 </div>
-                
-                <div class="grid-bottom">
+
+                <!-- StefanoBG-Style Interactive Social & Copy Rows -->
+                <div class="contact-directory-list">
                     
-                    <div class="social-box">
-                        <p class="box-title">SOCIAL</p>
-                        <ul>
-                            <li>
-                                <a href="https://github.com/N1X-KUN" target="_blank">
-                                    <svg class="social-icon" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                                    GitHub
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.youtube.com/@NTX-KUN" target="_blank">
-                                    <svg class="social-icon" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.781 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
-                                    YouTube
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.linkedin.com/in/gerard-matthew-fernandez-9aa8a8374/" target="_blank">
-                                    <svg class="social-icon" viewBox="0 0 448 512"><path d="M100.28 148.14L100.28 148.14c-28.02 0-46.28-18.51-46.28-41.67 0-23.64 18.74-41.68 47.26-41.68 28.5 0 46.27 18.04 46.75 41.68 0 23.16-18.25 41.67-47.73 41.67zm-30.82 283.84h61.64V179.9H69.46v252.08zm267.06-259c-32.9 0-47.72 18.15-56.02 30.93v-26.6h-61.65c.81 17.43 0 254.67 0 254.67h61.65V280.97c0-7.39.53-14.78 2.69-20.08 5.92-14.77 19.34-30.06 41.9-30.06 29.58 0 41.44 22.56 41.44 55.61v145.54h61.65V278.43c0-82.4-43.98-120.73-102.34-120.73z"/></svg>
-                                    LinkedIn
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" target="_blank">
-                                    <svg class="social-icon" viewBox="0 0 640 512"><path d="M524.531,69.836a1.5,1.5,0,0,0-.764-.7A485.065,485.065,0,0,0,404.081,32.03a1.816,1.816,0,0,0-1.923.91,337.461,337.461,0,0,0-14.9,30.6,447.848,447.848,0,0,0-134.426,0,309.541,309.541,0,0,0-15.135-30.6,1.89,1.89,0,0,0-1.924-.91A483.689,483.689,0,0,0,116.085,69.137a1.712,1.712,0,0,0-.788.676C39.068,183.651,18.186,294.69,28.43,404.354a2.016,2.016,0,0,0,.765,1.375A487.666,487.666,0,0,0,176.02,479.918a1.9,1.9,0,0,0,2.063-.276c8.3-11.455,15.894-23.475,22.846-35.96a1.884,1.884,0,0,0-1.058-2.617,314.168,314.168,0,0,1-44.821-21.365,1.88,1.88,0,0,1-.188-3.155c3.08-2.316,6.138-4.7,9.088-7.144a1.834,1.834,0,0,1,1.924-.225c95.234,43.518,198.374,43.518,292.368,0a1.841,1.841,0,0,1,1.924.225c2.95,2.44,6.008,4.828,9.112,7.144a1.884,1.884,0,0,1-.164,3.155,310.573,310.573,0,0,1-44.869,21.365,1.88,1.88,0,0,0-1.035,2.617c6.976,12.485,14.568,24.5,22.822,35.96a1.894,1.894,0,0,0,2.063.276A486.2,486.2,0,0,0,611.534,405.729a1.882,1.882,0,0,0,.765-1.352C623.729,277.594,590.933,167.465,524.531,69.836ZM222.491,337.58c-28.972,0-52.844-26.587-52.844-59.239S193.056,219.1,222.491,219.1c29.665,0,53.306,26.82,52.843,59.239C275.334,310.993,251.924,337.58,222.491,337.58Zm195.38,0c-28.971,0-52.843-26.587-52.843-59.239S388.437,219.1,417.871,219.1c29.667,0,53.307,26.82,52.844,59.239C470.715,310.993,447.538,337.58,417.871,337.58Z"/></svg>
-                                    disc.nix
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    <a href="https://www.linkedin.com/in/gerard-matthew-fernandez-9aa8a8374/" target="_blank" rel="noopener noreferrer" class="contact-dir-row">
+                        <span class="dir-platform">
+                            <svg class="dir-icon" viewBox="0 0 448 512"><path d="M100.28 148.14L100.28 148.14c-28.02 0-46.28-18.51-46.28-41.67 0-23.64 18.74-41.68 47.26-41.68 28.5 0 46.27 18.04 46.75 41.68 0 23.16-18.25 41.67-47.73 41.67zm-30.82 283.84h61.64V179.9H69.46v252.08zm267.06-259c-32.9 0-47.72 18.15-56.02 30.93v-26.6h-61.65c.81 17.43 0 254.67 0 254.67h61.65V280.97c0-7.39.53-14.78 2.69-20.08 5.92-14.77 19.34-30.06 41.9-30.06 29.58 0 41.44 22.56 41.44 55.61v145.54h61.65V278.43c0-82.4-43.98-120.73-102.34-120.73z"/></svg>
+                            LINKEDIN
+                        </span>
+                        <span class="dir-handle">Gerard Matthew Fernandez</span>
+                        <span class="dir-action">&nearr;</span>
+                    </a>
 
-                    <div class="academic-box">
-                        <p class="box-title">ACADEMIC</p>
-                        <p class="academic-text">
-                            Module Course: Creative Incubator<br>
-                            School: Bathspa University Rak
-                        </p>
-                        <a href="assets/GerardMatthew CV 26.pdf" download class="cv-btn">Wanna Explore My CV?</a>
-                    </div>
+                    <a href="https://www.youtube.com/@NTX-KUN" target="_blank" rel="noopener noreferrer" class="contact-dir-row">
+                        <span class="dir-platform">
+                            <svg class="dir-icon" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.781 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
+                            YOUTUBE
+                        </span>
+                        <span class="dir-handle">@NTX-KUN</span>
+                        <span class="dir-action">&nearr;</span>
+                    </a>
 
-                    <div class="email-box">
-                        <p class="box-title">SEND A MESSAGE</p>
-                        <form action="https://formsubmit.co/GERARDMF55@GMAIL.COM" method="POST">
-                            <input type="hidden" name="_captcha" value="false">
-                            <input type="hidden" name="_subject" value="New message from Portfolio!">
-                            <input type="text" name="name" placeholder="Your name" required>
-                            <input type="email" name="email" placeholder="Your email" required>
-                            <textarea name="message" placeholder="Your message" required></textarea>
-                            <button type="submit" class="send-btn">Send Message ➔</button>
-                        </form>
-                    </div>
+                    <a href="https://github.com/N1X-KUN" target="_blank" rel="noopener noreferrer" class="contact-dir-row">
+                        <span class="dir-platform">
+                            <svg class="dir-icon" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                            GITHUB
+                        </span>
+                        <span class="dir-handle">github.com/N1X-KUN</span>
+                        <span class="dir-action">&nearr;</span>
+                    </a>
 
+                    <!-- Discord ID: Hover Showcase + Click to Copy -->
+                    <button type="button" class="contact-dir-row copy-trigger-btn" data-copy="612114025530261517">
+                        <span class="dir-platform">
+                            <svg class="dir-icon" viewBox="0 0 640 512"><path d="M524.531,69.836a1.5,1.5,0,0,0-.764-.7A485.065,485.065,0,0,0,404.081,32.03a1.816,1.816,0,0,0-1.923.91,337.461,337.461,0,0,0-14.9,30.6,447.848,447.848,0,0,0-134.426,0,309.541,309.541,0,0,0-15.135-30.6,1.89,1.89,0,0,0-1.924-.91A483.689,483.689,0,0,0,116.085,69.137a1.712,1.712,0,0,0-.788.676C39.068,183.651,18.186,294.69,28.43,404.354a2.016,2.016,0,0,0,.765,1.375A487.666,487.666,0,0,0,176.02,479.918a1.9,1.9,0,0,0,2.063-.276c8.3-11.455,15.894-23.475,22.846-35.96a1.884,1.884,0,0,0-1.058-2.617,314.168,314.168,0,0,1-44.821-21.365,1.88,1.88,0,0,1-.188-3.155c3.08-2.316,6.138-4.7,9.088-7.144a1.834,1.834,0,0,1,1.924-.225c95.234,43.518,198.374,43.518,292.368,0a1.841,1.841,0,0,1,1.924.225c2.95,2.44,6.008,4.828,9.112,7.144a1.884,1.884,0,0,1-.164,3.155,310.573,310.573,0,0,1-44.869,21.365,1.88,1.88,0,0,0-1.035,2.617c6.976,12.485,14.568,24.5,22.822,35.96a1.894,1.894,0,0,0,2.063.276A486.2,486.2,0,0,0,611.534,405.729a1.882,1.882,0,0,0,.765-1.352C623.729,277.594,590.933,167.465,524.531,69.836ZM222.491,337.58c-28.972,0-52.844-26.587-52.844-59.239S193.056,219.1,222.491,219.1c29.665,0,53.306,26.82,52.843,59.239C275.334,310.993,251.924,337.58,222.491,337.58Zm195.38,0c-28.971,0-52.843-26.587-52.843-59.239S388.437,219.1,417.871,219.1c29.667,0,53.307,26.82,52.844,59.239C470.715,310.993,447.538,337.58,417.871,337.58Z"/></svg>
+                            DISCORD ID
+                        </span>
+                        <span class="dir-handle">
+                            <span class="copy-default-label">Hover to Reveal ID</span>
+                            <span class="copy-reveal-label">612114025530261517 (Click to Copy)</span>
+                        </span>
+                        <span class="dir-action">&#10697;</span>
+                    </button>
+
+                    <!-- Gmail: Hover Showcase + Click to Copy -->
+                    <button type="button" class="contact-dir-row copy-trigger-btn" data-copy="gerardmf55@gmail.com">
+                        <span class="dir-platform">
+                            <svg class="dir-icon" viewBox="0 0 512 512"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+                            GMAIL
+                        </span>
+                        <span class="dir-handle">
+                            <span class="copy-default-label">Hover to Reveal Email</span>
+                            <span class="copy-reveal-label">gerardmf55@gmail.com (Click to Copy)</span>
+                        </span>
+                        <span class="dir-action">&#10697;</span>
+                    </button>
+                </div>
+
+                <!-- Academic Info & Dual CV Download Bar -->
+                <div class="contact-cv-bar">
+                    <div class="cv-bar-meta">
+                        <span class="cv-meta-badge">BSc CREATIVE COMPUTING</span>
+                        <span class="cv-meta-school">Bath Spa University RAK &bull; Creative Incubator</span>
+                    </div>
+                    <div class="cv-bar-actions">
+                        <a href="assets/GerardMatthew CV 26.pdf" download class="contact-cv-btn primary">
+                            <span>CREATIVE CV &darr;</span>
+                        </a>
+                        <a href="assets/GerardMatthew_ATS_CV.pdf" download class="contact-cv-btn secondary">
+                            <span>ATS CV &darr;</span>
+                        </a>
+                    </div>
                 </div>
             </div>
+
+            <!-- RIGHT COLUMN: Neo-Brutalist Dispatch Form Card -->
+            <div class="contact-right-col">
+                <div class="contact-dispatch-card">
+                    <div class="dispatch-card-top">
+                        <span class="dispatch-badge">DIRECT DISPATCH</span>
+                        <span class="dispatch-dot-group">
+                            <span></span><span></span><span></span>
+                        </span>
+                    </div>
+                    <h3 class="dispatch-title">SEND A MESSAGE</h3>
+                    <p class="dispatch-sub">Have a project, role, or creative idea in mind? Drop a message straight to my inbox.</p>
+
+                    <form action="https://formsubmit.co/GERARDMF55@GMAIL.COM" method="POST" class="dispatch-form">
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_subject" value="New message from GMF Portfolio!">
+                        
+                        <div class="dispatch-field">
+                            <label>YOUR NAME</label>
+                            <input type="text" name="name" placeholder="Enter your name..." required>
+                        </div>
+
+                        <div class="dispatch-field">
+                            <label>YOUR EMAIL</label>
+                            <input type="email" name="email" placeholder="Enter your email address..." required>
+                        </div>
+
+                        <div class="dispatch-field">
+                            <label>YOUR MESSAGE</label>
+                            <textarea name="message" placeholder="Tell me about your project or inquiry..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="dispatch-submit-btn">
+                            <span class="dispatch-btn-label">SEND MESSAGE &rarr;</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -518,7 +655,7 @@
             <!-- Top Header Row -->
             <div class="web-header-top">
                 <h2 class="web-main-title">
-                    Web Creation<sup class="web-count">(05)</sup>
+                    Web Creation<sup class="web-count">(02)</sup>
                 </h2>
                 <div class="web-feature-label">
                     <span class="web-asterisk">*</span> LIVE BUILDS &amp; PROJECTS
@@ -537,43 +674,21 @@
             <!-- Clickable URL Rows (Opens in a new browser tab while keeping your modal open) -->
             <div class="web-table-body">
                 
+                <!-- PROJECT 1: Change href="..." below to your 1st live website URL -->
                 <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="web-row">
-                    <span class="web-col-site">Temporary Project 01 — Interactive Web</span>
-                    <span class="web-col-theme">Gaming / Interactive</span>
-                    <span class="web-col-year">2026</span>
-                    <span class="web-col-task">UI/UX &amp; Frontend Dev</span>
+                    <span class="web-col-site">Temporary Project 01 — Interactive Web</span> <!-- <-- Edit Website Name -->
+                    <span class="web-col-theme">Gaming / Interactive</span>                  <!-- <-- Edit Theme -->
+                    <span class="web-col-year">2026</span>                                   <!-- <-- Edit Year -->
+                    <span class="web-col-task">UI/UX &amp; Frontend Dev</span>               <!-- <-- Edit Task -->
                     <span class="web-col-arrow">↗</span>
                 </a>
 
+                <!-- PROJECT 2: Change href="..." below to your 2nd live website URL -->
                 <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="web-row">
-                    <span class="web-col-site">Temporary Project 02 — Client Showcase</span>
-                    <span class="web-col-theme">Modern Agency</span>
-                    <span class="web-col-year">2026</span>
-                    <span class="web-col-task">Full Frontend &amp; Hosting</span>
-                    <span class="web-col-arrow">↗</span>
-                </a>
-
-                <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="web-row">
-                    <span class="web-col-site">Temporary Project 03 — Digital Experience</span>
-                    <span class="web-col-theme">Creative Media</span>
-                    <span class="web-col-year">2025</span>
-                    <span class="web-col-task">Visual Design &amp; Motion</span>
-                    <span class="web-col-arrow">↗</span>
-                </a>
-
-                <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="web-row">
-                    <span class="web-col-site">Temporary Project 04 — Brand Landing Page</span>
-                    <span class="web-col-theme">E-Commerce / Promo</span>
-                    <span class="web-col-year">2025</span>
-                    <span class="web-col-task">Responsive Layout &amp; UI</span>
-                    <span class="web-col-arrow">↗</span>
-                </a>
-
-                <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="web-row">
-                    <span class="web-col-site">Temporary Project 05 — Web Prototype</span>
-                    <span class="web-col-theme">Experimental</span>
-                    <span class="web-col-year">2024</span>
-                    <span class="web-col-task">Concept &amp; Coding</span>
+                    <span class="web-col-site">Temporary Project 02 — Client Showcase</span> <!-- <-- Edit Website Name -->
+                    <span class="web-col-theme">Modern Agency</span>                         <!-- <-- Edit Theme -->
+                    <span class="web-col-year">2026</span>                                   <!-- <-- Edit Year -->
+                    <span class="web-col-task">Full Frontend &amp; Hosting</span>            <!-- <-- Edit Task -->
                     <span class="web-col-arrow">↗</span>
                 </a>
 
